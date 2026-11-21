@@ -61,6 +61,8 @@ export function AuthForm({ mode, returnTo, googleError }: { mode: "sign-in" | "s
   }, [mode, state]);
   const [values, setValues] = useState({ name: "", email: "", password: "" });
   const [role, setRole] = useState("");
+  const [preview, setPreview] = useState<string>();
+  useEffect(() => () => { if (preview) URL.revokeObjectURL(preview); }, [preview]);
 
   return (
     <>
@@ -170,7 +172,15 @@ export function AuthForm({ mode, returnTo, googleError }: { mode: "sign-in" | "s
             <label htmlFor="signup-image">Profile photo (optional)</label>
             <Input id="signup-image" name="image" type="file" accept="image/jpeg,image/png,image/webp"
               aria-describedby={state.errors?.image ? "signup-image-error" : "signup-image-hint"}
-              aria-invalid={Boolean(state.errors?.image)} />
+              aria-invalid={Boolean(state.errors?.image)}
+              onChange={(event) => {
+                const photo = event.currentTarget.files?.[0];
+                setPreview(photo?.type.startsWith("image/") ? URL.createObjectURL(photo) : undefined);
+              }} />
+            {preview && (
+              // eslint-disable-next-line @next/next/no-img-element -- Local photo preview.
+              <img src={preview} alt="Profile photo preview" className="size-14 rounded-full border border-line object-cover" />
+            )}
             <p id="signup-image-hint" className="invitation-hint">JPEG, PNG, or WebP, up to 5 MB.</p>
             {state.errors?.image && <p id="signup-image-error" className="invitation-error">{state.errors.image}</p>}
           </div>}
@@ -197,7 +207,7 @@ export function AuthForm({ mode, returnTo, googleError }: { mode: "sign-in" | "s
       <form action="/api/auth/google" method="post" className="mt-5">
         <input type="hidden" name="mode" value={mode} />
         {returnTo && <input type="hidden" name="returnTo" value={returnTo} />}
-        <Button type="submit" variant="outline" className="h-11 w-full border-stationery-line bg-stationery-paper">Continue with Google</Button>
+        <Button type="submit" variant="outline" className="h-11 w-full border-line bg-paper">Continue with Google</Button>
         {googleError && <p role="alert" className="invitation-error mt-2">{googleError}</p>}
       </form>
 

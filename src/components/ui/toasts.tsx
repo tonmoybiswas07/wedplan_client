@@ -32,7 +32,7 @@ export function WedPlanToasts() {
       toastOptions={{
         classNames: {
           toast:
-            "!border-stationery-line !bg-stationery-paper !text-stationery-plum",
+            "!border-line !bg-paper !text-ink",
         },
       }}
     />

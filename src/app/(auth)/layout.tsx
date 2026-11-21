@@ -14,10 +14,11 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
           </section>
 
           <figure className="invitation-photo">
+            <div aria-hidden="true" className="alpana pointer-events-none absolute -inset-3 opacity-45" />
             <div className="invitation-frame">
               <Image
-                src="/wedding-invitation.webp"
-                alt="A couple walking up a garden stairway on their wedding day"
+                src="/wedding-editorial.webp"
+                alt="A Bangladeshi bride and groom at their wedding"
                 fill
                 preload
                 sizes="(min-width: 1100px) 470px, (min-width: 768px) 42vw, 90vw"

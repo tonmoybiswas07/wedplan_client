@@ -18,12 +18,12 @@ export function BookingForm({ serviceId, earliestDate }: { serviceId: string; ea
   }
 
   return (
-    <section aria-labelledby="booking-heading" className="border border-stationery-line bg-stationery-paper p-1">
-      <div className="border border-stationery-line/65 p-5 sm:p-6">
-        <h2 id="booking-heading" className="font-stationery text-3xl text-stationery-plum">Request a booking</h2>
+    <section aria-labelledby="booking-heading" className="border border-line bg-paper p-1">
+      <div className="border border-line/65 p-5 sm:p-6">
+        <h2 id="booking-heading" className="font-editorial text-3xl text-ink">Request a booking</h2>
         {state?.ok ? (
-          <div role="status" className="mt-4 flex items-start gap-3 bg-stationery-blush/60 p-4">
-            <CalendarCheck className="mt-0.5 size-5 shrink-0 text-stationery-rose" aria-hidden="true" />
+          <div role="status" className="mt-4 flex items-start gap-3 bg-sage/60 p-4">
+            <CalendarCheck className="mt-0.5 size-5 shrink-0 text-earth" aria-hidden="true" />
             <div>
               <p className="font-semibold">Request sent</p>
               <p className="mt-1 text-sm text-muted-foreground">Your request is pending vendor review.</p>
@@ -52,21 +52,21 @@ export function BookingForm({ serviceId, earliestDate }: { serviceId: string; ea
               <fieldset disabled={pending} className="grid min-w-0 gap-4 disabled:opacity-70">
                 <div className="min-w-0">
                   <label htmlFor="event-date" className="mb-1.5 block text-sm font-semibold">Event date</label>
-                  <Input id="event-date" name="eventDate" type="date" min={earliestDate} required className="h-11 max-w-full bg-stationery-paper"
+                  <Input id="event-date" name="eventDate" type="date" min={earliestDate} required className="h-11 max-w-full bg-paper"
                     aria-invalid={Boolean(errors?.eventDate)} aria-describedby={errors?.eventDate ? "booking-eventDate-error" : undefined} />
                   {fieldError("eventDate")}
                 </div>
                 <div>
                   <label htmlFor="event-location" className="mb-1.5 block text-sm font-semibold">Event location</label>
                   <Input id="event-location" name="eventLocation" type="text" placeholder="Venue or city" minLength={2} maxLength={160} required
-                    className="h-11 bg-stationery-paper" aria-invalid={Boolean(errors?.eventLocation)}
+                    className="h-11 bg-paper" aria-invalid={Boolean(errors?.eventLocation)}
                     aria-describedby={errors?.eventLocation ? "booking-eventLocation-error" : undefined} />
                   {fieldError("eventLocation")}
                 </div>
                 <div>
                   <label htmlFor="booking-message" className="mb-1.5 block text-sm font-semibold">Message <span className="font-normal text-muted-foreground">(optional)</span></label>
                   <textarea id="booking-message" name="message" rows={4} maxLength={1000} placeholder="Tell the vendor a little about your event."
-                    className="w-full rounded-md border border-input bg-stationery-paper px-3 py-2 outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/40 aria-invalid:border-destructive"
+                    className="w-full rounded-md border border-input bg-paper px-3 py-2 outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/40 aria-invalid:border-destructive"
                     aria-invalid={Boolean(errors?.message)} aria-describedby={errors?.message ? "booking-message-error" : undefined} />
                   {fieldError("message")}
                 </div>

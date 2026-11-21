@@ -22,8 +22,8 @@ const eventCalendar = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Dhaka",
 function Unavailable({ title, message }: { title: string; message: string }) {
   return (
     <main className="mx-auto min-h-[65svh] max-w-3xl px-4 py-16 sm:px-8">
-      <div className="border border-stationery-line bg-stationery-paper p-6 sm:p-10">
-        <h1 className="font-stationery text-4xl">{title}</h1>
+      <div className="border border-line bg-paper p-6 sm:p-10">
+        <h1 className="font-editorial text-4xl">{title}</h1>
         <p className="mt-3 text-muted-foreground">{message}</p>
         <Link href="/services" className={cn(buttonVariants(), "mt-6 h-11 px-4")}>Back to Browse Services</Link>
       </div>
@@ -54,26 +54,26 @@ async function ServicePageContent({ params }: { params: Params }) {
     <main className="mx-auto min-h-[70svh] max-w-7xl px-4 py-8 sm:px-8 sm:py-12">
       <Link href="/services" className="text-sm font-semibold underline underline-offset-4">Browse Services</Link>
       <header className="mb-7 mt-5 sm:mb-9">
-        <p className="mb-2 text-sm font-semibold tracking-wide text-stationery-rose">{service.category}</p>
-        <h1 className="break-words font-stationery text-4xl leading-tight tracking-tight sm:text-6xl">{service.title}</h1>
+        <p className="mb-2 text-sm font-semibold tracking-wide text-earth">{service.category}</p>
+        <h1 className="break-words font-editorial text-4xl leading-tight tracking-tight sm:text-6xl">{service.title}</h1>
       </header>
       <div className="grid min-w-0 items-start gap-7 lg:grid-cols-[minmax(0,1.75fr)_minmax(0,1fr)] lg:gap-10">
         <div className="grid min-w-0 gap-7">
           <ServiceGallery key={service.id} title={service.title} photos={photos} />
-          <section aria-labelledby="service-description" className="border-t border-stationery-line pt-5">
-            <h2 id="service-description" className="font-stationery text-3xl">About this service</h2>
+          <section aria-labelledby="service-description" className="border-t border-line pt-5">
+            <h2 id="service-description" className="font-editorial text-3xl">About this service</h2>
             <p className="mt-3 whitespace-pre-wrap break-words leading-relaxed text-muted-foreground">{service.description}</p>
           </section>
         </div>
         <div className="grid min-w-0 gap-5">
-          <section aria-labelledby="vendor-details" className="border border-stationery-line bg-stationery-paper p-5 sm:p-6">
-            <h2 id="vendor-details" className="font-stationery text-2xl">Service and vendor</h2>
+          <section aria-labelledby="vendor-details" className="border border-line bg-paper p-5 sm:p-6">
+            <h2 id="vendor-details" className="font-editorial text-2xl">Service and vendor</h2>
             <p className="mt-4 text-sm text-muted-foreground">Starting price</p>
             <p className="mt-1 text-xl font-semibold">{currency.format(service.priceMinor / 100)}</p>
-            <div className="mt-4 grid gap-2 border-t border-stationery-line/60 pt-4 text-sm">
-              <p className="flex items-start gap-2 break-words"><Store className="mt-0.5 size-4 shrink-0 text-stationery-rose" aria-hidden="true" />{service.vendor.businessName || service.vendor.name}</p>
-              {service.vendor.premium && <span className="w-fit rounded-full bg-stationery-blush px-2 py-0.5 text-xs font-semibold text-stationery-plum">Premium Vendor</span>}
-              <p className="flex items-start gap-2 break-words"><MapPin className="mt-0.5 size-4 shrink-0 text-stationery-rose" aria-hidden="true" />{service.location || "Location not listed"}</p>
+            <div className="mt-4 grid gap-2 border-t border-line/60 pt-4 text-sm">
+              <p className="flex items-start gap-2 break-words"><Store className="mt-0.5 size-4 shrink-0 text-earth" aria-hidden="true" />{service.vendor.businessName || service.vendor.name}</p>
+              {service.vendor.premium && <span className="w-fit rounded-full bg-sage px-2 py-0.5 text-xs font-semibold text-ink">Premium Vendor</span>}
+              <p className="flex items-start gap-2 break-words"><MapPin className="mt-0.5 size-4 shrink-0 text-earth" aria-hidden="true" />{service.location || "Location not listed"}</p>
             </div>
           </section>
           {access.user.role === "customer" && <BookingForm serviceId={service.id} earliestDate={eventCalendar.format(new Date())} />}

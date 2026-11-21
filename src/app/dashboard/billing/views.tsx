@@ -9,8 +9,8 @@ import { stripeMoney } from "./money";
 const subscriptionPath = "/dashboard/vendor/subscription";
 const transactionsPath = "/dashboard/admin/transactions";
 const dateFormat = new Intl.DateTimeFormat("en-BD", { dateStyle: "medium", timeZone: "Asia/Dhaka" });
-const badge = "inline-flex w-fit items-center gap-1 rounded-full border border-stationery-line bg-stationery-blush px-2.5 py-1 text-xs font-semibold text-stationery-plum";
-const card = "border border-stationery-line bg-stationery-paper p-1 shadow-sm";
+const badge = "inline-flex w-fit items-center gap-1 rounded-full border border-line bg-sage px-2.5 py-1 text-xs font-semibold text-ink";
+const card = "border border-line bg-paper p-1 shadow-sm";
 
 type Billing = {
   plan: "free" | "premium";
@@ -30,12 +30,12 @@ async function billing(sessionId?: string) {
 }
 
 export function BillingLoading() {
-  return <p role="status" className="border border-stationery-line bg-stationery-paper p-5 text-sm text-muted-foreground">Loading billing information…</p>;
+  return <p role="status" className="border border-line bg-paper p-5 text-sm text-muted-foreground">Loading billing information…</p>;
 }
 
 export async function VendorSubscription() {
   const result = await billing();
-  if (!result) return <p role="alert" className="border border-stationery-line bg-stationery-paper p-5">Subscription details could not be loaded. Refresh to try again.</p>;
+  if (!result) return <p role="alert" className="border border-line bg-paper p-5">Subscription details could not be loaded. Refresh to try again.</p>;
   const premium = result.plan === "premium";
   const price = result.price;
   const ends = result.currentPeriodEnd ? dateFormat.format(new Date(result.currentPeriodEnd)) : null;
@@ -43,9 +43,9 @@ export async function VendorSubscription() {
   return (
     <div className="grid max-w-4xl gap-5">
       <section className={card}>
-        <div className="flex flex-wrap items-center justify-between gap-3 border border-stationery-line/65 p-5">
+        <div className="flex flex-wrap items-center justify-between gap-3 border border-line/65 p-5">
           <div>
-            <h2 className="font-stationery text-2xl">Current plan</h2>
+            <h2 className="font-editorial text-2xl">Current plan</h2>
             {premium && ends && <p className="mt-1 text-sm text-muted-foreground">
               {result.cancelAtPeriodEnd ? "Premium ends" : "Current paid period ends"} {ends}.
             </p>}
@@ -58,8 +58,8 @@ export async function VendorSubscription() {
       </section>
       <div className="grid gap-4 md:grid-cols-2">
         <section className={card}>
-          <div className="grid h-full content-start gap-4 border border-stationery-line/65 p-5 sm:p-6">
-            <h2 className="font-stationery text-3xl">Free</h2>
+          <div className="grid h-full content-start gap-4 border border-line/65 p-5 sm:p-6">
+            <h2 className="font-editorial text-3xl">Free</h2>
             <p className="text-sm text-muted-foreground">No subscription fee.</p>
             <p className="flex items-start gap-2 text-sm"><Check size={17} aria-hidden="true" /> Activate up to 3 services.</p>
             <p className="text-sm">Vendor dashboard and booking request management.</p>
@@ -67,11 +67,11 @@ export async function VendorSubscription() {
           </div>
         </section>
         <section className={card}>
-          <div className="grid h-full content-start gap-4 border border-stationery-line/65 p-5 sm:p-6">
-            <h2 className="flex items-center gap-2 font-stationery text-3xl"><Crown aria-hidden="true" className="size-5 text-stationery-rose" />Premium</h2>
+          <div className="grid h-full content-start gap-4 border border-line/65 p-5 sm:p-6">
+            <h2 className="flex items-center gap-2 font-editorial text-3xl"><Crown aria-hidden="true" className="size-5 text-earth" />Premium</h2>
             <p className="text-sm text-muted-foreground">{price ? (
               <>
-                <strong className="text-lg text-stationery-plum">{stripeMoney(price.amount, price.currency)}</strong>
+                <strong className="text-lg text-ink">{stripeMoney(price.amount, price.currency)}</strong>
                 {price.intervalCount === 1 ? ` per ${price.interval}` : ` every ${price.intervalCount} ${price.interval}s`}
               </>
             ) : "Recurring subscription"}</p>
@@ -100,9 +100,9 @@ export async function PaymentReturn({ kind, search }: { kind: "success" | "cance
 
   return (
     <section className={cn(card, "max-w-2xl")}>
-      <div className="grid gap-4 border border-stationery-line/65 p-5 sm:p-8">
-        <CreditCard aria-hidden="true" className="text-stationery-rose" />
-        <h2 role="status" className="font-stationery text-3xl">{heading}</h2>
+      <div className="grid gap-4 border border-line/65 p-5 sm:p-8">
+        <CreditCard aria-hidden="true" className="text-earth" />
+        <h2 role="status" className="font-editorial text-3xl">{heading}</h2>
         <p className="text-sm text-muted-foreground">
           {kind === "cancel" ? "You can return to your subscription and start Checkout again."
             : confirmed ? "Premium is now active for your vendor account."
@@ -131,7 +131,7 @@ export async function AdminTransactions({ search }: { search: Promise<Record<str
   const raw = (await search).page;
   const page = typeof raw === "string" && /^[1-9]\d{0,5}$/.test(raw) ? Number(raw) : 1;
   const response = await fetchDashboardApi("admin", `/api/admin/transactions?page=${page}`);
-  if (!response.ok) return <p role="alert" className="border border-stationery-line bg-stationery-paper p-5">Transactions could not be loaded. Refresh to try again.</p>;
+  if (!response.ok) return <p role="alert" className="border border-line bg-paper p-5">Transactions could not be loaded. Refresh to try again.</p>;
   const { transactions, hasNext } = await response.json() as { transactions: Transaction[]; hasNext: boolean };
 
   return (
@@ -140,20 +140,20 @@ export async function AdminTransactions({ search }: { search: Promise<Record<str
         <ul className="grid gap-3">
           {transactions.map((row) => (
             <li key={row.id} className={card}>
-              <dl className="grid min-w-0 grid-cols-2 gap-3 border border-stationery-line/65 p-4 text-sm sm:grid-cols-3 lg:grid-cols-6">
+              <dl className="grid min-w-0 grid-cols-2 gap-3 border border-line/65 p-4 text-sm sm:grid-cols-3 lg:grid-cols-6">
                 <div className="col-span-2 min-w-0 sm:col-span-1"><dt className="text-muted-foreground">Vendor</dt><dd className="break-words font-semibold">{row.vendor}</dd></div>
                 <div><dt className="text-muted-foreground">Plan</dt><dd className="font-semibold">Premium</dd></div>
                 <div><dt className="text-muted-foreground">Amount</dt><dd className="font-semibold">{stripeMoney(row.amount, row.currency)}</dd></div>
                 <div><dt className="text-muted-foreground">Currency</dt><dd className="font-semibold uppercase">{row.currency}</dd></div>
                 <div><dt className="text-muted-foreground">Status</dt><dd className="mt-0.5">
-                  <span className={cn(badge, row.status === "paid" ? "bg-green-100 text-green-900" : "bg-red-100 text-red-900")}>{row.status === "paid" ? "Paid" : "Failed"}</span>
+                  <span className={cn(badge, row.status === "paid" ? "bg-success-surface text-success-ink" : "bg-danger-surface text-danger-ink")}>{row.status === "paid" ? "Paid" : "Failed"}</span>
                 </dd></div>
                 <div><dt className="text-muted-foreground">Date</dt><dd className="font-semibold"><time dateTime={row.date}>{dateFormat.format(new Date(row.date))}</time></dd></div>
               </dl>
             </li>
           ))}
         </ul>
-      ) : <p className="border border-dashed border-stationery-line bg-stationery-paper p-8 text-center text-muted-foreground">No transactions on this page.</p>}
+      ) : <p className="border border-dashed border-line bg-paper p-8 text-center text-muted-foreground">No transactions on this page.</p>}
       {(page > 1 || hasNext) && <nav aria-label="Transaction results" className="flex items-center gap-3">
         {page > 1 && <Link href={`${transactionsPath}?page=${page - 1}`} className={buttonVariants({ variant: "outline" })}>Previous</Link>}
         <span className="text-sm">Page {page}</span>

@@ -49,9 +49,9 @@ export function ActionConfirmation({
         onCancel={(event) => {
           if (pending) event.preventDefault();
         }}
-        className="fixed inset-0 m-auto w-[min(90vw,26rem)] rounded-lg border border-stationery-line bg-stationery-paper p-6 text-stationery-plum backdrop:bg-stationery-plum/60"
+        className="fixed inset-0 m-auto w-[min(90vw,26rem)] rounded-lg border border-line bg-paper p-6 text-ink backdrop:bg-overlay/60"
       >
-        <h2 id={heading} className="mb-2 font-stationery text-2xl">
+        <h2 id={heading} className="mb-2 font-editorial text-2xl">
           {label} {subject}?
         </h2>
         <p className="mb-2 break-words text-sm font-semibold">{title}</p>

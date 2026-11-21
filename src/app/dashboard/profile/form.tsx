@@ -47,8 +47,8 @@ export function ProfileForm({ role, name, email, image, businessName }: {
       });
     }}>
       <fieldset disabled={pending} className="grid gap-5 disabled:opacity-70">
-        <div className="flex flex-wrap items-center gap-4 border-b border-stationery-line/65 pb-5">
-          <div className="grid size-20 shrink-0 place-items-center overflow-hidden rounded-full border border-stationery-line bg-stationery-blush text-stationery-rose">
+        <div className="flex flex-wrap items-center gap-4 border-b border-line/65 pb-5">
+          <div className="grid size-20 shrink-0 place-items-center overflow-hidden rounded-full border border-line bg-sage text-earth">
             {preview || image ? (
               // eslint-disable-next-line @next/next/no-img-element -- Supports local file previews and hosted profile photos.
               <img src={preview ?? image} alt="Profile photo" className="size-full object-cover" referrerPolicy="no-referrer" />
@@ -74,7 +74,7 @@ export function ProfileForm({ role, name, email, image, businessName }: {
         </div>
         <div>
           <label htmlFor="profile-email" className="mb-1 block text-sm font-semibold">Email</label>
-          <Input id="profile-email" value={email} readOnly className="h-11 bg-stationery-ivory" />
+          <Input id="profile-email" value={email} readOnly className="h-11 bg-canvas" />
         </div>
         {role === "vendor" && <div>
           <label htmlFor="profile-business" className="mb-1 block text-sm font-semibold">Business name</label>

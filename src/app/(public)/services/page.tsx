@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Form from "next/form";
 import Link from "next/link";
 import { Suspense } from "react";
+import { ResponsiveDrawer } from "@/components/ui/responsive-drawer";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { categories } from "@/components/public/categories";
@@ -37,7 +38,7 @@ async function BrowseCatalog({ searchParams }: { searchParams: Search }) {
       : 1;
   const filtered = q || category || location || minPrice || maxPrice || sort !== "newest";
   const select =
-    "h-11 w-full rounded-md border border-input bg-stationery-paper px-3 text-sm focus-visible:outline-2 focus-visible:outline-ring";
+    "h-11 w-full rounded-md border border-input bg-paper px-3 text-sm focus-visible:outline-2 focus-visible:outline-ring";
 
   function query(pageNumber: number) {
     const params = new URLSearchParams();
@@ -51,22 +52,21 @@ async function BrowseCatalog({ searchParams }: { searchParams: Search }) {
     return params;
   }
 
-  return (
-    <>
+  const filters = (prefix: string) => (
       <Form
         action="/services"
         key={query(page).toString()}
-        className="mb-8 grid items-end gap-4 border border-stationery-line bg-stationery-paper p-4 sm:grid-cols-2 sm:p-5 xl:grid-cols-4"
+        className="grid items-end gap-4 rounded-xl border border-line bg-paper p-4 sm:p-5 lg:grid-cols-4"
       >
         <div>
           <label
-            htmlFor="browse-search"
+            htmlFor={prefix + "-browse-search"}
             className="mb-1.5 block text-sm font-semibold"
           >
             Search services
           </label>
           <Input
-            id="browse-search"
+            id={prefix + "-browse-search"}
             name="q"
             type="search"
             maxLength={100}
@@ -77,13 +77,13 @@ async function BrowseCatalog({ searchParams }: { searchParams: Search }) {
         </div>
         <div>
           <label
-            htmlFor="browse-category"
+            htmlFor={prefix + "-browse-category"}
             className="mb-1.5 block text-sm font-semibold"
           >
             Category
           </label>
           <select
-            id="browse-category"
+            id={prefix + "-browse-category"}
             name="category"
             defaultValue={category}
             className={select}
@@ -99,13 +99,13 @@ async function BrowseCatalog({ searchParams }: { searchParams: Search }) {
         </div>
         <div>
           <label
-            htmlFor="browse-location"
+            htmlFor={prefix + "-browse-location"}
             className="mb-1.5 block text-sm font-semibold"
           >
             Location
           </label>
           <Input
-            id="browse-location"
+            id={prefix + "-browse-location"}
             name="location"
             maxLength={100}
             defaultValue={location}
@@ -115,13 +115,13 @@ async function BrowseCatalog({ searchParams }: { searchParams: Search }) {
         </div>
         <div>
           <label
-            htmlFor="browse-sort"
+            htmlFor={prefix + "-browse-sort"}
             className="mb-1.5 block text-sm font-semibold"
           >
             Sort by
           </label>
           <select
-            id="browse-sort"
+            id={prefix + "-browse-sort"}
             name="sort"
             defaultValue={sort}
             className={select}
@@ -133,8 +133,8 @@ async function BrowseCatalog({ searchParams }: { searchParams: Search }) {
         </div>
         {([["minPrice", "Minimum price (BDT)", minPrice], ["maxPrice", "Maximum price (BDT)", maxPrice]] as const).map(([key, label, value]) => (
           <div key={key}>
-            <label htmlFor={`browse-${key}`} className="mb-1.5 block text-sm font-semibold">{label}</label>
-            <Input id={`browse-${key}`} name={key} type="number" min="0" max="99999999.99" step="0.01" defaultValue={value} className="h-11" />
+            <label htmlFor={`${prefix}-browse-${key}`} className="mb-1.5 block text-sm font-semibold">{label}</label>
+            <Input id={`${prefix}-browse-${key}`} name={key} type="number" min="0" max="99999999.99" step="0.01" defaultValue={value} className="h-11" />
           </div>
         ))}
         <Button
@@ -144,9 +144,17 @@ async function BrowseCatalog({ searchParams }: { searchParams: Search }) {
           Apply filters
         </Button>
       </Form>
+  );
 
+  return (
+    <>
+      <div className="mb-6 lg:hidden">
+        <ResponsiveDrawer title="Filter services" kind="filters">{filters("mobile")}</ResponsiveDrawer>
+        {filtered && <Link href="/services" className="ms-4 text-sm font-semibold underline underline-offset-4">Reset filters</Link>}
+      </div>
+      <div className="mb-8 hidden lg:block">{filters("desktop")}</div>
       <div className="mb-4 flex items-center justify-between gap-3">
-        <h2 className="font-stationery text-2xl">Service listings</h2>
+        <h2 className="font-editorial text-2xl">Service listings</h2>
         {filtered && (
           <Link
             href="/services"
@@ -182,14 +190,14 @@ async function BrowseResults({
   const min = query.get("minPrice");
   const max = query.get("maxPrice");
   if (min !== null && max !== null && Number(min) > Number(max)) {
-    return <p role="alert" className="border border-stationery-line bg-stationery-paper p-6">Minimum price must be at or below maximum price.</p>;
+    return <p role="alert" className="border border-line bg-paper p-6">Minimum price must be at or below maximum price.</p>;
   }
   const result = await readCatalog(query);
   if (!result)
     return (
       <div
         role="alert"
-        className="border border-stationery-line bg-stationery-paper p-6"
+        className="border border-line bg-paper p-6"
       >
         <p>Services couldn’t be loaded right now.</p>
         {/* A normal navigation retries the backend request even when the URL stays the same. */}
@@ -207,8 +215,8 @@ async function BrowseResults({
       {result.services.length ? (
         <ServiceGrid listings={result.services} />
       ) : (
-        <div className="border border-dashed border-stationery-line bg-stationery-paper p-8 text-center">
-          <h3 className="font-stationery text-2xl">No matching services</h3>
+        <div className="border border-dashed border-line bg-paper p-8 text-center">
+          <h3 className="font-editorial text-2xl">No matching services</h3>
           <p className="mt-2 text-muted-foreground">
             Try another name, category, or location.
           </p>
@@ -245,7 +253,7 @@ async function BrowseResults({
 export default function BrowsePage({ searchParams }: { searchParams: Search }) {
   return (
     <main className="mx-auto min-h-[70svh] max-w-7xl px-4 py-10 sm:px-8 sm:py-14">
-      <h1 className="font-stationery text-5xl leading-tight tracking-tight text-stationery-plum sm:text-6xl">
+      <h1 className="font-editorial text-4xl leading-tight tracking-tight text-ink sm:text-6xl">
         Browse wedding services
       </h1>
       <p className="mt-3 mb-7 max-w-prose text-muted-foreground">

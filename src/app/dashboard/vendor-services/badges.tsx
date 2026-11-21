@@ -4,10 +4,10 @@ import type { VendorService } from "./model";
 const approval = {
   pending: {
     label: "Pending approval",
-    color: "bg-stationery-blush text-stationery-plum",
+    color: "bg-sage text-ink",
   },
-  approved: { label: "Approved", color: "bg-green-100 text-green-900" },
-  rejected: { label: "Rejected", color: "bg-red-100 text-red-900" },
+  approved: { label: "Approved", color: "bg-success-surface text-success-ink" },
+  rejected: { label: "Rejected", color: "bg-danger-surface text-danger-ink" },
 };
 
 export function ServiceBadges({
@@ -24,7 +24,7 @@ export function ServiceBadges({
       >
         {approval[status].label}
       </span>
-      <span className="rounded-full border border-stationery-line px-2.5 py-1 text-xs font-medium">
+      <span className="rounded-full border border-line px-2.5 py-1 text-xs font-medium">
         {isActive ? "Active" : "Inactive"}
       </span>
     </div>

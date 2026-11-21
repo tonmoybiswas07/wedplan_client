@@ -74,7 +74,7 @@ export function ServiceForm({ service }: { service?: VendorService }) {
                 inputMode={name === "price" ? "decimal" : undefined}
                 defaultValue={name === "price" ? (service ? (service.priceMinor / 100).toFixed(2) : "") : service?.[name]}
                 aria-invalid={Boolean(errors[name])} aria-describedby={errors[name] ? `${name}-error` : undefined}
-                className="min-h-11 bg-stationery-paper" />
+                className="min-h-11 bg-paper" />
               {fieldError(name)}
             </div>
           ))}
@@ -82,7 +82,7 @@ export function ServiceForm({ service }: { service?: VendorService }) {
             <label htmlFor="category" className="mb-1.5 block text-sm font-semibold">Category</label>
             <select id="category" name="category" required defaultValue={canonicalCategory(service?.category)}
               aria-invalid={Boolean(errors.category)} aria-describedby={errors.category ? "category-error" : undefined}
-              className="h-11 w-full rounded-md border border-input bg-stationery-paper px-3 text-sm focus-visible:ring-2 focus-visible:ring-ring">
+              className="h-11 w-full rounded-md border border-input bg-paper px-3 text-sm focus-visible:ring-2 focus-visible:ring-ring">
               <option value="">Choose a category</option>
               {categories.map(({ name }) => <option key={name}>{name}</option>)}
             </select>
@@ -94,15 +94,15 @@ export function ServiceForm({ service }: { service?: VendorService }) {
           <textarea id="description" name="description" rows={5} minLength={10} maxLength={2000} required
             defaultValue={service?.description} placeholder="Describe what’s included in your service."
             aria-invalid={Boolean(errors.description)} aria-describedby={errors.description ? "description-error" : undefined}
-            className="w-full rounded-md border border-input bg-stationery-paper px-3 py-2 outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/40 aria-invalid:border-destructive" />
+            className="w-full rounded-md border border-input bg-paper px-3 py-2 outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/40 aria-invalid:border-destructive" />
           {fieldError("description")}
         </div>
-        <div className="grid gap-4 border-t border-stationery-line/65 pt-5">
+        <div className="grid gap-4 border-t border-line/65 pt-5">
           <div className="flex flex-wrap gap-3">
             {shownImages.length ? shownImages.map((photo, index) => (
               // eslint-disable-next-line @next/next/no-img-element -- Includes local blob previews.
-              <img key={photo + index} src={photo} alt={`Service photo ${index + 1}`} className="aspect-square w-20 rounded-md border border-stationery-line object-cover sm:w-24" />
-            )) : <div className="grid size-20 place-items-center rounded-md border border-stationery-line bg-stationery-ivory text-stationery-rose"><ImagePlus aria-hidden="true" size={26} /></div>}
+              <img key={photo + index} src={photo} alt={`Service photo ${index + 1}`} className="aspect-square w-20 rounded-md border border-line object-cover sm:w-24" />
+            )) : <div className="grid size-20 place-items-center rounded-md border border-line bg-canvas text-earth"><ImagePlus aria-hidden="true" size={26} /></div>}
           </div>
           <div className="min-w-0">
             <label htmlFor="image" className="mb-1 block text-sm font-semibold">{savedImages.length ? "Replace service photos" : "Service photos"}</label>
@@ -118,7 +118,7 @@ export function ServiceForm({ service }: { service?: VendorService }) {
           </div>
         </div>
       </fieldset>
-      <div className="border-t border-stationery-line/65 pt-5">
+      <div className="border-t border-line/65 pt-5">
         <p className="mb-4 text-sm text-muted-foreground">Listings stay inactive until approved. Edits send the listing back for review.</p>
         {message && <p role="alert" className="mb-4 text-sm font-medium text-destructive">{message}</p>}
         <div className="flex flex-wrap gap-3">

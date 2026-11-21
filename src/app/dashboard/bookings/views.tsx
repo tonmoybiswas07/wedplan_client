@@ -7,28 +7,28 @@ import { BookingControls } from "./controls";
 import { bookingsPath, type Booking, type BookingRole, type BookingStatus } from "./model";
 
 const statuses: Record<BookingStatus, { label: string; style: string }> = {
-  pending: { label: "Pending", style: "bg-stationery-blush text-stationery-plum" },
-  accepted: { label: "Accepted", style: "bg-green-100 text-green-900" },
-  confirmed: { label: "Confirmed", style: "bg-green-100 text-green-900" },
-  completed: { label: "Completed", style: "bg-green-100 text-green-900" },
-  rejected: { label: "Rejected", style: "bg-red-100 text-red-900" },
-  cancelled: { label: "Cancelled", style: "bg-stationery-ivory text-muted-foreground" },
+  pending: { label: "Pending", style: "bg-warning-surface text-warning-ink" },
+  accepted: { label: "Accepted", style: "bg-success-surface text-success-ink" },
+  confirmed: { label: "Confirmed", style: "bg-success-surface text-success-ink" },
+  completed: { label: "Completed", style: "bg-success-surface text-success-ink" },
+  rejected: { label: "Rejected", style: "bg-danger-surface text-danger-ink" },
+  cancelled: { label: "Cancelled", style: "bg-canvas text-muted-foreground" },
 };
 const eventFormat = new Intl.DateTimeFormat("en-BD", { dateStyle: "medium", timeZone: "UTC" });
 const requestFormat = new Intl.DateTimeFormat("en-BD", { dateStyle: "medium", timeZone: "Asia/Dhaka" });
 
 function BookingStatusBadge({ status }: { status: BookingStatus }) {
   const badge = statuses[status];
-  return <span className={cn("inline-flex w-fit rounded-full border border-stationery-line/60 px-3 py-1 text-xs font-semibold", badge.style)}>
+  return <span className={cn("inline-flex w-fit rounded-full border border-line/60 px-3 py-1 text-xs font-semibold", badge.style)}>
     {badge.label}
   </span>;
 }
 
 function BookingCard({ booking, role, details = false }: { booking: Booking; role: BookingRole; details?: boolean }) {
   return (
-    <article className="min-w-0 border border-stationery-line bg-stationery-paper p-1 shadow-sm">
-      <div className="grid min-w-0 gap-4 border border-stationery-line/65 p-4 sm:grid-cols-[10rem_minmax(0,1fr)] sm:p-5">
-        <div className="grid aspect-[4/3] w-full place-items-center overflow-hidden border border-stationery-line/60 bg-stationery-blush/50 text-stationery-rose">
+    <article className="min-w-0 border border-line bg-paper p-1 shadow-sm">
+      <div className="grid min-w-0 gap-4 border border-line/65 p-4 sm:grid-cols-[10rem_minmax(0,1fr)] sm:p-5">
+        <div className="grid aspect-[4/3] w-full place-items-center overflow-hidden border border-line/60 bg-sage/50 text-earth">
           {booking.service.imageUrl ? (
             // eslint-disable-next-line @next/next/no-img-element -- Service images are stored as ImgBB URLs.
             <img src={booking.service.imageUrl} alt="" loading="lazy" className="size-full object-cover" />
@@ -36,7 +36,7 @@ function BookingCard({ booking, role, details = false }: { booking: Booking; rol
         </div>
         <div className="min-w-0">
           <div className="flex flex-wrap items-start justify-between gap-2">
-            <h2 className="break-words font-stationery text-2xl">{booking.service.title}</h2>
+            <h2 className="break-words font-editorial text-2xl">{booking.service.title}</h2>
             <BookingStatusBadge status={booking.status} />
           </div>
           <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
@@ -51,7 +51,7 @@ function BookingCard({ booking, role, details = false }: { booking: Booking; rol
               </dd></div>
           </dl>
           {role === "vendor" && (
-            <div className="mt-4 border-t border-stationery-line/65 pt-3 text-sm">
+            <div className="mt-4 border-t border-line/65 pt-3 text-sm">
               <p className="font-semibold">Customer message</p>
               <p className={cn("mt-1 whitespace-pre-wrap break-words text-muted-foreground", !details && "line-clamp-2")}>
                 {booking.message || "No message provided."}
@@ -70,11 +70,11 @@ function BookingCard({ booking, role, details = false }: { booking: Booking; rol
 }
 
 function BookingError({ message }: { message: string }) {
-  return <p role="alert" className="border border-stationery-line bg-stationery-paper p-5 text-sm">{message}</p>;
+  return <p role="alert" className="border border-line bg-paper p-5 text-sm">{message}</p>;
 }
 
 export function BookingLoading() {
-  return <p role="status" className="border border-stationery-line bg-stationery-paper p-5 text-sm text-muted-foreground motion-safe:animate-pulse">Loading bookings…</p>;
+  return <p role="status" className="border border-line bg-paper p-5 text-sm text-muted-foreground motion-safe:animate-pulse">Loading bookings…</p>;
 }
 
 export async function BookingList({ role, search }: { role: BookingRole; search: Promise<{ page?: string | string[] }> }) {
@@ -90,9 +90,9 @@ export async function BookingList({ role, search }: { role: BookingRole; search:
       {result.bookings.length ? (
         <ul className="grid gap-4">{result.bookings.map((booking) => <li key={booking.id}><BookingCard role={role} booking={booking} /></li>)}</ul>
       ) : (
-        <div className="border border-dashed border-stationery-line bg-stationery-paper p-8 text-center">
-          <CalendarDays aria-hidden="true" className="mx-auto mb-3 text-stationery-rose" />
-          <h2 className="font-stationery text-2xl">{page > 1 ? "No bookings on this page" : role === "customer" ? "No bookings yet" : "No booking requests yet"}</h2>
+        <div className="border border-dashed border-line bg-paper p-8 text-center">
+          <CalendarDays aria-hidden="true" className="mx-auto mb-3 text-earth" />
+          <h2 className="font-editorial text-2xl">{page > 1 ? "No bookings on this page" : role === "customer" ? "No bookings yet" : "No booking requests yet"}</h2>
           {page === 1 && role === "customer" && <Link href="/services" className={cn(buttonVariants(), "mt-4 h-9 px-3")}>Browse Services</Link>}
         </div>
       )}

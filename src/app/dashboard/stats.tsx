@@ -22,9 +22,9 @@ export async function DashboardStats({ role }: { role: DashboardRole }) {
   return (
     <dl className="grid grid-cols-2 gap-3 sm:grid-cols-3">
       {metrics[role].map(([key, label]) => (
-        <div key={key} className="min-w-0 border border-stationery-line/65 bg-stationery-ivory p-3">
+        <div key={key} className="min-w-0 border border-line/65 bg-canvas p-3">
           <dt className="text-sm text-muted-foreground">{label}</dt>
-          <dd className="mt-1 break-words font-stationery text-2xl">
+          <dd className="mt-1 break-words font-editorial text-2xl">
             {key === "plan" ? (stats.plan === "premium" ? "Premium" : "Free") : stats[key] ?? "Pending"}
           </dd>
         </div>

@@ -6,6 +6,7 @@ import { requireDashboardAccess } from "@/lib/dashboard-session";
 import { Suspense } from "react";
 import { BookingDetails, BookingList, BookingLoading } from "./bookings/views";
 import { AdminUserDetails, AdminUsersList } from "./admin-users/views";
+import { ThemeSwitcher } from "@/components/ui/theme";
 import { Button } from "@/components/ui/button";
 import { ProfileForm } from "./profile/form";
 import { AdminTransactions, BillingLoading, PaymentReturn, VendorSubscription } from "./billing/views";
@@ -26,7 +27,7 @@ import {
 export function DashboardNotice({ unavailable }: { unavailable: boolean }) {
   return (
     <main className="mx-auto max-w-2xl px-6 py-20">
-      <h1 className="mb-4 font-stationery text-4xl">
+      <h1 className="mb-4 font-editorial text-4xl">
         {unavailable ? "Dashboard unavailable" : "Access denied"}
       </h1>
       <p className="mb-5 text-muted-foreground">
@@ -43,8 +44,8 @@ export function DashboardNotice({ unavailable }: { unavailable: boolean }) {
 
 function StationeryCard({ children }: { children: ReactNode }) {
   return (
-    <section className="min-w-0 border border-stationery-line bg-stationery-paper p-1 shadow-sm">
-      <div className="h-full border border-stationery-line/65 p-5 sm:p-7">
+    <section className="min-w-0 rounded-xl border border-line bg-paper p-1 shadow-sm">
+      <div className="h-full rounded-lg border border-line/65 p-5 sm:p-7">
         {children}
       </div>
     </section>
@@ -96,10 +97,10 @@ export async function DashboardOverview({
   const accountSummary = (
     <>
       <div className="mb-5 flex items-center gap-3">
-        <span className="grid size-10 place-items-center rounded-full bg-stationery-blush text-stationery-plum">
+        <span className="grid size-10 place-items-center rounded-full bg-sage text-ink">
           <CircleUserRound size={19} aria-hidden="true" />
         </span>
-        <h2 className="font-stationery text-2xl">Your account</h2>
+        <h2 className="font-editorial text-2xl">Your account</h2>
       </div>
       <dl className="grid gap-3 text-sm">
         <div>
@@ -128,10 +129,10 @@ export async function DashboardOverview({
         <Link
           href={dashboardPath(user.role, item)}
           prefetch={false}
-          className="group flex items-center justify-between gap-3 py-3 text-sm font-semibold text-stationery-plum hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stationery-rose"
+          className="group flex items-center justify-between gap-3 py-3 text-sm font-semibold text-ink hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-earth"
         >
           <span>{sections[item].label}</span>
-          <span className="flex items-center gap-2 text-xs font-medium text-stationery-rose">
+          <span className="flex items-center gap-2 text-xs font-medium text-earth">
             {!["profile-settings", "my-services", "add-service", "manage-services", "my-bookings", "booking-requests", "manage-users", "subscription", "transactions"].includes(
               item,
             ) && "Coming soon"}
@@ -150,14 +151,15 @@ export async function DashboardOverview({
         id="dashboard-overview"
       >
         <div className="mx-auto max-w-6xl">
-          <div className="flex min-h-20 items-center justify-between gap-3 border-b border-stationery-line">
-            <p className="text-sm font-semibold text-stationery-rose">
+          <div className="flex min-h-20 items-center justify-between gap-3 border-b border-line">
+            <p className="text-sm font-semibold text-earth">
               {workspace.label} dashboard
             </p>
-            <DashboardAccount name={user.name} role={user.role} image={user.image} />
+            <div className="flex items-center gap-2"><ThemeSwitcher /><DashboardAccount name={user.name} role={user.role} image={user.image} /></div>
           </div>
-          <header className="py-8 sm:py-11">
-            <h1 className="break-words font-stationery text-4xl leading-tight tracking-tight text-stationery-plum sm:text-5xl">
+          <header className="relative my-6 overflow-hidden rounded-xl border border-line bg-paper px-5 py-7 sm:px-8 sm:py-9">
+            <div aria-hidden="true" className="alpana pointer-events-none absolute inset-y-0 end-0 w-1/3 opacity-55 [mask-image:linear-gradient(to_right,transparent,black)]" />
+            <h1 className="relative break-words font-editorial text-4xl leading-tight tracking-tight text-ink sm:text-5xl">
               {overview
                 ? `Welcome, ${user.name}`
                 : editing
@@ -172,17 +174,17 @@ export async function DashboardOverview({
             <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
               <StationeryCard>
                 <div className="mb-2 flex items-center gap-3">
-                  <span className="grid size-10 place-items-center rounded-full bg-stationery-blush text-stationery-plum">
+                  <span className="grid size-10 place-items-center rounded-full bg-sage text-ink">
                     <Heart size={18} aria-hidden="true" />
                   </span>
-                  <h2 className="font-stationery text-2xl">Overview</h2>
+                  <h2 className="font-editorial text-2xl">Overview</h2>
                 </div>
                 <div className="my-4">
                   <Suspense fallback={<p role="status" className="text-sm">Loading statistics…</p>}>
                     <DashboardStats role={user.role} />
                   </Suspense>
                 </div>
-                <ul className="divide-y divide-stationery-line/60">
+                <ul className="divide-y divide-line/60">
                   {workspace.sections
                     .filter((item) => item !== "overview")
                     .map(workspaceLink)}
@@ -224,7 +226,7 @@ export async function DashboardOverview({
                 {profile && user.role !== "admin" ? (
                   <>
                     <ProfileForm role={user.role} name={user.name} email={user.email} image={user.image} businessName={user.businessName} />
-                    <form action="/api/auth/google" method="post" className="mt-6 border-t border-stationery-line/65 pt-5">
+                    <form action="/api/auth/google" method="post" className="mt-6 border-t border-line/65 pt-5">
                       <input type="hidden" name="mode" value="link" />
                       <input type="hidden" name="profile" value={dashboardPath(user.role, "profile-settings")} />
                       <Button type="submit" variant="outline" className="h-10 px-4">Link Google account</Button>
@@ -234,7 +236,7 @@ export async function DashboardOverview({
                     </form>
                   </>
                 ) : profile ? accountSummary : (
-                  <h2 className="font-stationery text-2xl">Coming soon</h2>
+                  <h2 className="font-editorial text-2xl">Coming soon</h2>
                 )}
               </StationeryCard>
             </div>

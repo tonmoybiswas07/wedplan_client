@@ -53,7 +53,7 @@ export async function AdminServiceList({
     <div className="grid gap-5">
       <form
         action={path}
-        className="flex flex-wrap items-end gap-3 border border-stationery-line bg-stationery-paper p-4"
+        className="flex flex-wrap items-end gap-3 border border-line bg-paper p-4"
       >
         <div className="min-w-0 flex-1 basis-52">
           <label
@@ -83,7 +83,7 @@ export async function AdminServiceList({
             id="service-status"
             name="status"
             defaultValue={status}
-            className="h-10 rounded-md border border-input bg-stationery-paper px-3 text-sm focus-visible:ring-2 focus-visible:ring-ring"
+            className="h-10 rounded-md border border-input bg-paper px-3 text-sm focus-visible:ring-2 focus-visible:ring-ring"
           >
             <option value="">All statuses</option>
             {Object.entries(statuses).map(([value, label]) => (
@@ -110,7 +110,7 @@ export async function AdminServiceList({
           Services could not be loaded. Refresh the page to try again.
         </p>
       ) : result.services.length === 0 ? (
-        <p className="border border-dashed border-stationery-line bg-stationery-paper p-8 text-center text-muted-foreground">
+        <p className="border border-dashed border-line bg-paper p-8 text-center text-muted-foreground">
           No services match these filters.
         </p>
       ) : (
@@ -118,15 +118,15 @@ export async function AdminServiceList({
           {result.services.map((service) => (
             <li
               key={service.id}
-              className="border border-stationery-line bg-stationery-paper p-1"
+              className="border border-line bg-paper p-1"
             >
-              <article className="grid gap-4 border border-stationery-line/65 p-4 sm:p-5">
+              <article className="grid gap-4 border border-line/65 p-4 sm:p-5">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="break-words text-sm font-medium text-stationery-rose">
+                    <p className="break-words text-sm font-medium text-earth">
                       {service.category}
                     </p>
-                    <h2 className="break-words font-stationery text-2xl">
+                    <h2 className="break-words font-editorial text-2xl">
                       {service.title}
                     </h2>
                   </div>

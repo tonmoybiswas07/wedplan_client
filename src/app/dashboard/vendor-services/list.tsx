@@ -24,16 +24,16 @@ export async function ServiceList() {
         </Link>
       </div>
       {!services.length ? (
-        <div className="border border-dashed border-stationery-line bg-stationery-paper px-6 py-12 text-center">
-          <h2 className="font-stationery text-2xl">No services yet</h2>
+        <div className="border border-dashed border-line bg-paper px-6 py-12 text-center">
+          <h2 className="font-editorial text-2xl">No services yet</h2>
           <p className="mt-2 text-sm text-muted-foreground">Add your first wedding service to submit it for review.</p>
         </div>
       ) : (
         <ul className="grid gap-4 lg:grid-cols-2 2xl:grid-cols-3">
           {services.map((service) => (
-            <li key={service.id} className="min-w-0 border border-stationery-line bg-stationery-paper p-1 shadow-sm">
-              <article className="flex h-full flex-col border border-stationery-line/65">
-                <div className="grid aspect-video place-items-center overflow-hidden bg-stationery-blush/45 text-stationery-rose">
+            <li key={service.id} className="min-w-0 border border-line bg-paper p-1 shadow-sm">
+              <article className="flex h-full flex-col border border-line/65">
+                <div className="grid aspect-video place-items-center overflow-hidden bg-sage/45 text-earth">
                   {service.imageUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element -- The API supplies a hosted ImgBB URL.
                     <img src={service.imageUrl} alt="" loading="lazy" className="size-full object-cover" />
@@ -41,13 +41,13 @@ export async function ServiceList() {
                 </div>
                 <div className="flex flex-1 flex-col gap-3 p-4 sm:p-5">
                   <div>
-                    <p className="text-sm font-medium break-words text-stationery-rose">{service.category}</p>
-                    <h2 className="font-stationery text-2xl break-words">{service.title}</h2>
+                    <p className="text-sm font-medium break-words text-earth">{service.category}</p>
+                    <h2 className="font-editorial text-2xl break-words">{service.title}</h2>
                   </div>
                   <p className="line-clamp-3 text-sm break-words text-muted-foreground">{service.description}</p>
                   <p className="font-semibold">{price.format(service.priceMinor / 100)}</p>
                   <ServiceBadges status={service.status} isActive={service.isActive} />
-                  <div className="mt-auto flex flex-wrap gap-2 border-t border-stationery-line/65 pt-3">
+                  <div className="mt-auto flex flex-wrap gap-2 border-t border-line/65 pt-3">
                     <Link href={`/dashboard/vendor/my-services/${service.id}`}
                       aria-label={`Edit ${service.title}`}
                       className={cn(buttonVariants({ variant: "outline" }), "h-9 px-3")}>Edit</Link>
