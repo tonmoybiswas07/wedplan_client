@@ -26,41 +26,62 @@ function BookingStatusBadge({ status }: { status: BookingStatus }) {
 
 function BookingCard({ booking, role, details = false }: { booking: Booking; role: BookingRole; details?: boolean }) {
   return (
-    <article className="min-w-0 border border-line bg-paper p-1 shadow-sm">
-      <div className="grid min-w-0 gap-4 border border-line/65 p-4 sm:grid-cols-[10rem_minmax(0,1fr)] sm:p-5">
-        <div className="grid aspect-[4/3] w-full place-items-center overflow-hidden border border-line/60 bg-blush/50 text-berry">
+    <article className="min-w-0 rounded-2xl border border-border/80 bg-card p-5 shadow-sm">
+      <div className="grid min-w-0 gap-5 sm:grid-cols-[11rem_minmax(0,1fr)]">
+        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl border border-border bg-secondary/50 text-primary">
           {booking.service.imageUrl ? (
             // eslint-disable-next-line @next/next/no-img-element -- Service images are stored as ImgBB URLs.
             <img src={booking.service.imageUrl} alt="" loading="lazy" className="size-full object-cover" />
-          ) : <ImageIcon aria-hidden="true" className="size-6" />}
+          ) : (
+            <div className="flex size-full items-center justify-center">
+              <ImageIcon aria-hidden="true" className="size-6 text-muted-foreground" />
+            </div>
+          )}
         </div>
         <div className="min-w-0">
-          <div className="flex flex-wrap items-start justify-between gap-2">
-            <h2 className="break-words font-display text-2xl">{booking.service.title}</h2>
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <h2 className="break-words font-display text-2xl font-bold text-foreground">{booking.service.title}</h2>
             <BookingStatusBadge status={booking.status} />
           </div>
-          <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
-            <div><dt className="text-muted-foreground">Event date</dt>
-              <dd className="font-medium"><time dateTime={booking.eventDate}>{eventFormat.format(new Date(booking.eventDate))}</time></dd></div>
-            <div><dt className="text-muted-foreground">Event location</dt><dd className="break-words font-medium">{booking.eventLocation}</dd></div>
-            <div><dt className="text-muted-foreground">Request date</dt>
-              <dd className="font-medium"><time dateTime={booking.createdAt}>{requestFormat.format(new Date(booking.createdAt))}</time></dd></div>
-            <div><dt className="text-muted-foreground">{role === "customer" ? "Vendor" : "Customer"}</dt>
-              <dd className="break-words font-medium">{booking.contact.name}
-                {booking.contact.email && <span className="block text-sm font-normal">{booking.contact.email}</span>}
-              </dd></div>
+          <dl className="mt-4 grid gap-3 text-xs sm:grid-cols-2">
+            <div className="rounded-xl border border-border/60 bg-background/50 p-2.5">
+              <dt className="text-muted-foreground uppercase font-semibold text-[10px]">Event Date</dt>
+              <dd className="font-bold text-foreground text-sm mt-0.5"><time dateTime={booking.eventDate}>{eventFormat.format(new Date(booking.eventDate))}</time></dd>
+            </div>
+            <div className="rounded-xl border border-border/60 bg-background/50 p-2.5">
+              <dt className="text-muted-foreground uppercase font-semibold text-[10px]">Event Location</dt>
+              <dd className="break-words font-bold text-foreground text-sm mt-0.5">{booking.eventLocation}</dd>
+            </div>
+            <div className="rounded-xl border border-border/60 bg-background/50 p-2.5">
+              <dt className="text-muted-foreground uppercase font-semibold text-[10px]">Submitted On</dt>
+              <dd className="font-medium text-foreground mt-0.5"><time dateTime={booking.createdAt}>{requestFormat.format(new Date(booking.createdAt))}</time></dd>
+            </div>
+            <div className="rounded-xl border border-border/60 bg-background/50 p-2.5">
+              <dt className="text-muted-foreground uppercase font-semibold text-[10px]">{role === "customer" ? "Vendor Contact" : "Customer Name"}</dt>
+              <dd className="break-words font-bold text-foreground mt-0.5">
+                {booking.contact.name}
+                {booking.contact.email && <span className="block text-xs font-normal text-muted-foreground">{booking.contact.email}</span>}
+              </dd>
+            </div>
           </dl>
           {role === "vendor" && (
-            <div className="mt-4 border-t border-line/65 pt-3 text-sm">
-              <p className="font-semibold">Customer message</p>
+            <div className="mt-4 rounded-xl border border-border/60 bg-background/50 p-3 text-xs">
+              <p className="font-semibold text-foreground">Customer Message</p>
               <p className={cn("mt-1 whitespace-pre-wrap break-words text-muted-foreground", !details && "line-clamp-2")}>
-                {booking.message || "No message provided."}
+                {booking.message || "No special requests mentioned."}
               </p>
             </div>
           )}
-          <div className="mt-4 flex flex-wrap gap-2">
-            {!details && <Link href={bookingsPath(role, booking.id)} className={cn(buttonVariants({ variant: "outline" }), "h-9 px-3")}
-              aria-label={`View details for ${booking.service.title}`}>View details</Link>}
+          <div className="mt-5 flex flex-wrap gap-2.5">
+            {!details && (
+              <Link 
+                href={bookingsPath(role, booking.id)} 
+                className={cn(buttonVariants({ variant: "outline", size: "sm" }), "rounded-full px-4")}
+                aria-label={`View details for ${booking.service.title}`}
+              >
+                View Full Details
+              </Link>
+            )}
             <BookingControls booking={booking} role={role} />
           </div>
         </div>

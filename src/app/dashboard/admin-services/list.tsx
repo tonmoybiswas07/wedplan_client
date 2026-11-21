@@ -114,42 +114,42 @@ export async function AdminServiceList({
           No services match these filters.
         </p>
       ) : (
-        <ul className="grid gap-3">
+        <ul className="grid gap-4">
           {result.services.map((service) => (
             <li
               key={service.id}
-              className="border border-line bg-paper p-1"
+              className="rounded-2xl border border-border/80 bg-card p-5 shadow-sm"
             >
-              <article className="grid gap-4 border border-line/65 p-4 sm:p-5">
+              <article className="grid gap-3">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="break-words text-sm font-medium text-berry">
+                    <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-bold text-primary">
                       {service.category}
-                    </p>
-                    <h2 className="break-words font-display text-2xl">
+                    </span>
+                    <h3 className="break-words font-display text-xl font-bold text-foreground mt-1.5">
                       {service.title}
-                    </h2>
+                    </h3>
                   </div>
                   <ServiceBadges
                     status={service.status}
                     isActive={service.isActive}
                   />
                 </div>
-                <p className="whitespace-pre-wrap break-words text-sm text-muted-foreground">
+                <p className="whitespace-pre-wrap break-words text-xs text-muted-foreground line-clamp-3">
                   {service.description}
                 </p>
-                <div className="flex flex-wrap items-center justify-between gap-3">
-                  <p className="text-sm font-semibold">
-                    BDT {(service.priceMinor / 100).toLocaleString("en-BD")}
+                <div className="flex flex-wrap items-center justify-between gap-3 border-t border-border/60 pt-3">
+                  <p className="text-sm font-bold text-foreground">
+                    ৳{(service.priceMinor / 100).toLocaleString("en-BD")}
                   </p>
                   {service.imageUrl && (
                     <a
                       href={service.imageUrl}
                       target="_blank"
                       rel="noreferrer"
-                      className="text-sm underline"
+                      className="text-xs text-primary underline underline-offset-4 font-semibold"
                     >
-                      View photo
+                      View Photo
                     </a>
                   )}
                   <ModerationControls {...service} />

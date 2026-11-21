@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowUpRight, CircleUserRound } from "lucide-react";
+import { ArrowUpRight, CircleUserRound, Sparkles } from "lucide-react";
 import { requireDashboardAccess } from "@/lib/dashboard-session";
 import { Suspense } from "react";
 import { BookingDetails, BookingList } from "./bookings/views";
@@ -27,25 +27,33 @@ import {
 
 export function DashboardNotice({ unavailable }: { unavailable: boolean }) {
   return (
-    <main className="mx-auto max-w-2xl px-6 py-20">
-      <h1 className="mb-4 font-display text-4xl">
-        {unavailable ? "Dashboard unavailable" : "Access denied"}
-      </h1>
-      <p className="mb-5 text-muted-foreground">
-        {unavailable
-          ? "Your session could not be verified. Try again shortly."
-          : "Your account does not have access to this dashboard."}
-      </p>
-      <Link href="/" className="font-semibold underline underline-offset-4">
-        Return home
-      </Link>
+    <main className="mx-auto max-w-2xl px-6 py-20 text-center">
+      <div className="rounded-3xl border border-border bg-card p-10 shadow-sm">
+        <Sparkles className="mx-auto size-10 text-muted-foreground/40 mb-3" />
+        <h1 className="mb-3 font-display text-3xl font-bold text-foreground">
+          {unavailable ? "Dashboard Unavailable" : "Access Restricted"}
+        </h1>
+        <p className="mb-6 text-sm text-muted-foreground leading-relaxed">
+          {unavailable
+            ? "Your session could not be verified at this moment. Please refresh or try again shortly."
+            : "Your current account role does not have authorization to access this dashboard space."}
+        </p>
+        <Link 
+          href="/" 
+          className="inline-flex h-10 items-center justify-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground shadow-sm"
+        >
+          Return to WedPlan Home
+        </Link>
+      </div>
     </main>
   );
 }
 
 function StationeryCard({ children }: { children: ReactNode }) {
   return (
-    <section className="workspace-panel min-w-0">{children}</section>
+    <section className="rounded-2xl border border-border/80 bg-card p-6 shadow-sm min-w-0">
+      {children}
+    </section>
   );
 }
 
@@ -73,6 +81,7 @@ export async function DashboardOverview({
   const bookingId = bookingRole && slug?.length === 2 ? slug[1] : undefined;
   const accountId = section === "manage-users" && slug?.length === 2 ? slug[1] : undefined;
   const payment = section === "subscription" && slug?.length === 2 && (slug[1] === "success" || slug[1] === "cancel") ? slug[1] : undefined;
+  
   if (
     !section ||
     (!editing && !bookingId && !accountId && !payment && slug && (slug.length !== 1 || section === "overview"))
@@ -91,30 +100,33 @@ export async function DashboardOverview({
   const overview = section === "overview";
   const profile = section === "profile-settings";
   const googleStatus = profile ? (await search).google : undefined;
+  
   const accountSummary = (
     <>
       <div className="mb-5 flex items-center gap-3">
-        <span className="grid size-10 place-items-center rounded-full bg-blush text-ink">
-          <CircleUserRound size={19} aria-hidden="true" />
+        <span className="flex size-10 items-center justify-center rounded-xl bg-secondary text-primary">
+          <CircleUserRound size={20} aria-hidden="true" />
         </span>
-        <h2 className="font-display text-2xl">Your account</h2>
+        <h2 className="font-display text-xl font-bold text-foreground">Account Information</h2>
       </div>
-      <dl className="grid gap-3 text-sm">
-        <div>
-          <dt className="text-muted-foreground">Name</dt>
-          <dd className="break-words font-semibold">{user.name}</dd>
+      <dl className="grid gap-3.5 text-sm">
+        <div className="rounded-xl border border-border/60 bg-background/50 p-3">
+          <dt className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Full Name</dt>
+          <dd className="mt-0.5 break-words font-semibold text-foreground">{user.name}</dd>
         </div>
-        <div>
-          <dt className="text-muted-foreground">Email</dt>
-          <dd className="break-words font-semibold">{user.email}</dd>
+        <div className="rounded-xl border border-border/60 bg-background/50 p-3">
+          <dt className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Email Address</dt>
+          <dd className="mt-0.5 break-words font-semibold text-foreground">{user.email}</dd>
         </div>
-        {user.role === "vendor" && user.businessName && <div>
-          <dt className="text-muted-foreground">Business name</dt>
-          <dd className="break-words font-semibold">{user.businessName}</dd>
-        </div>}
-        <div>
-          <dt className="text-muted-foreground">Role</dt>
-          <dd className="font-semibold">{workspace.label}</dd>
+        {user.role === "vendor" && user.businessName && (
+          <div className="rounded-xl border border-border/60 bg-background/50 p-3">
+            <dt className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Business Name</dt>
+            <dd className="mt-0.5 break-words font-semibold text-foreground">{user.businessName}</dd>
+          </div>
+        )}
+        <div className="rounded-xl border border-border/60 bg-background/50 p-3">
+          <dt className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">Role</dt>
+          <dd className="mt-0.5 font-semibold text-primary capitalize">{workspace.label}</dd>
         </div>
       </dl>
     </>
@@ -124,42 +136,63 @@ export async function DashboardOverview({
   const secondary = user.role === "admin" ? "transactions" : user.role === "vendor" ? "my-services" : null;
 
   return (
-    <div className="min-h-svh md:grid md:grid-cols-[13rem_minmax(0,1fr)] lg:grid-cols-[15rem_minmax(0,1fr)]">
+    <div className="min-h-svh md:grid md:grid-cols-[14rem_minmax(0,1fr)] lg:grid-cols-[16rem_minmax(0,1fr)] bg-background">
       <DashboardNavigation role={user.role} section={section} />
       <main
-        className="min-w-0 px-4 pb-12 sm:px-8 lg:px-12"
+        className="min-w-0 px-4 pb-14 sm:px-8 lg:px-12"
         id="dashboard-overview"
       >
         <div className="mx-auto max-w-6xl">
-          <div className="flex min-h-18 items-center justify-between gap-3 border-b border-line">
-            <p className="text-sm font-semibold text-berry">
-              {workspace.label} dashboard
-            </p>
-            <div className="flex items-center gap-2"><ThemeSwitcher /><DashboardAccount name={user.name} role={user.role} image={user.image} /></div>
+          {/* Top bar */}
+          <div className="flex min-h-18 items-center justify-between gap-3 border-b border-border/70 py-4">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-primary">
+                {workspace.label} Console
+              </span>
+              <span className="text-muted-foreground">/</span>
+              <span className="text-xs font-medium text-muted-foreground capitalize">
+                {sections[section].label}
+              </span>
+            </div>
+            <div className="flex items-center gap-3">
+              <ThemeSwitcher />
+              <DashboardAccount name={user.name} role={user.role} image={user.image} />
+            </div>
           </div>
+
+          {/* Banner / Header */}
           <header className={overview
-            ? "relative my-6 overflow-hidden rounded-[1.75rem] bg-plum px-5 py-7 text-on-plum sm:px-8 sm:py-9"
-            : "my-6 border-b border-line pb-5 sm:my-8"}>
-            {overview && <div aria-hidden="true" className="petal-pattern pointer-events-none absolute inset-y-0 end-0 w-1/2 opacity-65 [mask-image:linear-gradient(to_right,transparent,black)]" />}
-            <div className="relative">
-              <h1 className="break-words font-display text-3xl leading-tight tracking-tight sm:text-5xl">
-                {overview ? `Welcome, ${user.name}` : editing ? "Edit Service" : bookingId ? "Booking Details" : accountId ? "User Details" : payment ? "Payment status" : sections[section].label}
+            ? "relative my-6 overflow-hidden rounded-3xl bg-gradient-to-r from-primary via-rose-800 to-primary px-6 py-8 text-primary-foreground shadow-lg shadow-primary/10 sm:px-10 sm:py-10"
+            : "my-6 border-b border-border/70 pb-5 sm:my-8"}>
+            <div className="relative z-10">
+              <h1 className="break-words font-display text-3xl font-extrabold tracking-tight sm:text-5xl leading-tight">
+                {overview ? `Welcome, ${user.name}` : editing ? "Edit Service" : bookingId ? "Booking Details" : accountId ? "User Details" : payment ? "Payment Status" : sections[section].label}
               </h1>
-              <p className={overview ? "mt-2 max-w-prose text-on-plum/85" : "mt-2 max-w-prose text-muted-foreground"}>
+              <p className={overview ? "mt-2 max-w-prose text-primary-foreground/90 text-sm sm:text-base leading-relaxed" : "mt-2 max-w-prose text-sm text-muted-foreground"}>
                 {overview ? workspace.description : sections[section].description}
               </p>
-              {overview && <div className="mt-5 flex flex-wrap gap-2">
-                <Link href={dashboardPath(user.role, primary)} className="inline-flex min-h-11 items-center gap-2 rounded-full bg-paper px-4 py-2 text-sm font-bold text-ink hover:bg-blush">
-                  {sections[primary].label} <ArrowUpRight size={16} aria-hidden="true" />
-                </Link>
-                <Link href={secondary ? dashboardPath(user.role, secondary) : "/services"} className="inline-flex min-h-11 items-center rounded-full border border-on-plum/45 px-4 py-2 text-sm font-semibold text-on-plum hover:bg-on-plum/10">
-                  {secondary ? sections[secondary].label : "Browse services"}
-                </Link>
-              </div>}
+              {overview && (
+                <div className="mt-6 flex flex-wrap gap-3">
+                  <Link 
+                    href={dashboardPath(user.role, primary)} 
+                    className="inline-flex min-h-10 items-center gap-2 rounded-full bg-white px-5 py-2 text-xs font-bold text-primary shadow-sm hover:bg-white/90 transition-all"
+                  >
+                    {sections[primary].label} <ArrowUpRight size={14} aria-hidden="true" />
+                  </Link>
+                  <Link 
+                    href={secondary ? dashboardPath(user.role, secondary) : "/services"} 
+                    className="inline-flex min-h-10 items-center rounded-full border border-white/40 bg-white/10 px-5 py-2 text-xs font-semibold text-white hover:bg-white/20 transition-all backdrop-blur-sm"
+                  >
+                    {secondary ? sections[secondary].label : "Browse Public Directory"}
+                  </Link>
+                </div>
+              )}
             </div>
           </header>
+
+          {/* Section Dynamic Views */}
           {overview ? (
-            <Suspense fallback={<SunflowerLoader label="Loading dashboard…" />}>
+            <Suspense fallback={<SunflowerLoader label="Loading dashboard metrics…" />}>
               <DashboardStats role={user.role} />
             </Suspense>
           ) : bookingRole ? (
@@ -181,7 +214,9 @@ export async function DashboardOverview({
               {payment ? <PaymentReturn kind={payment} search={search} /> : <VendorSubscription />}
             </Suspense>
           ) : section === "transactions" ? (
-            <Suspense fallback={<SunflowerLoader label="Loading billing information…" />}><AdminTransactions search={search} /></Suspense>
+            <Suspense fallback={<SunflowerLoader label="Loading billing records…" />}>
+              <AdminTransactions search={search} />
+            </Suspense>
           ) : section === "manage-users" ? (
             <Suspense fallback={<SunflowerLoader label="Loading users…" />}>
               {accountId ? <AdminUserDetails id={accountId} viewerEmail={user.email} /> : <AdminUsersList search={search} viewerEmail={user.email} />}
@@ -191,22 +226,24 @@ export async function DashboardOverview({
               <AdminServiceList search={search} />
             </Suspense>
           ) : (
-            <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
+            <div className="grid items-start gap-6 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
               <StationeryCard>
                 {profile && user.role !== "admin" ? (
                   <>
                     <ProfileForm role={user.role} name={user.name} email={user.email} image={user.image} businessName={user.businessName} />
-                    <form action="/api/auth/google" method="post" className="mt-6 border-t border-line/65 pt-5">
+                    <form action="/api/auth/google" method="post" className="mt-8 border-t border-border/70 pt-6">
                       <input type="hidden" name="mode" value="link" />
                       <input type="hidden" name="profile" value={dashboardPath(user.role, "profile-settings")} />
-                      <Button type="submit" variant="outline" className="h-10 px-4">Link Google account</Button>
-                      {googleStatus === "linked" && <p role="status" className="mt-2 text-sm">Google account linked.</p>}
-                      {googleStatus === "unavailable" && <p role="alert" className="mt-2 text-sm text-destructive">Google sign-in is not configured.</p>}
-                      {googleStatus === "failed" && <p role="alert" className="mt-2 text-sm text-destructive">Google linking did not complete. Try again with the email on this account.</p>}
+                      <Button type="submit" variant="outline" className="h-10 rounded-full px-5 text-xs font-semibold">
+                        Link Google Account
+                      </Button>
+                      {googleStatus === "linked" && <p role="status" className="mt-2 text-xs text-emerald-600 font-medium">Google account linked successfully.</p>}
+                      {googleStatus === "unavailable" && <p role="alert" className="mt-2 text-xs text-destructive font-medium">Google sign-in is not configured.</p>}
+                      {googleStatus === "failed" && <p role="alert" className="mt-2 text-xs text-destructive font-medium">Google linking did not complete. Try again with the email on this account.</p>}
                     </form>
                   </>
                 ) : profile ? accountSummary : (
-                  <h2 className="font-display text-2xl">Coming soon</h2>
+                  <h2 className="font-display text-2xl font-bold">Coming Soon</h2>
                 )}
               </StationeryCard>
               {profile && user.role !== "admin" && (

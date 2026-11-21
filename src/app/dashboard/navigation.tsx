@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import Link from "next/link";
 import {
   CalendarDays, ChevronDown, CircleUserRound, CreditCard, Heart, LayoutGrid,
-  LogOut, Menu, PackagePlus, ReceiptText, Store, Users, X,
+  LogOut, Menu, PackagePlus, ReceiptText, Store, Users, X, ArrowLeft
 } from "lucide-react";
 import { AccountAvatar } from "@/components/ui/account-avatar";
 import { ThemeSwitcher } from "@/components/ui/theme";
@@ -27,11 +27,15 @@ const icons = {
 
 function Brand() {
   return (
-    <Link href="/" aria-label="WedPlan home" className="inline-flex items-center gap-3 text-on-plum">
-      <span className="grid size-9 place-items-center rounded-full border border-blush/40">
-        <Heart size={17} aria-hidden="true" />
+    <Link href="/" aria-label="WedPlan home" className="group inline-flex items-center gap-2.5">
+      <span className="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground shadow-sm transition-transform group-hover:scale-105">
+        <Heart size={18} className="fill-current" aria-hidden="true" />
       </span>
-      <span className="font-display text-2xl font-semibold">WedPlan</span>
+      <div className="flex flex-col">
+        <span className="font-display text-2xl font-bold tracking-tight text-foreground">
+          Wed<span className="text-primary font-normal italic">Plan</span>
+        </span>
+      </div>
     </Link>
   );
 }
@@ -42,18 +46,26 @@ function DashboardLinks({ role, section, onNavigate }: {
   onNavigate?: () => void;
 }) {
   return (
-    <nav aria-label="Dashboard" className="grid gap-1.5">
+    <nav aria-label="Dashboard navigation" className="grid gap-1">
       {dashboardRoles[role].sections.map((item) => {
         const Icon = icons[item];
+        const isActive = section === item;
         return (
-          <Link key={item} href={dashboardPath(role, item)} prefetch={false}
-            onClick={onNavigate} aria-current={section === item ? "page" : undefined}
+          <Link 
+            key={item} 
+            href={dashboardPath(role, item)} 
+            prefetch={false}
+            onClick={onNavigate} 
+            aria-current={isActive ? "page" : undefined}
             className={cn(
-              "flex min-h-11 items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blush",
-              section === item ? "bg-blush font-bold text-ink" : "text-on-plum hover:bg-on-plum/10",
-            )}>
-            <Icon size={17} aria-hidden="true" />
-            {sections[item].label}
+              "flex min-h-11 items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
+              isActive 
+                ? "bg-primary text-primary-foreground font-semibold shadow-sm" 
+                : "text-muted-foreground hover:bg-secondary/60 hover:text-foreground",
+            )}
+          >
+            <Icon size={18} aria-hidden="true" className={isActive ? "text-primary-foreground" : "text-muted-foreground"} />
+            <span>{sections[item].label}</span>
           </Link>
         );
       })}
@@ -83,25 +95,25 @@ export function DashboardAccount({ name, role, image, align = "end" }: { name: s
       }
     }}>
       <summary ref={trigger} aria-label="Account menu"
-        className="flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-lg border border-line bg-paper px-2.5 text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-berry [&::-webkit-details-marker]:hidden">
+        className="flex min-h-10 cursor-pointer list-none items-center gap-2.5 rounded-full border border-border bg-card px-3 py-1.5 text-foreground shadow-sm transition-colors hover:border-primary/40 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary [&::-webkit-details-marker]:hidden">
         <AccountAvatar image={image} />
-        <span className={cn("max-w-40 truncate text-sm font-medium", align === "end" && "hidden sm:block")}>{name}</span>
-        <ChevronDown size={15} aria-hidden="true" />
+        <span className={cn("max-w-40 truncate text-xs font-semibold", align === "end" && "hidden sm:block")}>{name}</span>
+        <ChevronDown size={14} className="text-muted-foreground" aria-hidden="true" />
       </summary>
-      <div className={cn("absolute top-full z-20 mt-2 w-56 max-w-[75vw] rounded-lg border border-line bg-paper p-2 shadow-lg", align === "start" ? "start-0" : "end-0")}>
-        <div className="border-b border-line px-2.5 py-2 text-sm">
-          <p className="break-words font-semibold">{name}</p>
-          <p className="text-muted-foreground">{dashboardRoles[role].label}</p>
+      <div className={cn("absolute top-full z-30 mt-2 w-56 max-w-[80vw] rounded-2xl border border-border bg-card p-2 shadow-xl backdrop-blur-md", align === "start" ? "start-0" : "end-0")}>
+        <div className="border-b border-border/70 px-3 py-2 text-xs">
+          <p className="truncate font-bold text-foreground">{name}</p>
+          <p className="text-primary font-medium mt-0.5 capitalize">{dashboardRoles[role].label} Account</p>
         </div>
-        <nav aria-label="Account" className="grid gap-1 pt-1">
+        <nav aria-label="Account links" className="grid gap-1 pt-1.5">
           <Link href="/dashboard" prefetch={false} onClick={() => details.current?.removeAttribute("open")}
-            className="rounded-md px-2.5 py-2 text-sm hover:bg-blush">Dashboard</Link>
+            className="rounded-xl px-3 py-2 text-xs font-medium text-foreground hover:bg-secondary transition-colors">Dashboard Overview</Link>
           <Link href={dashboardPath(role, "profile-settings")} prefetch={false} onClick={() => details.current?.removeAttribute("open")}
-            className="rounded-md px-2.5 py-2 text-sm hover:bg-blush">Profile Settings</Link>
+            className="rounded-xl px-3 py-2 text-xs font-medium text-foreground hover:bg-secondary transition-colors">Profile Settings</Link>
         </nav>
-        <form action="/dashboard/sign-out" method="post" className="pt-1">
-          <Button type="submit" variant="ghost" className="h-10 w-full justify-start gap-2 px-2.5 hover:bg-blush">
-            <LogOut size={16} aria-hidden="true" /> Sign Out
+        <form action="/dashboard/sign-out" method="post" className="border-t border-border/70 pt-1.5 mt-1.5">
+          <Button type="submit" variant="ghost" className="h-9 w-full justify-start gap-2 rounded-xl px-3 text-xs text-destructive hover:bg-destructive/10 hover:text-destructive">
+            <LogOut size={14} aria-hidden="true" /> Sign Out
           </Button>
         </form>
       </div>
@@ -121,34 +133,78 @@ export function DashboardNavigation({ role, section }: { role: DashboardRole; se
 
   return (
     <>
-      <aside className="hidden border-e border-line bg-plum md:block">
-        <div className="sticky top-0 max-h-svh overflow-auto p-4 lg:p-5">
-          <div className="mb-5 border-b border-on-plum/20 pb-5"><Brand /></div>
-          <p className="mb-2 px-3 text-xs font-semibold tracking-widest text-on-plum/75 uppercase">{dashboardRoles[role].label}</p>
-          <DashboardLinks role={role} section={section} />
-          <Link href="/" className="mt-5 flex min-h-11 items-center border-t border-on-plum/20 px-3 text-sm text-on-plum hover:underline">Back to WedPlan</Link>
+      <aside className="hidden border-e border-border bg-card md:block">
+        <div className="sticky top-0 flex min-h-svh flex-col justify-between p-5">
+          <div>
+            <div className="mb-6 border-b border-border/70 pb-5">
+              <Brand />
+            </div>
+            
+            <div className="mb-3 px-3">
+              <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-[11px] font-bold text-primary uppercase tracking-wider">
+                {dashboardRoles[role].label} Space
+              </span>
+            </div>
+
+            <DashboardLinks role={role} section={section} />
+          </div>
+
+          <div className="border-t border-border/70 pt-4">
+            <Link 
+              href="/" 
+              className="flex min-h-10 items-center gap-2 rounded-xl px-3 text-xs font-medium text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+            >
+              <ArrowLeft size={15} /> Back to Public Site
+            </Link>
+          </div>
         </div>
       </aside>
-      <header className="col-span-full flex items-center justify-between bg-plum px-4 py-3 md:hidden">
+
+      <header className="col-span-full flex items-center justify-between border-b border-border bg-card px-4 py-3 md:hidden">
         <Brand />
-        <Button type="button" variant="ghost" size="icon" aria-label="Open dashboard menu"
-          aria-haspopup="dialog" aria-controls="dashboard-drawer" onClick={() => drawer.current?.showModal()}
-          className="size-11 border-blush/40 text-on-plum hover:bg-on-plum/10 hover:text-on-plum">
-          <Menu aria-hidden="true" />
+        <Button 
+          type="button" 
+          variant="outline" 
+          size="icon" 
+          aria-label="Open dashboard menu"
+          aria-haspopup="dialog" 
+          aria-controls="dashboard-drawer" 
+          onClick={() => drawer.current?.showModal()}
+          className="size-10 rounded-xl"
+        >
+          <Menu size={18} aria-hidden="true" />
         </Button>
       </header>
-      <dialog id="dashboard-drawer" ref={drawer} aria-labelledby="drawer-heading"
-        className="fixed inset-y-0 start-0 end-auto m-0 h-dvh max-h-none w-[min(85vw,21rem)] max-w-none overflow-auto bg-plum p-5 text-on-plum backdrop:bg-overlay/60">
-        <div className="mb-5 flex items-center justify-between border-b border-blush/30 pb-4">
-          <h2 id="drawer-heading" className="font-display text-2xl">Dashboard</h2>
-          <Button type="button" variant="ghost" size="icon" aria-label="Close dashboard menu"
+
+      <dialog 
+        id="dashboard-drawer" 
+        ref={drawer} 
+        aria-labelledby="drawer-heading"
+        className="fixed inset-y-0 start-0 end-auto m-0 h-dvh max-h-none w-[min(85vw,20rem)] max-w-none overflow-auto border-e border-border bg-card p-5 text-foreground backdrop:bg-black/50"
+      >
+        <div className="mb-6 flex items-center justify-between border-b border-border/70 pb-4">
+          <Brand />
+          <Button 
+            type="button" 
+            variant="ghost" 
+            size="icon" 
+            aria-label="Close dashboard menu"
             onClick={() => drawer.current?.close()}
-            className="size-11 text-on-plum hover:bg-on-plum/10 hover:text-on-plum">
-            <X aria-hidden="true" />
+            className="size-9 rounded-xl"
+          >
+            <X size={18} aria-hidden="true" />
           </Button>
         </div>
+        <div className="mb-4">
+          <span className="inline-flex items-center rounded-full bg-primary/10 px-2.5 py-0.5 text-[11px] font-bold text-primary uppercase tracking-wider">
+            {dashboardRoles[role].label} Space
+          </span>
+        </div>
         <DashboardLinks role={role} section={section} onNavigate={() => drawer.current?.close()} />
-        <div className="mt-5"><ThemeSwitcher /></div>
+        <div className="mt-8 border-t border-border/70 pt-5 flex items-center justify-between">
+          <Link href="/" className="text-xs text-muted-foreground hover:underline">WedPlan Home</Link>
+          <ThemeSwitcher />
+        </div>
       </dialog>
     </>
   );

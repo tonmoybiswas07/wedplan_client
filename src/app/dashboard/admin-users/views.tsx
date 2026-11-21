@@ -15,34 +15,48 @@ function AccountCard({ user, viewerEmail, details }: { user: AdminUser; viewerEm
   const isViewer = viewerEmail === user.email;
 
   return (
-    <article className="border border-line bg-paper p-1 shadow-sm">
-      <div className="grid gap-4 border border-line/65 p-4 sm:p-5">
-        <div className="flex min-w-0 flex-wrap items-start justify-between gap-3">
-          <div className="flex min-w-0 items-start gap-3">
-            <span className="grid size-10 shrink-0 place-items-center rounded-full bg-blush text-ink">
-              <UserRound aria-hidden="true" size={18} />
-            </span>
-            <div className="min-w-0">
-              <h2 className="break-words font-display text-2xl">{user.name}</h2>
-              <p className="break-words text-sm text-muted-foreground">{user.email}</p>
-            </div>
+    <article className="rounded-2xl border border-border/80 bg-card p-5 shadow-sm min-w-0">
+      <div className="flex min-w-0 flex-wrap items-start justify-between gap-3">
+        <div className="flex min-w-0 items-start gap-3">
+          <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-secondary text-primary">
+            <UserRound aria-hidden="true" size={20} />
+          </span>
+          <div className="min-w-0">
+            <h3 className="break-words font-display text-xl font-bold text-foreground">{user.name}</h3>
+            <p className="break-words text-xs text-muted-foreground">{user.email}</p>
           </div>
-          <span className={cn(
-            "rounded-full border border-line/65 px-2.5 py-1 text-xs font-semibold",
-            user.blocked ? "bg-danger-surface text-danger-ink" : "bg-success-surface text-success-ink",
-          )}>{user.blocked ? "Blocked" : "Active"}</span>
         </div>
-        <dl className="flex flex-wrap gap-x-6 gap-y-2 text-sm">
-          <div className="flex gap-2"><dt className="text-muted-foreground">Role</dt><dd className="font-semibold">{role}</dd></div>
-          {details && <div className="flex gap-2"><dt className="text-muted-foreground">Access</dt>
-            <dd className="font-semibold">{user.blocked ? "Protected access denied" : "Protected access enabled"}</dd></div>}
-        </dl>
-        <div className="flex flex-wrap items-center gap-2 border-t border-line/65 pt-3">
-          {!details && <Link href={`${adminUsersPath}/${user.id}`} prefetch={false}
+        <span className={cn(
+          "rounded-full px-3 py-1 text-xs font-bold",
+          user.blocked ? "bg-destructive/10 text-destructive" : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400",
+        )}>
+          {user.blocked ? "Blocked" : "Active"}
+        </span>
+      </div>
+      <dl className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-xs">
+        <div className="flex items-center gap-1.5">
+          <dt className="text-muted-foreground uppercase font-semibold text-[10px]">Role:</dt>
+          <dd className="font-bold text-primary capitalize">{role}</dd>
+        </div>
+        {details && (
+          <div className="flex items-center gap-1.5">
+            <dt className="text-muted-foreground uppercase font-semibold text-[10px]">Access Status:</dt>
+            <dd className="font-semibold text-foreground">{user.blocked ? "Protected access revoked" : "Platform access granted"}</dd>
+          </div>
+        )}
+      </dl>
+      <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-border/70 pt-3">
+        {!details && (
+          <Link 
+            href={`${adminUsersPath}/${user.id}`} 
+            prefetch={false}
             aria-label={`View details for ${user.name}`}
-            className={cn(buttonVariants({ variant: "outline" }), "h-9 px-3")}>View details</Link>}
-          {isViewer ? <span className="px-2 text-xs text-muted-foreground">Your account</span> : <AccountControls user={user} />}
-        </div>
+            className={cn(buttonVariants({ variant: "outline", size: "sm" }), "rounded-full px-3.5 text-xs font-semibold")}
+          >
+            View Details
+          </Link>
+        )}
+        {isViewer ? <span className="px-2 text-xs font-medium text-muted-foreground">Your Account</span> : <AccountControls user={user} />}
       </div>
     </article>
   );
