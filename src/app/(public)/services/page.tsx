@@ -1,3 +1,4 @@
+import { SunflowerLoader } from "@/components/ui/sunflower-loader";
 import Image from "next/image";
 import type { Metadata } from "next";
 import Form from "next/form";
@@ -7,7 +8,7 @@ import { ResponsiveDrawer } from "@/components/ui/responsive-drawer";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { categories } from "@/components/public/categories";
-import { CatalogLoading, ServiceGrid } from "@/components/public/service-grid";
+import { ServiceGrid } from "@/components/public/service-grid";
 import { readCatalog } from "@/lib/public-catalog";
 import { cn } from "@/lib/utils";
 
@@ -171,7 +172,7 @@ async function BrowseCatalog({ searchParams }: { searchParams: Search }) {
             {[q, category, location, minPrice && `From BDT ${minPrice}`, maxPrice && `Up to BDT ${maxPrice}`, sort === "price-asc" ? "Price: low to high" : sort === "price-desc" ? "Price: high to low" : ""]
               .filter(Boolean).map((item, index) => <li key={index} className="max-w-full break-words rounded-full bg-blush px-3 py-1 text-xs font-semibold">{item}</li>)}
           </ul>}
-          <Suspense key={query(page).toString()} fallback={<CatalogLoading />}>
+          <Suspense key={query(page).toString()} fallback={<SunflowerLoader label="Loading services…" />}>
             <BrowseResults
               query={query(page)}
               previous={page > 1 ? query(page - 1) : null}
@@ -271,7 +272,7 @@ export default function BrowsePage({ searchParams }: { searchParams: Search }) {
           <Image src="/bloom/florist.webp" alt="" fill sizes="30vw" className="object-cover" />
         </div>
       </header>
-      <Suspense fallback={<CatalogLoading />}>
+      <Suspense fallback={<SunflowerLoader label="Loading services…" />}>
         <BrowseCatalog searchParams={searchParams} />
       </Suspense>
     </main>

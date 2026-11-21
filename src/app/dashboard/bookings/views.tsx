@@ -73,9 +73,6 @@ function BookingError({ message }: { message: string }) {
   return <p role="alert" className="workspace-panel text-sm">{message}</p>;
 }
 
-export function BookingLoading() {
-  return <p role="status" className="workspace-panel text-sm text-muted-foreground motion-safe:animate-pulse">Loading bookings…</p>;
-}
 
 export async function BookingList({ role, search }: { role: BookingRole; search: Promise<{ page?: string | string[] }> }) {
   const { page: requestedPage } = await search;

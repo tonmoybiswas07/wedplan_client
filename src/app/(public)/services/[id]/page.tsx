@@ -1,3 +1,4 @@
+import { SunflowerLoader } from "@/components/ui/sunflower-loader";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import Link from "next/link";
@@ -84,5 +85,5 @@ async function ServicePageContent({ params }: { params: Params }) {
 }
 
 export default function ServicePage({ params }: { params: Params }) {
-  return <Suspense fallback={<p role="status" className="p-8">Loading service…</p>}><ServicePageContent params={params} /></Suspense>;
+  return <Suspense fallback={<SunflowerLoader label="Loading service…" />}><ServicePageContent params={params} /></Suspense>;
 }

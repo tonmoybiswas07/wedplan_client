@@ -1,3 +1,4 @@
+import { SunflowerLoader } from "@/components/ui/sunflower-loader";
 import { Suspense } from "react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -28,5 +29,5 @@ async function Complete({ search }: { search: Search }) {
 }
 
 export default function CompletePage({ searchParams }: { searchParams: Search }) {
-  return <Suspense fallback={<p role="status">Checking your account…</p>}><Complete search={searchParams} /></Suspense>;
+  return <Suspense fallback={<SunflowerLoader label="Checking your account…" />}><Complete search={searchParams} /></Suspense>;
 }

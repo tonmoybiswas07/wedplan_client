@@ -29,9 +29,6 @@ async function billing(sessionId?: string) {
   return response.ok ? await response.json() as Billing : null;
 }
 
-export function BillingLoading() {
-  return <p role="status" className="border border-line bg-paper p-5 text-sm text-muted-foreground">Loading billing information…</p>;
-}
 
 export async function VendorSubscription() {
   const result = await billing();

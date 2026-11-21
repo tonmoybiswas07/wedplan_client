@@ -1,3 +1,4 @@
+import { SunflowerLoader } from "@/components/ui/sunflower-loader";
 import { Suspense } from "react";
 import { requireDashboardAccess } from "@/lib/dashboard-session";
 import { DashboardNotice } from "./overview";
@@ -8,5 +9,5 @@ async function DashboardEntry() {
 }
 
 export default function DashboardPage() {
-  return <Suspense fallback={<p className="p-8">Loading dashboard…</p>}><DashboardEntry /></Suspense>;
+  return <Suspense fallback={<SunflowerLoader label="Loading dashboard…" />}><DashboardEntry /></Suspense>;
 }

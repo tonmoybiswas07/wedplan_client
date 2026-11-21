@@ -1,3 +1,4 @@
+import { SunflowerLoader } from "@/components/ui/sunflower-loader";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { safeServiceReturn } from "@/lib/service-return";
@@ -13,5 +14,5 @@ async function FormWithReturn({ searchParams }: { searchParams: Search }) {
 }
 
 export default function AuthPage({ searchParams }: { searchParams: Search }) {
-  return <Suspense fallback={<p role="status">Loading…</p>}><FormWithReturn searchParams={searchParams} /></Suspense>;
+  return <Suspense fallback={<SunflowerLoader label="Loading…" />}><FormWithReturn searchParams={searchParams} /></Suspense>;
 }

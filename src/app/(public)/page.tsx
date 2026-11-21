@@ -1,3 +1,4 @@
+import { SunflowerLoader } from "@/components/ui/sunflower-loader";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { connection } from "next/server";
@@ -11,7 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { categories } from "@/components/public/categories";
 import { Reveal } from "@/components/public/reveal";
-import { CatalogLoading, ServiceGrid } from "@/components/public/service-grid";
+import { ServiceGrid } from "@/components/public/service-grid";
 import { readCatalog } from "@/lib/public-catalog";
 import { cn } from "@/lib/utils";
 
@@ -106,7 +107,7 @@ export default function Home() {
           <h2 className="font-display text-4xl font-extrabold tracking-tight sm:text-5xl">Featured services</h2>
           <Link href="/services" className={cn(buttonVariants({ variant: "outline" }), "h-10 bg-paper px-4")}>See all services</Link>
         </div>
-        <Suspense fallback={<CatalogLoading />}><FeaturedServices /></Suspense>
+        <Suspense fallback={<SunflowerLoader label="Loading services…" />}><FeaturedServices /></Suspense>
       </section>
 
       <section className="bg-plum text-on-plum">

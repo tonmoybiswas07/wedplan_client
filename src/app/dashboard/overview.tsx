@@ -1,3 +1,4 @@
+import { SunflowerLoader } from "@/components/ui/sunflower-loader";
 import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -5,12 +6,12 @@ import { notFound } from "next/navigation";
 import { ArrowUpRight, CircleUserRound } from "lucide-react";
 import { requireDashboardAccess } from "@/lib/dashboard-session";
 import { Suspense } from "react";
-import { BookingDetails, BookingList, BookingLoading } from "./bookings/views";
+import { BookingDetails, BookingList } from "./bookings/views";
 import { AdminUserDetails, AdminUsersList } from "./admin-users/views";
 import { ThemeSwitcher } from "@/components/ui/theme";
 import { Button } from "@/components/ui/button";
 import { ProfileForm } from "./profile/form";
-import { AdminTransactions, BillingLoading, PaymentReturn, VendorSubscription } from "./billing/views";
+import { AdminTransactions, PaymentReturn, VendorSubscription } from "./billing/views";
 import { DashboardStats } from "./stats";
 import { AdminServiceList, type DashboardSearch } from "./admin-services/list";
 import { fetchVendorServices } from "./vendor-services/api";
@@ -158,11 +159,11 @@ export async function DashboardOverview({
             </div>
           </header>
           {overview ? (
-            <Suspense fallback={<div role="status" className="workspace-panel motion-safe:animate-pulse">Loading dashboard…</div>}>
+            <Suspense fallback={<SunflowerLoader label="Loading dashboard…" />}>
               <DashboardStats role={user.role} />
             </Suspense>
           ) : bookingRole ? (
-            <Suspense fallback={<BookingLoading />}>
+            <Suspense fallback={<SunflowerLoader label="Loading bookings…" />}>
               {bookingId ? <BookingDetails role={bookingRole} id={bookingId} /> : <BookingList role={bookingRole} search={search} />}
             </Suspense>
           ) : section === "add-service" || editing ? (
@@ -172,21 +173,21 @@ export async function DashboardOverview({
               </StationeryCard>
             </div>
           ) : section === "my-services" ? (
-            <Suspense fallback={<p role="status">Loading services…</p>}>
+            <Suspense fallback={<SunflowerLoader label="Loading services…" />}>
               <ServiceList />
             </Suspense>
           ) : section === "subscription" ? (
-            <Suspense fallback={<BillingLoading />}>
+            <Suspense fallback={<SunflowerLoader label="Loading billing information…" />}>
               {payment ? <PaymentReturn kind={payment} search={search} /> : <VendorSubscription />}
             </Suspense>
           ) : section === "transactions" ? (
-            <Suspense fallback={<BillingLoading />}><AdminTransactions search={search} /></Suspense>
+            <Suspense fallback={<SunflowerLoader label="Loading billing information…" />}><AdminTransactions search={search} /></Suspense>
           ) : section === "manage-users" ? (
-            <Suspense fallback={<p role="status">Loading users…</p>}>
+            <Suspense fallback={<SunflowerLoader label="Loading users…" />}>
               {accountId ? <AdminUserDetails id={accountId} viewerEmail={user.email} /> : <AdminUsersList search={search} viewerEmail={user.email} />}
             </Suspense>
           ) : section === "manage-services" ? (
-            <Suspense fallback={<p role="status">Loading services…</p>}>
+            <Suspense fallback={<SunflowerLoader label="Loading services…" />}>
               <AdminServiceList search={search} />
             </Suspense>
           ) : (

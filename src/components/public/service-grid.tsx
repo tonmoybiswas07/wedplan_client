@@ -38,14 +38,3 @@ export function ServiceGrid({ listings, compact = false }: { listings: Listing[]
     </ul>
   );
 }
-
-export function CatalogLoading() {
-  return (
-    <div role="status">
-      <p className="mb-4 text-sm text-muted-foreground">Loading services…</p>
-      <div aria-hidden="true" className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-        {[0, 1, 2].map((index) => <div key={index} className="aspect-[4/3] border border-line bg-blush/40 motion-safe:animate-pulse" />)}
-      </div>
-    </div>
-  );
-}
