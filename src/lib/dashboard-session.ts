@@ -4,56 +4,51 @@ import { cache } from "react";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { fetchBackend } from "@/lib/api";
-
-export const dashboardPaths = {
-  customer: "/dashboard/customer",
-  vendor: "/dashboard/vendor",
-} as const;
-
-export type DashboardRole = keyof typeof dashboardPaths;
-
-type SessionUser = {
-  name?: unknown;
-  role?: unknown;
-  banned?: unknown;
-  blocked?: unknown;
-};
+import { dashboardPath, isDashboardRole } from "@/app/dashboard/sections";
 
 export const getDashboardAccess = cache(async () => {
   const cookie = (await headers()).get("cookie");
   if (!cookie) return { status: "guest" } as const;
 
   try {
-    const response = await fetchBackend("/api/auth/get-session", {
+    const session = await fetchBackend("/api/auth/token", {
       headers: { cookie },
       cache: "no-store",
       redirect: "error",
     });
-    if (response.status === 401 || response.status === 404) return { status: "guest" } as const;
+    if (session.status === 401) return { status: "guest" } as const;
+    if (session.status === 403) return { status: "denied" } as const;
+    if (!session.ok) return { status: "unavailable" } as const;
+
+    const { token } = await session.json();
+    if (typeof token !== "string" || !token) return { status: "unavailable" } as const;
+
+    const response = await fetchBackend("/api/me", {
+      headers: { authorization: `Bearer ${token}` },
+      cache: "no-store",
+      redirect: "error",
+    });
     if (response.status === 403) return { status: "denied" } as const;
+    if (response.status === 401) return { status: "guest" } as const;
     if (!response.ok) return { status: "unavailable" } as const;
 
-    const data = (await response.json()) as { session?: unknown; user?: SessionUser } | null;
-    if (!data?.session || !data.user) return { status: "guest" } as const;
-
-    const { name, role, banned, blocked } = data.user;
-    if (banned === true || blocked === true || (role !== "customer" && role !== "vendor")) {
+    const { user } = (await response.json()) as { user?: { name?: unknown; email?: unknown; role?: unknown } };
+    if (!user || !isDashboardRole(user.role) || typeof user.name !== "string" || typeof user.email !== "string") {
       return { status: "denied" } as const;
     }
-    if (typeof name !== "string" || !name.trim()) return { status: "denied" } as const;
 
-    return { status: "allowed", user: { name, role } } as const;
+    return { status: "allowed", user: { name: user.name, email: user.email, role: user.role } } as const;
   } catch {
     return { status: "unavailable" } as const;
   }
 });
 
-export async function requireDashboardAccess(role?: DashboardRole) {
+export async function requireDashboardAccess(role?: string) {
   const access = await getDashboardAccess();
 
   if (access.status === "guest") redirect("/sign-in");
   if (access.status === "allowed" && access.user.role !== role) {
-    redirect(dashboardPaths[access.user.role]);
+    redirect(dashboardPath(access.user.role));
   }
 
   return access;

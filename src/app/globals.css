@@ -5,6 +5,13 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --color-stationery-ivory: var(--invitation-ivory);
+  --color-stationery-plum: var(--invitation-plum);
+  --color-stationery-rose: var(--invitation-rose);
+  --color-stationery-blush: var(--invitation-blush);
+  --color-stationery-paper: var(--invitation-paper);
+  --color-stationery-line: var(--invitation-line);
+  --font-stationery: var(--invitation-serif);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);

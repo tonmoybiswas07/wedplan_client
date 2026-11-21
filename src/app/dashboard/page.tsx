@@ -8,5 +8,5 @@ async function DashboardEntry() {
 }
 
 export default function DashboardPage() {
-  return <Suspense fallback={<p className="dashboard-loading">Loading dashboard…</p>}><DashboardEntry /></Suspense>;
+  return <Suspense fallback={<p className="p-8">Loading dashboard…</p>}><DashboardEntry /></Suspense>;
 }
