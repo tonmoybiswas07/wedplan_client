@@ -77,21 +77,6 @@ export function BookingLoading() {
   return <p role="status" className="border border-stationery-line bg-stationery-paper p-5 text-sm text-muted-foreground motion-safe:animate-pulse">Loading bookings…</p>;
 }
 
-export async function BookingCounters({ role }: { role: BookingRole }) {
-  const response = await fetchDashboardApi(role, "/api/bookings/counts");
-  if (!response.ok) return <p role="alert" className="text-sm text-muted-foreground">Booking totals are unavailable.</p>;
-  const { counts } = await response.json() as { counts: { total: number; pending: number } };
-
-  return (
-    <dl className="grid grid-cols-2 gap-3">
-      <div className="border border-stationery-line/65 bg-stationery-ivory p-3"><dt className="text-sm text-muted-foreground">
-        {role === "customer" ? "Total bookings" : "Total requests"}</dt><dd className="font-stationery text-3xl">{counts.total}</dd></div>
-      <div className="border border-stationery-line/65 bg-stationery-ivory p-3"><dt className="text-sm text-muted-foreground">Pending</dt>
-        <dd className="font-stationery text-3xl">{counts.pending}</dd></div>
-    </dl>
-  );
-}
-
 export async function BookingList({ role, search }: { role: BookingRole; search: Promise<{ page?: string | string[] }> }) {
   const { page: requestedPage } = await search;
   const page = typeof requestedPage === "string" && /^[1-9]\d{0,5}$/.test(requestedPage) ? Number(requestedPage) : 1;

@@ -4,7 +4,9 @@ import { notFound } from "next/navigation";
 import { ArrowRight, CircleUserRound, Heart } from "lucide-react";
 import { requireDashboardAccess } from "@/lib/dashboard-session";
 import { Suspense } from "react";
-import { BookingCounters, BookingDetails, BookingList, BookingLoading } from "./bookings/views";
+import { BookingDetails, BookingList, BookingLoading } from "./bookings/views";
+import { AdminUserDetails, AdminUsersList } from "./admin-users/views";
+import { DashboardStats } from "./stats";
 import { AdminServiceList, type DashboardSearch } from "./admin-services/list";
 import { fetchVendorServices } from "./vendor-services/api";
 import { ServiceForm } from "./vendor-services/form";
@@ -68,9 +70,10 @@ export async function DashboardOverview({
   const bookingRole = user.role === "customer" && section === "my-bookings" ? "customer"
     : user.role === "vendor" && section === "booking-requests" ? "vendor" : undefined;
   const bookingId = bookingRole && slug?.length === 2 ? slug[1] : undefined;
+  const accountId = section === "manage-users" && slug?.length === 2 ? slug[1] : undefined;
   if (
     !section ||
-    (!editing && !bookingId && slug && (slug.length !== 1 || section === "overview"))
+    (!editing && !bookingId && !accountId && slug && (slug.length !== 1 || section === "overview"))
   )
     notFound();
 
@@ -120,7 +123,7 @@ export async function DashboardOverview({
         >
           <span>{sections[item].label}</span>
           <span className="flex items-center gap-2 text-xs font-medium text-stationery-rose">
-            {!["profile-settings", "my-services", "add-service", "manage-services", "my-bookings", "booking-requests"].includes(
+            {!["profile-settings", "my-services", "add-service", "manage-services", "my-bookings", "booking-requests", "manage-users"].includes(
               item,
             ) && "Coming soon"}
             <ArrowRight size={15} aria-hidden="true" />
@@ -150,7 +153,7 @@ export async function DashboardOverview({
                 ? `Welcome, ${user.name}`
                 : editing
                   ? "Edit Service"
-                  : bookingId ? "Booking Details" : sections[section].label}
+                  : bookingId ? "Booking Details" : accountId ? "User Details" : sections[section].label}
             </h1>
             <p className="mt-2 max-w-prose text-muted-foreground">
               {overview ? workspace.description : sections[section].description}
@@ -165,13 +168,11 @@ export async function DashboardOverview({
                   </span>
                   <h2 className="font-stationery text-2xl">Overview</h2>
                 </div>
-                {user.role !== "admin" && (
-                  <div className="my-4">
-                    <Suspense fallback={<p role="status" className="text-sm">Loading booking totals…</p>}>
-                      <BookingCounters role={user.role} />
-                    </Suspense>
-                  </div>
-                )}
+                <div className="my-4">
+                  <Suspense fallback={<p role="status" className="text-sm">Loading statistics…</p>}>
+                    <DashboardStats role={user.role} />
+                  </Suspense>
+                </div>
                 <ul className="divide-y divide-stationery-line/60">
                   {workspace.sections
                     .filter((item) => item !== "overview")
@@ -193,6 +194,10 @@ export async function DashboardOverview({
           ) : section === "my-services" ? (
             <Suspense fallback={<p role="status">Loading services…</p>}>
               <ServiceList />
+            </Suspense>
+          ) : section === "manage-users" ? (
+            <Suspense fallback={<p role="status">Loading users…</p>}>
+              {accountId ? <AdminUserDetails id={accountId} viewerEmail={user.email} /> : <AdminUsersList search={search} viewerEmail={user.email} />}
             </Suspense>
           ) : section === "manage-services" ? (
             <Suspense fallback={<p role="status">Loading services…</p>}>
