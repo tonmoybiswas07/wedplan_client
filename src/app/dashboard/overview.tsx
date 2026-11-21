@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowRight, CircleUserRound, Heart } from "lucide-react";
 import { requireDashboardAccess } from "@/lib/dashboard-session";
 import { Suspense } from "react";
+import { BookingCounters, BookingDetails, BookingList, BookingLoading } from "./bookings/views";
 import { AdminServiceList, type DashboardSearch } from "./admin-services/list";
 import { fetchVendorServices } from "./vendor-services/api";
 import { ServiceForm } from "./vendor-services/form";
@@ -64,9 +65,12 @@ export async function DashboardOverview({
   );
   const editing =
     user.role === "vendor" && section === "my-services" && slug?.length === 2;
+  const bookingRole = user.role === "customer" && section === "my-bookings" ? "customer"
+    : user.role === "vendor" && section === "booking-requests" ? "vendor" : undefined;
+  const bookingId = bookingRole && slug?.length === 2 ? slug[1] : undefined;
   if (
     !section ||
-    (!editing && slug && (slug.length !== 1 || section === "overview"))
+    (!editing && !bookingId && slug && (slug.length !== 1 || section === "overview"))
   )
     notFound();
 
@@ -116,7 +120,7 @@ export async function DashboardOverview({
         >
           <span>{sections[item].label}</span>
           <span className="flex items-center gap-2 text-xs font-medium text-stationery-rose">
-            {!["profile-settings", "my-services", "add-service", "manage-services"].includes(
+            {!["profile-settings", "my-services", "add-service", "manage-services", "my-bookings", "booking-requests"].includes(
               item,
             ) && "Coming soon"}
             <ArrowRight size={15} aria-hidden="true" />
@@ -146,7 +150,7 @@ export async function DashboardOverview({
                 ? `Welcome, ${user.name}`
                 : editing
                   ? "Edit Service"
-                  : sections[section].label}
+                  : bookingId ? "Booking Details" : sections[section].label}
             </h1>
             <p className="mt-2 max-w-prose text-muted-foreground">
               {overview ? workspace.description : sections[section].description}
@@ -161,6 +165,13 @@ export async function DashboardOverview({
                   </span>
                   <h2 className="font-stationery text-2xl">Overview</h2>
                 </div>
+                {user.role !== "admin" && (
+                  <div className="my-4">
+                    <Suspense fallback={<p role="status" className="text-sm">Loading booking totals…</p>}>
+                      <BookingCounters role={user.role} />
+                    </Suspense>
+                  </div>
+                )}
                 <ul className="divide-y divide-stationery-line/60">
                   {workspace.sections
                     .filter((item) => item !== "overview")
@@ -169,6 +180,10 @@ export async function DashboardOverview({
               </StationeryCard>
               <StationeryCard>{accountSummary}</StationeryCard>
             </div>
+          ) : bookingRole ? (
+            <Suspense fallback={<BookingLoading />}>
+              {bookingId ? <BookingDetails role={bookingRole} id={bookingId} /> : <BookingList role={bookingRole} search={search} />}
+            </Suspense>
           ) : section === "add-service" || editing ? (
             <div className="max-w-3xl">
               <StationeryCard>
