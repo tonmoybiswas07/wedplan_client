@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { fetchBackend } from "@/lib/api";
 import { dashboardPath, isDashboardRole } from "@/app/dashboard/sections";
 
-export const getDashboardAccess = cache(async () => {
+export const getDashboardToken = cache(async () => {
   const cookie = (await headers()).get("cookie");
   if (!cookie) return { status: "guest" } as const;
 
@@ -23,8 +23,19 @@ export const getDashboardAccess = cache(async () => {
     const { token } = await session.json();
     if (typeof token !== "string" || !token) return { status: "unavailable" } as const;
 
+    return { status: "allowed", token } as const;
+  } catch {
+    return { status: "unavailable" } as const;
+  }
+});
+
+export const getDashboardAccess = cache(async () => {
+  const session = await getDashboardToken();
+  if (session.status !== "allowed") return session;
+
+  try {
     const response = await fetchBackend("/api/me", {
-      headers: { authorization: `Bearer ${token}` },
+      headers: { authorization: `Bearer ${session.token}` },
       cache: "no-store",
       redirect: "error",
     });
