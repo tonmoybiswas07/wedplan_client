@@ -1,13 +1,14 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import { parseString } from "set-cookie-parser";
+import { safeServiceReturn } from "@/lib/service-return";
 import { postBackendAuth } from "@/lib/api";
 
 export type AuthState = {
   errors?: Partial<Record<"name" | "email" | "password" | "role", string>>;
   message?: string;
+  returnTo?: string;
 };
 
 async function authenticate(form: FormData, signingUp: boolean): Promise<AuthState> {
@@ -67,7 +68,7 @@ async function authenticate(form: FormData, signingUp: boolean): Promise<AuthSta
     return { message: "Authentication is currently unavailable. Please try again." };
   }
 
-  redirect("/dashboard");
+  return { returnTo: safeServiceReturn(form.get("returnTo")) ?? "/dashboard" };
 }
 
 export async function signIn(_state: AuthState, form: FormData): Promise<AuthState> {

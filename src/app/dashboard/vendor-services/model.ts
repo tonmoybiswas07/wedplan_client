@@ -2,6 +2,7 @@ export type VendorService = {
   id: string;
   title: string;
   category: string;
+  location?: string;
   description: string;
   priceMinor: number;
   imageUrl?: string;
@@ -9,4 +10,4 @@ export type VendorService = {
   isActive: boolean;
 };
 
-export type ServiceErrors = Partial<Record<"title" | "category" | "description" | "price" | "image", string[]>>;
+export type ServiceErrors = Partial<Record<"title" | "category" | "location" | "description" | "price" | "image", string[]>>;

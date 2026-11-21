@@ -14,6 +14,7 @@ import type { ServiceErrors, VendorService } from "./model";
 const fields = [
   { name: "title", label: "Service name", max: 100, min: 3, placeholder: "e.g. Full-day wedding photography" },
   { name: "category", label: "Category", max: 60, min: 2, placeholder: "e.g. Photography" },
+  { name: "location", label: "City or service area", max: 100, min: 2, placeholder: "e.g. Dhaka" },
   { name: "price", label: "Starting price (BDT)", max: 11, min: 1, placeholder: "e.g. 25000" },
 ] as const;
 

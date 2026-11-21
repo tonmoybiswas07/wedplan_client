@@ -24,7 +24,7 @@ async function mutationResult(response: Response): Promise<ServiceResult> {
 
 export async function saveVendorService(id: string | undefined, form: FormData): Promise<ServiceResult> {
   const body = new FormData();
-  for (const key of ["title", "category", "description", "price"]) {
+  for (const key of ["title", "category", "location", "description", "price"]) {
     const value = form.get(key);
     if (typeof value === "string") body.set(key, value);
   }

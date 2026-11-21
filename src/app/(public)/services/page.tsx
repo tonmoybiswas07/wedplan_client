@@ -1,0 +1,244 @@
+import type { Metadata } from "next";
+import Form from "next/form";
+import Link from "next/link";
+import { Suspense } from "react";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { categories } from "@/components/public/categories";
+import { CatalogLoading, ServiceGrid } from "@/components/public/service-grid";
+import { readCatalog } from "@/lib/public-catalog";
+import { cn } from "@/lib/utils";
+
+export const metadata: Metadata = {
+  title: "Browse Wedding Services | WedPlan",
+};
+
+type Search = Promise<Record<string, string | string[] | undefined>>;
+
+async function BrowseCatalog({ searchParams }: { searchParams: Search }) {
+  const values = await searchParams;
+  function text(name: string, limit: number) {
+    return typeof values[name] === "string"
+      ? values[name].trim().slice(0, limit)
+      : "";
+  }
+  const q = text("q", 100);
+  const category = text("category", 60);
+  const location = text("location", 100);
+  const sort =
+    values.sort === "price-asc" || values.sort === "price-desc"
+      ? values.sort
+      : "newest";
+  const page =
+    typeof values.page === "string" && /^[1-9]\d{0,4}$/.test(values.page)
+      ? Number(values.page)
+      : 1;
+  const filtered = q || category || location || sort !== "newest";
+  const select =
+    "h-11 w-full rounded-md border border-input bg-stationery-paper px-3 text-sm focus-visible:outline-2 focus-visible:outline-ring";
+
+  function query(pageNumber: number) {
+    const params = new URLSearchParams();
+    if (q) params.set("q", q);
+    if (category) params.set("category", category);
+    if (location) params.set("location", location);
+    if (sort !== "newest") params.set("sort", sort);
+    if (pageNumber > 1) params.set("page", String(pageNumber));
+    return params;
+  }
+
+  return (
+    <>
+      <Form
+        action="/services"
+        key={query(page).toString()}
+        className="mb-8 grid items-end gap-4 border border-stationery-line bg-stationery-paper p-4 sm:grid-cols-2 sm:p-5 xl:grid-cols-[1.4fr_1fr_1fr_1fr_auto]"
+      >
+        <div>
+          <label
+            htmlFor="browse-search"
+            className="mb-1.5 block text-sm font-semibold"
+          >
+            Service name
+          </label>
+          <Input
+            id="browse-search"
+            name="q"
+            type="search"
+            maxLength={100}
+            defaultValue={q}
+            placeholder="Search by name"
+            className="h-11"
+          />
+        </div>
+        <div>
+          <label
+            htmlFor="browse-category"
+            className="mb-1.5 block text-sm font-semibold"
+          >
+            Category
+          </label>
+          <select
+            id="browse-category"
+            name="category"
+            defaultValue={category}
+            className={select}
+          >
+            <option value="">All categories</option>
+            {categories.map(({ name }) => (
+              <option key={name}>{name}</option>
+            ))}
+            {category && !categories.some(({ name }) => name === category) && (
+              <option>{category}</option>
+            )}
+          </select>
+        </div>
+        <div>
+          <label
+            htmlFor="browse-location"
+            className="mb-1.5 block text-sm font-semibold"
+          >
+            Location
+          </label>
+          <Input
+            id="browse-location"
+            name="location"
+            maxLength={100}
+            defaultValue={location}
+            placeholder="e.g. Dhaka"
+            className="h-11"
+          />
+        </div>
+        <div>
+          <label
+            htmlFor="browse-sort"
+            className="mb-1.5 block text-sm font-semibold"
+          >
+            Sort by
+          </label>
+          <select
+            id="browse-sort"
+            name="sort"
+            defaultValue={sort}
+            className={select}
+          >
+            <option value="newest">Newest first</option>
+            <option value="price-asc">Price: low to high</option>
+            <option value="price-desc">Price: high to low</option>
+          </select>
+        </div>
+        <Button
+          type="submit"
+          className="h-11 px-4 sm:justify-self-start xl:justify-self-stretch"
+        >
+          Apply filters
+        </Button>
+      </Form>
+
+      <div className="mb-4 flex items-center justify-between gap-3">
+        <h2 className="font-stationery text-2xl">Service listings</h2>
+        {filtered && (
+          <Link
+            href="/services"
+            className="text-sm font-semibold underline underline-offset-4"
+          >
+            Clear filters
+          </Link>
+        )}
+      </div>
+      <Suspense key={query(page).toString()} fallback={<CatalogLoading />}>
+        <BrowseResults
+          query={query(page)}
+          previous={page > 1 ? query(page - 1) : null}
+          next={query(page + 1)}
+          page={page}
+        />
+      </Suspense>
+    </>
+  );
+}
+
+async function BrowseResults({
+  query,
+  previous,
+  next,
+  page,
+}: {
+  query: URLSearchParams;
+  previous: URLSearchParams | null;
+  next: URLSearchParams;
+  page: number;
+}) {
+  const result = await readCatalog(query);
+  if (!result)
+    return (
+      <div
+        role="alert"
+        className="border border-stationery-line bg-stationery-paper p-6"
+      >
+        <p>Services couldn’t be loaded right now.</p>
+        {/* A normal navigation retries the backend request even when the URL stays the same. */}
+        {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+        <a
+          href={`/services?${query}`}
+          className={cn(buttonVariants({ variant: "outline" }), "mt-3 px-3")}
+        >
+          Try again
+        </a>
+      </div>
+    );
+  return (
+    <>
+      {result.services.length ? (
+        <ServiceGrid listings={result.services} />
+      ) : (
+        <div className="border border-dashed border-stationery-line bg-stationery-paper p-8 text-center">
+          <h3 className="font-stationery text-2xl">No matching services</h3>
+          <p className="mt-2 text-muted-foreground">
+            Try another name, category, or location.
+          </p>
+        </div>
+      )}
+      {(previous || result.hasNext) && (
+        <nav
+          aria-label="Service results"
+          className="mt-6 flex flex-wrap items-center gap-3"
+        >
+          {previous && (
+            <Link
+              href={`/services?${previous}`}
+              className={buttonVariants({ variant: "outline" })}
+            >
+              Previous
+            </Link>
+          )}
+          <span className="text-sm">Page {page}</span>
+          {result.hasNext && (
+            <Link
+              href={`/services?${next}`}
+              className={buttonVariants({ variant: "outline" })}
+            >
+              Next
+            </Link>
+          )}
+        </nav>
+      )}
+    </>
+  );
+}
+
+export default function BrowsePage({ searchParams }: { searchParams: Search }) {
+  return (
+    <main className="mx-auto min-h-[70svh] max-w-7xl px-4 py-10 sm:px-8 sm:py-14">
+      <h1 className="font-stationery text-5xl leading-tight tracking-tight text-stationery-plum sm:text-6xl">
+        Browse wedding services
+      </h1>
+      <p className="mt-3 mb-7 max-w-prose text-muted-foreground">
+        Find wedding vendors by service, location, and starting price.
+      </p>
+      <Suspense fallback={<CatalogLoading />}>
+        <BrowseCatalog searchParams={searchParams} />
+      </Suspense>
+    </main>
+  );
+}

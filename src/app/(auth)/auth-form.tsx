@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import Link from "next/link";
 import { HeartHandshake, Store } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -40,12 +40,15 @@ const roles = [
 
 const initialState: AuthState = {};
 
-export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
+export function AuthForm({ mode, returnTo }: { mode: "sign-in" | "sign-up"; returnTo?: string }) {
   const signingUp = mode === "sign-up";
   const [state, action, pending] = useActionState(
     signingUp ? signUp : signIn,
     initialState,
   );
+  useEffect(() => {
+    if (state.returnTo) window.location.replace(state.returnTo);
+  }, [state.returnTo]);
   const [values, setValues] = useState({ name: "", email: "", password: "" });
   const [role, setRole] = useState("");
 
@@ -68,6 +71,7 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
         className="invitation-form"
         aria-busy={pending}
       >
+        {returnTo && <input type="hidden" name="returnTo" value={returnTo} />}
         <fieldset disabled={pending} className="invitation-fields">
           {fields
             .filter((field) => signingUp || field.name !== "name")
@@ -174,7 +178,7 @@ export function AuthForm({ mode }: { mode: "sign-in" | "sign-up" }) {
 
       <p className="invitation-switch">
         {signingUp ? "Already have an account?" : "New to WedPlan?"}{" "}
-        <Link href={signingUp ? "/sign-in" : "/sign-up"}>
+        <Link href={{ pathname: signingUp ? "/sign-in" : "/sign-up", query: returnTo ? { returnTo } : undefined }}>
           {signingUp ? "Sign in" : "Create an account"}
         </Link>
       </p>
