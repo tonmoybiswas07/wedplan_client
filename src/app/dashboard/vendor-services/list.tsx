@@ -3,16 +3,12 @@ import { ImageIcon, Plus } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { fetchVendorServices } from "./api";
+import { ServiceBadges } from "./badges";
+import { AvailabilityControl } from "./availability";
 import { DeleteService } from "./delete";
 import type { VendorService } from "./model";
 
 const price = new Intl.NumberFormat("en-BD", { style: "currency", currency: "BDT", currencyDisplay: "code" });
-
-const approval = {
-  pending: { label: "Pending approval", color: "bg-stationery-blush text-stationery-plum" },
-  approved: { label: "Approved", color: "bg-green-100 text-green-900" },
-  rejected: { label: "Rejected", color: "bg-red-100 text-red-900" },
-};
 
 export async function ServiceList() {
   const response = await fetchVendorServices();
@@ -50,18 +46,12 @@ export async function ServiceList() {
                   </div>
                   <p className="line-clamp-3 text-sm break-words text-muted-foreground">{service.description}</p>
                   <p className="font-semibold">{price.format(service.priceMinor / 100)}</p>
-                  <div className="flex flex-wrap gap-2">
-                    <span className={cn("rounded-full px-2.5 py-1 text-xs font-semibold", approval[service.status].color)}>
-                      {approval[service.status].label}
-                    </span>
-                    <span className="rounded-full border border-stationery-line px-2.5 py-1 text-xs font-medium">
-                      {service.active ? "Active" : "Inactive"}
-                    </span>
-                  </div>
+                  <ServiceBadges status={service.status} isActive={service.isActive} />
                   <div className="mt-auto flex flex-wrap gap-2 border-t border-stationery-line/65 pt-3">
                     <Link href={`/dashboard/vendor/my-services/${service.id}`}
                       aria-label={`Edit ${service.title}`}
                       className={cn(buttonVariants({ variant: "outline" }), "h-9 px-3")}>Edit</Link>
+                    <AvailabilityControl {...service} />
                     <DeleteService id={service.id} title={service.title} />
                   </div>
                 </div>

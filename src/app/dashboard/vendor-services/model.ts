@@ -6,7 +6,7 @@ export type VendorService = {
   priceMinor: number;
   imageUrl?: string;
   status: "pending" | "approved" | "rejected";
-  active: boolean;
+  isActive: boolean;
 };
 
 export type ServiceErrors = Partial<Record<"title" | "category" | "description" | "price" | "image", string[]>>;

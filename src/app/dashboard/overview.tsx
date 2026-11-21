@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowRight, CircleUserRound, Heart } from "lucide-react";
 import { requireDashboardAccess } from "@/lib/dashboard-session";
 import { Suspense } from "react";
+import { AdminServiceList, type DashboardSearch } from "./admin-services/list";
 import { fetchVendorServices } from "./vendor-services/api";
 import { ServiceForm } from "./vendor-services/form";
 import { ServiceList } from "./vendor-services/list";
@@ -45,9 +46,10 @@ function StationeryCard({ children }: { children: ReactNode }) {
 }
 
 export async function DashboardOverview({
-  params,
+  params, search,
 }: {
   params: Promise<{ role: string; section?: string[] }>;
+  search: Promise<DashboardSearch>;
 }) {
   const { role, section: slug } = await params;
   const access = await requireDashboardAccess(role);
@@ -114,7 +116,7 @@ export async function DashboardOverview({
         >
           <span>{sections[item].label}</span>
           <span className="flex items-center gap-2 text-xs font-medium text-stationery-rose">
-            {!["profile-settings", "my-services", "add-service"].includes(
+            {!["profile-settings", "my-services", "add-service", "manage-services"].includes(
               item,
             ) && "Coming soon"}
             <ArrowRight size={15} aria-hidden="true" />
@@ -176,6 +178,10 @@ export async function DashboardOverview({
           ) : section === "my-services" ? (
             <Suspense fallback={<p role="status">Loading services…</p>}>
               <ServiceList />
+            </Suspense>
+          ) : section === "manage-services" ? (
+            <Suspense fallback={<p role="status">Loading services…</p>}>
+              <AdminServiceList search={search} />
             </Suspense>
           ) : (
             <div className="max-w-2xl">

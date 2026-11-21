@@ -1,6 +1,7 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { fetchDashboardApi } from "@/lib/dashboard-api";
 import { fetchVendorServices } from "./api";
 import type { ServiceErrors } from "./model";
 
@@ -41,4 +42,13 @@ export async function saveVendorService(id: string | undefined, form: FormData):
 
 export async function deleteVendorService(id: string): Promise<ServiceResult> {
   return mutationResult(await fetchVendorServices(id, { method: "DELETE" }));
+}
+
+export async function setServiceAvailability(id: string, isActive: boolean): Promise<ServiceResult> {
+  if (!/^[\da-f]{24}$/i.test(id)) return { ok: false, message: "Service not found." };
+  return mutationResult(await fetchDashboardApi("vendor", `/api/vendor/services/${id}/availability`, {
+    method: "PATCH",
+    headers: { "content-type": "application/json" },
+    body: JSON.stringify({ isActive }),
+  }));
 }
