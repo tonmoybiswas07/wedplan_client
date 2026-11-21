@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Nunito } from "next/font/google";
+import { Playfair_Display, Plus_Jakarta_Sans, Geist_Mono } from "next/font/google";
 import { WedPlanTheme } from "@/components/ui/theme";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
   subsets: ["latin"],
+  display: "swap",
+});
+
+const plusJakarta = Plus_Jakarta_Sans({
+  variable: "--font-sans",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
@@ -13,11 +20,9 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const nunito = Nunito({ variable: "--font-nunito", subsets: ["latin"] });
-
 export const metadata: Metadata = {
-  title: "WedPlan | Wedding Planning Platform",
-  description: "Browse wedding services, request bookings, and manage your WedPlan account.",
+  title: "WedPlan | Luxury Wedding Planning Platform",
+  description: "Discover premier wedding vendors, browse curated services, and plan your perfect wedding celebration.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
@@ -25,9 +30,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} ${nunito.variable} h-full antialiased`}
+      className={`${playfair.variable} ${plusJakarta.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col"><WedPlanTheme>{children}</WedPlanTheme></body>
+      <body className="min-h-full flex flex-col font-sans bg-background text-foreground"><WedPlanTheme>{children}</WedPlanTheme></body>
     </html>
   );
 }
