@@ -1,37 +1,56 @@
-# WedPlan Client
+# WedPlan — Wedding Planning Platform
 
-WedPlan is a wedding planning marketplace. Customers discover services and request bookings, vendors publish services and manage requests, and admins moderate the platform.
+WedPlan helps couples discover wedding vendors and request bookings. The client provides the public marketplace, account pages, and separate dashboards for customers, vendors, and admins.
 
-## Features
+## Important Features
 
-- Public catalogue with six assignment categories, keyword and location filters, budget ranges, and price sorting
-- Better Auth email and Google authentication, role-protected dashboards, and ImgBB profile and service images
-- Booking requests, vendor moderation, and Stripe Test Mode subscriptions and transaction reporting
+- Browse wedding services by name, category, and location, with price sorting.
+- Customers can request bookings, track their status, and cancel pending requests.
+- Vendors can manage listings, upload photos, and accept or reject booking requests.
+- Admins can moderate listings, manage users, and view transactions.
+- Vendors can upgrade through Stripe Checkout in Test Mode. Verified webhook events activate Premium access.
 
-## Technology
+## Technology Stack
 
-Next.js, React, TypeScript, Tailwind CSS, shadcn/ui, Motion, and Sonner. The separate API uses Express, MongoDB, Better Auth, ImgBB, and Stripe.
+- Frontend: Next.js, TypeScript, Tailwind CSS, shadcn/ui, and Motion
+- Backend: Express, TypeScript, and MongoDB
+- Integrations: Better Auth, Stripe Checkout and webhooks, and ImgBB
 
-## Run locally
+## Installation
 
-1. Start the [WedPlan API](https://github.com/tonmoybiswas07/wedplan_server) and configure its environment.
-2. In this repository, run `npm ci`.
-3. Copy `.env.example` to `.env.local`. Set `API_BASE_URL` to the Express origin.
-4. Run `npm run dev` and open [WedPlan on localhost](http://localhost:3000).
+Install Node.js and npm, then clone both repositories into sibling directories. Use the repository URLs listed below once available.
 
-Run `npm run build` followed by `npm start` to check the production build locally.
+```bash
+git clone https://github.com/tonmoybiswas07/wedplan_server wedplan-server
+git clone https://github.com/tonmoybiswas07/wedplan_client wedplan-client
+```
 
-| Client variable | Purpose |
+Use each repository's environment example to configure local variables. Set the MongoDB connection and auth configuration on the server. Set the frontend API base URL to the local backend address. Configure Google OAuth, ImgBB, or Stripe test credentials when testing those integrations.
+
+## Run Locally
+
+Start the server in one terminal.
+
+```bash
+cd wedplan-server
+npm install
+npm run dev
+```
+
+From the parent directory, start the client in another terminal.
+
+```bash
+cd wedplan-client
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000). The default API address is [http://localhost:8000](http://localhost:8000). If either port changes, update the corresponding URLs in your local environment configuration.
+
+## Project Links
+
+| Resource | Link |
 | --- | --- |
-| `API_BASE_URL` | Server-side Express origin, such as `http://localhost:8000` |
-| `WEDPLAN_CONTACT_EMAIL` | Optional public support email for the footer |
-
-Set the server's `CLIENT_URL` to the browser-facing Next.js origin. Use the same local hostname in the browser and OAuth configuration. Keep MongoDB, Better Auth, Google, ImgBB and Stripe credentials on the server. See the [server setup and environment guide](https://github.com/tonmoybiswas07/wedplan_server#wedplan-api).
-
-## Links and submission
-
-- [Client repository](https://github.com/tonmoybiswas07/wedplan_client)
-- [Server repository](https://github.com/tonmoybiswas07/wedplan_server)
-- Live website link pending deployment and verification.
-
-For deployment, configure the Express origin and support email on the Next.js host, then use its Next.js build and start commands. Check private routes after a hard refresh, Google callback and consent, Stripe Checkout and webhook delivery from the deployed host. Provide the evaluator with the verified live URL and the dedicated Admin credentials through the assignment submission channel.
+| Live website | Pending verified deployment URL |
+| Client repository | Pending Git remote URL |
+| Server repository | Pending Git remote URL |
