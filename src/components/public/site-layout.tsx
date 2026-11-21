@@ -14,7 +14,7 @@ const serverRepository = github + "/wedplan_server";
 
 function Brand() {
   return <Link href="/" className="invitation-brand shrink-0">
-    <span className="invitation-mark hidden sm:grid"><Heart size={16} aria-hidden="true" /></span>
+    <span className="invitation-mark grid"><Heart size={16} aria-hidden="true" /></span>
     WedPlan
   </Link>;
 }
@@ -26,23 +26,23 @@ async function AccountLinks({ mobile }: { mobile: boolean }) {
   }
 
   return <>
-    <Link href="/sign-in" className="shrink-0 font-medium hover:underline">Sign In</Link>
-    <Link href="/sign-up" className={cn(buttonVariants(), "h-9 shrink-0 px-3")}>Sign Up</Link>
+    <Link href="/sign-in" className="shrink-0 inline-flex min-h-10 items-center rounded-full px-3 font-semibold hover:bg-blush">Sign In</Link>
+    <Link href="/sign-up" className={cn(buttonVariants(), "h-10 shrink-0 px-4")}>Sign Up</Link>
   </>;
 }
 
 function Navigation({ mobile = false }: { mobile?: boolean }) {
   return <nav aria-label={mobile ? "Mobile navigation" : "Main navigation"}
-    className={mobile ? "flex flex-col items-start gap-4 text-sm" : "flex items-center gap-5 text-sm"}>
-    <Link href="/" className="font-medium hover:underline">Home</Link>
-    <Link href="/services" className="font-medium hover:underline">Browse Services</Link>
+    className={mobile ? "grid justify-items-start gap-4 text-sm" : "flex items-center gap-4 text-sm lg:gap-6"}>
+    <Link href="/" className="inline-flex min-h-10 items-center rounded-full px-3 font-semibold hover:bg-blush">Home</Link>
+    <Link href="/services" className="inline-flex min-h-10 items-center rounded-full px-3 font-semibold hover:bg-blush">Browse Services</Link>
     <Suspense fallback={<span className="h-9 w-14" aria-hidden="true" />}><AccountLinks mobile={mobile} /></Suspense>
     <ThemeSwitcher />
   </nav>;
 }
 
 export function SiteHeader() {
-  return <header className="relative z-30 border-b border-line bg-canvas">
+  return <header className="sticky top-0 z-30 border-b border-line bg-paper">
     <div className="mx-auto flex min-h-18 max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-8">
       <Brand />
       <div className="hidden sm:block"><Navigation /></div>
@@ -58,7 +58,7 @@ export function SiteFooter() {
   const configured = process.env.WEDPLAN_CONTACT_EMAIL?.trim();
   const email = configured && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(configured) ? configured : undefined;
   return <footer className="border-t border-line bg-plum text-on-plum">
-    <div className="mx-auto grid max-w-7xl gap-7 px-4 py-9 sm:grid-cols-3 sm:px-8">
+    <div className="mx-auto grid max-w-7xl gap-8 px-5 py-12 sm:grid-cols-[1.5fr_1fr_1fr] sm:px-8">
       <section><Brand />
         <p className="mt-3 max-w-xs text-sm text-on-plum/80">Discover wedding services, compare vendors, and request bookings in one place.</p>
       </section>
@@ -79,7 +79,7 @@ export function SiteFooter() {
           <a href={serverRepository} className="hover:underline">Server</a>
         </div>
       </section>
-      <p className="border-t border-line/60 pt-4 text-xs text-on-plum/80 sm:col-span-3">© WedPlan. All rights reserved.</p>
+      <p className="border-t border-on-plum/25 pt-4 text-xs text-on-plum/80 sm:col-span-3">© WedPlan. All rights reserved.</p>
     </div>
   </footer>;
 }

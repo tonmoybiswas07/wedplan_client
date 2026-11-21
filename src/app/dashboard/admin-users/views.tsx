@@ -69,7 +69,7 @@ export async function AdminUsersList({ search, viewerEmail }: {
 
   return (
     <div className="grid gap-5">
-      <Form action={adminUsersPath} key={query(page)} className="flex flex-wrap items-end gap-3 border border-line bg-paper p-4">
+      <Form action={adminUsersPath} key={query(page)} className="flex flex-wrap items-end gap-3 workspace-panel">
         <div className="min-w-0 flex-1 basis-52">
           <label htmlFor="user-search" className="mb-1 block text-sm font-semibold">Search users</label>
           <Input id="user-search" name="q" type="search" maxLength={100} defaultValue={q}
@@ -86,7 +86,7 @@ export async function AdminUsersList({ search, viewerEmail }: {
         <Button type="submit" className="h-10 px-4">Apply filters</Button>
         {(q || role) && <Link href={adminUsersPath} className={cn(buttonVariants({ variant: "ghost" }), "h-10 px-3")}>Clear</Link>}
       </Form>
-      {!result ? <p role="alert" className="border border-line bg-paper p-5">Users could not be loaded. Refresh the page to try again.</p>
+      {!result ? <p role="alert" className="workspace-panel">Users could not be loaded. Refresh the page to try again.</p>
         : result.users.length ? <ul className="grid gap-4 xl:grid-cols-2">
           {result.users.map((user) => <li key={user.id} className="min-w-0"><AccountCard user={user} viewerEmail={viewerEmail} /></li>)}
         </ul> : <p className="border border-dashed border-line bg-paper p-8 text-center text-muted-foreground">No users match these filters.</p>}
@@ -107,7 +107,7 @@ export async function AdminUserDetails({ id, viewerEmail }: { id: string; viewer
     <div className="grid max-w-3xl gap-5">
       <Link href={adminUsersPath} className="w-fit text-sm font-semibold underline underline-offset-4">Back to Manage Users</Link>
       {result ? <AccountCard user={result.user} viewerEmail={viewerEmail} details /> : (
-        <p role="alert" className="border border-line bg-paper p-5">
+        <p role="alert" className="workspace-panel">
           {!response || response.status === 404 ? "This user could not be found." : "User details could not be loaded. Refresh the page to try again."}
         </p>
       )}

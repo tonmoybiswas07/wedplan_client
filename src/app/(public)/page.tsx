@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { connection } from "next/server";
 import Form from "next/form";
-import { Search, Flower2 } from "lucide-react";
+import { Search, Flower2, ArrowUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { HeartHandshake, MapPin, ShieldCheck } from "lucide-react";
@@ -44,44 +44,41 @@ const photographs = ["photography", "venues", "florist", "catering", "styling", 
 export default function Home() {
   return (
     <main>
-      <section className="relative isolate overflow-hidden bg-[var(--hero-wash)]">
-        <div className="relative mx-auto grid max-w-7xl items-center gap-10 px-5 pt-12 pb-16 sm:px-8 lg:grid-cols-[.9fr_1.1fr] lg:gap-14 lg:pt-16 lg:pb-22">
+      <section className="relative isolate overflow-hidden border-b border-line bg-[var(--hero-wash)]">
+        <div className="relative mx-auto grid max-w-[88rem] items-center gap-10 px-5 pt-11 pb-12 sm:px-8 lg:grid-cols-[.86fr_1.14fr] lg:gap-12 lg:py-14 xl:px-12">
           <div className="max-w-xl">
-            <Flower2 aria-hidden="true" className="mb-4 size-7 -rotate-12 text-berry" />
-            <h1 className="font-display text-[clamp(3rem,6.4vw,6.2rem)] leading-[.94] font-black tracking-[-.058em] text-ink">
-              Find your wedding <span className="text-berry">people.</span>
+            <Flower2 aria-hidden="true" className="mb-5 size-7 -rotate-12 text-berry" />
+            <h1 className="font-display text-[clamp(3.25rem,6.8vw,7rem)] leading-[.94] font-black tracking-[-.058em] text-ink">
+              Find your<br className="hidden lg:block" /> wedding <span className="text-berry">people.</span>
             </h1>
             <p className="mt-5 max-w-sm text-base leading-relaxed text-muted-foreground sm:text-lg">From the first photo to the last dance, find the right wedding vendors across Bangladesh.</p>
             <NavigationCta href="/services" className="mt-7">Explore Services</NavigationCta>
+            <Form action="/services" className="mt-7 grid items-end gap-3 rounded-[1.35rem] border border-line bg-paper p-3 shadow-sm sm:grid-cols-[1.2fr_1fr] sm:p-4">
+              <div className="min-w-0">
+                <label htmlFor="home-search" className="mb-1 block px-2 text-sm font-semibold">What are you looking for?</label>
+                <Input id="home-search" name="q" type="search" maxLength={100} className="h-11 rounded-full bg-canvas px-4" placeholder="Photography, venues, catering…" />
+              </div>
+              <div className="min-w-0">
+                <label htmlFor="home-location" className="mb-1 block px-2 text-sm font-semibold">Location</label>
+                <Input id="home-location" name="location" maxLength={100} className="h-11 rounded-full bg-canvas px-4" placeholder="City or area" />
+              </div>
+              <Button type="submit" className="h-11 w-fit gap-2 px-5 sm:col-span-2"><Search aria-hidden="true" />Search services</Button>
+            </Form>
           </div>
           <Reveal className="relative px-0 pb-5 sm:ps-7 sm:pe-5">
-            <div className="relative aspect-[6/5] overflow-hidden rounded-[2.3rem_6rem_2rem_7rem] border-[5px] border-paper shadow-xl sm:rounded-[4rem_8rem_3rem_9rem]">
+            <div className="relative aspect-[6/5] overflow-hidden rounded-t-[42%] rounded-b-[1.5rem] border-[5px] border-paper shadow-xl sm:aspect-[6/5] lg:aspect-[6/5.35]">
               <Image src="/wedding-editorial.webp" alt="A Bangladeshi bride and groom sharing a quiet moment at their wedding" fill preload
-                sizes="(min-width: 1024px) 50vw, 95vw" className="object-cover object-[center_36%]" />
+                sizes="(min-width: 1024px) 50vw, 95vw" className="object-cover object-[center_40%]" />
             </div>
-            <div className="absolute bottom-0 start-0 w-[27%] min-w-22 max-w-40 -rotate-7 rounded-3xl border border-line bg-paper p-1.5 shadow-lg">
+            <div className="absolute bottom-0 end-0 w-[27%] min-w-22 max-w-40 rotate-6 rounded-3xl border border-line bg-paper p-1.5 shadow-lg">
               <div className="relative aspect-square overflow-hidden rounded-[1.2rem]">
                 <Image src="/bloom/bouquet.webp" alt="A hand holding a pink wedding bouquet" fill sizes="160px" className="object-cover" />
               </div>
             </div>
-            <Flower2 aria-hidden="true" className="absolute end-0 top-0 size-8 rotate-12 text-berry sm:size-11" />
+            <Flower2 aria-hidden="true" className="absolute start-1 top-8 size-8 rotate-12 text-berry sm:size-11" />
           </Reveal>
         </div>
       </section>
-
-      <div className="relative z-10 mx-auto -mt-8 max-w-5xl px-5 sm:px-8">
-        <Form action="/services" className="grid items-end gap-3 rounded-[1.5rem] border border-line bg-paper p-4 shadow-lg sm:grid-cols-[1fr_1fr_auto]">
-          <div className="min-w-0">
-            <label htmlFor="home-search" className="mb-1 block px-2 text-sm font-semibold">What are you looking for?</label>
-            <Input id="home-search" name="q" type="search" maxLength={100} className="h-11 rounded-full bg-canvas px-4" placeholder="Photography, venues, catering…" />
-          </div>
-          <div className="min-w-0">
-            <label htmlFor="home-location" className="mb-1 block px-2 text-sm font-semibold">Location</label>
-            <Input id="home-location" name="location" maxLength={100} className="h-11 rounded-full bg-canvas px-4" placeholder="City or area" />
-          </div>
-          <Button type="submit" className="h-11 gap-2 px-5"><Search aria-hidden="true" />Search services</Button>
-        </Form>
-      </div>
 
       <section className="bg-canvas">
         <div className="mx-auto max-w-7xl px-5 py-12 sm:px-8 sm:py-16">
@@ -95,7 +92,7 @@ export default function Home() {
                     <Image src={`/bloom/${photographs[index]}.webp`} alt="" fill sizes="(min-width: 1024px) 40vw, (min-width: 640px) 33vw, 50vw"
                       className="-z-20 object-cover motion-safe:transition-transform motion-safe:duration-500 motion-safe:group-hover:scale-105" />
                     <span aria-hidden="true" className="absolute inset-0 -z-10 bg-linear-to-t from-overlay/95 via-overlay/35 to-transparent" />
-                    <span className="font-display text-xl font-extrabold leading-tight sm:text-2xl">{name}</span>
+                    <span className="flex w-full items-end justify-between gap-2 font-display text-lg font-extrabold leading-tight sm:text-2xl">{name}<ArrowUpRight size={18} className="shrink-0" aria-hidden="true" /></span>
                   </Link>
                 </li>
               ))}

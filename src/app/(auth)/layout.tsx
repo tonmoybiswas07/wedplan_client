@@ -17,14 +17,14 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
             <div aria-hidden="true" className="petal-pattern pointer-events-none absolute -inset-3 opacity-45" />
             <div className="invitation-frame">
               <Image
-                src="/wedding-editorial.webp"
-                alt="A Bangladeshi bride and groom at their wedding"
+                src="/bloom/styling.webp"
+                alt="A makeup artist helps a Bangladeshi bride get ready"
                 fill
                 preload
                 sizes="(min-width: 1100px) 470px, (min-width: 768px) 42vw, 90vw"
               />
             </div>
-            <figcaption>For the day you’ll always remember.</figcaption>
+            <figcaption>Wedding planning starts here.</figcaption>
           </figure>
         </div>
       </main>

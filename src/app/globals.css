@@ -70,8 +70,8 @@
 
 :root {
   --display-font: var(--font-nunito), Arial, sans-serif;
-  --background: #fff8ed;
-  --foreground: #352038;
+  --background: #fff9f3;
+  --foreground: #301b30;
   --card: #fffdf8;
   --card-foreground: var(--foreground);
   --popover: var(--card);
@@ -82,14 +82,14 @@
   --secondary-foreground: var(--foreground);
   --muted: #f3e9e9;
   --muted-foreground: #6f5269;
-  --accent: #fbe5ed;
+  --accent: #f9e5ec;
   --accent-foreground: var(--foreground);
   --destructive: #a4213d;
-  --border: #e4c3cf;
+  --border: #e8d2da;
   --input: #a67991;
   --ring: #a41761;
   --berry: #a31a53;
-  --plum: #4a2446;
+  --plum: #422039;
   --on-plum: #fff1f6;
   --petal: #db72a0;
   --overlay: #231021;
@@ -106,12 +106,12 @@
   --sidebar-accent-foreground: var(--accent-foreground);
   --sidebar-border: var(--border);
   --sidebar-ring: var(--petal);
-  --chart-1: #426749;
-  --chart-2: #aa5037;
-  --chart-3: #946521;
+  --chart-1: #b72864;
+  --chart-2: #725493;
+  --chart-3: #487665;
   --chart-4: #67826c;
   --chart-5: #754b3b;
-  --radius: .75rem;
+  --radius: 1rem;
   --hero-wash: #ffedf2;
   --button-edge: #7d1240;
   --arrow-inset: #fdd9e9;
@@ -119,6 +119,9 @@
 }
 
 .dark {
+  --chart-1: #f68ab8;
+  --chart-2: #bca0ec;
+  --chart-3: #8ccfba;
   --background: #211524;
   --foreground: #fff2f8;
   --card: #302034;
@@ -166,4 +169,8 @@
   html {
     @apply font-sans;
   }
+}
+
+@utility workspace-panel {
+  @apply rounded-[1.4rem] border border-line bg-paper p-4 shadow-sm sm:p-6;
 }

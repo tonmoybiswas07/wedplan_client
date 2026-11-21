@@ -29,7 +29,7 @@
   place-items: center;
   border-radius: 50%;
   border: 1px solid var(--border);
-  color: var(--earth);
+  color: var(--berry);
 }
 
 .invitation-grid {
@@ -110,7 +110,7 @@
 
 .invitation-role:hover,
 .invitation-role:has(:checked) {
-  border-color: var(--earth);
+  border-color: var(--berry);
   background: var(--accent);
 }
 
@@ -129,7 +129,7 @@
 }
 
 .invitation-role svg {
-  color: var(--earth);
+  color: var(--berry);
 }
 
 .invitation-role strong,
@@ -173,7 +173,7 @@
   color: var(--foreground);
   font-weight: 600;
   text-decoration: underline;
-  text-decoration-color: var(--earth);
+  text-decoration-color: var(--berry);
   text-underline-offset: .2em;
 }
 
@@ -276,3 +276,31 @@
 .invitation-photo { position: relative; }
 .invitation-frame { border-radius: 2rem 7rem 2rem 4.25rem; overflow: hidden; }
 .invitation-frame::after { border-radius: inherit; }
+
+
+.invitation-mark {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.invitation-shell { padding-top: 1.4rem; }
+.invitation-grid { gap: clamp(1.65rem, 4vw, 3.25rem); padding-top: 1rem; }
+.invitation-panel {
+  padding: clamp(1.15rem, 4vw, 3rem);
+  border-radius: 1.65rem;
+  box-shadow: 0 .75rem 2.5rem color-mix(in srgb, var(--plum) 7%, transparent);
+}
+.invitation-role { border-radius: .9rem; }
+.invitation-frame { aspect-ratio: 4 / 4.7; border-radius: 49% 49% 1.5rem 1.5rem; }
+.invitation-frame::after { inset: .55rem; border-color: color-mix(in srgb, var(--card) 70%, transparent); }
+.invitation-frame img { padding: 0; object-position: center 42%; }
+.invitation-photo figcaption { border-radius: .8rem; font-style: normal; font-weight: 800; }
+@media (max-width: 767px) {
+  .invitation-shell { width: min(100% - 1.75rem, 35rem); }
+  .invitation-photo { width: min(100%, 25rem); }
+}
+@media (min-width: 768px) {
+  .invitation-grid { padding-top: 2rem; grid-template-columns: minmax(0, 1.04fr) minmax(0, .96fr); }
+  .invitation-photo { grid-column: 1; grid-row: 1; width: 100%; }
+  .invitation-panel { grid-column: 2; grid-row: 1; }
+}

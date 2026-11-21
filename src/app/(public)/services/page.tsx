@@ -1,3 +1,4 @@
+import Image from "next/image";
 import type { Metadata } from "next";
 import Form from "next/form";
 import Link from "next/link";
@@ -56,7 +57,7 @@ async function BrowseCatalog({ searchParams }: { searchParams: Search }) {
       <Form
         action="/services"
         key={query(page).toString()}
-        className="grid items-end gap-4 rounded-xl border border-line bg-paper p-4 sm:p-5 lg:grid-cols-4"
+        className="grid items-end gap-4 workspace-panel lg:grid-cols-2"
       >
         <div>
           <label
@@ -148,30 +149,38 @@ async function BrowseCatalog({ searchParams }: { searchParams: Search }) {
 
   return (
     <>
-      <div className="mb-6 lg:hidden">
-        <ResponsiveDrawer title="Filter services" kind="filters">{filters("mobile")}</ResponsiveDrawer>
-        {filtered && <Link href="/services" className="ms-4 text-sm font-semibold underline underline-offset-4">Reset filters</Link>}
+      <div className="lg:grid lg:items-start lg:gap-7 lg:grid-cols-[minmax(16rem,1fr)_minmax(0,3fr)]">
+        <div className="mb-6 lg:hidden">
+          <ResponsiveDrawer title="Filter services" kind="filters">{filters("mobile")}</ResponsiveDrawer>
+          {filtered && <Link href="/services" className="ms-4 text-sm font-semibold underline underline-offset-4">Reset filters</Link>}
+        </div>
+        <aside className="hidden lg:sticky lg:top-23 lg:block" aria-label="Service filters">{filters("desktop")}</aside>
+        <div className="min-w-0">
+          <div className="mb-4 flex items-center justify-between gap-3">
+            <h2 className="font-display text-2xl">Service listings</h2>
+            {filtered && (
+              <Link
+                href="/services"
+                className="text-sm font-semibold underline underline-offset-4"
+              >
+                Clear filters
+              </Link>
+            )}
+          </div>
+          {filtered && <ul aria-label="Applied filters" className="mb-5 flex flex-wrap gap-2">
+            {[q, category, location, minPrice && `From BDT ${minPrice}`, maxPrice && `Up to BDT ${maxPrice}`, sort === "price-asc" ? "Price: low to high" : sort === "price-desc" ? "Price: high to low" : ""]
+              .filter(Boolean).map((item, index) => <li key={index} className="max-w-full break-words rounded-full bg-blush px-3 py-1 text-xs font-semibold">{item}</li>)}
+          </ul>}
+          <Suspense key={query(page).toString()} fallback={<CatalogLoading />}>
+            <BrowseResults
+              query={query(page)}
+              previous={page > 1 ? query(page - 1) : null}
+              next={query(page + 1)}
+              page={page}
+            />
+          </Suspense>
+        </div>
       </div>
-      <div className="mb-8 hidden lg:block">{filters("desktop")}</div>
-      <div className="mb-4 flex items-center justify-between gap-3">
-        <h2 className="font-display text-2xl">Service listings</h2>
-        {filtered && (
-          <Link
-            href="/services"
-            className="text-sm font-semibold underline underline-offset-4"
-          >
-            Clear filters
-          </Link>
-        )}
-      </div>
-      <Suspense key={query(page).toString()} fallback={<CatalogLoading />}>
-        <BrowseResults
-          query={query(page)}
-          previous={page > 1 ? query(page - 1) : null}
-          next={query(page + 1)}
-          page={page}
-        />
-      </Suspense>
     </>
   );
 }
@@ -213,7 +222,7 @@ async function BrowseResults({
   return (
     <>
       {result.services.length ? (
-        <ServiceGrid listings={result.services} />
+        <ServiceGrid listings={result.services} compact />
       ) : (
         <div className="border border-dashed border-line bg-paper p-8 text-center">
           <h3 className="font-display text-2xl">No matching services</h3>
@@ -253,12 +262,15 @@ async function BrowseResults({
 export default function BrowsePage({ searchParams }: { searchParams: Search }) {
   return (
     <main className="mx-auto min-h-[70svh] max-w-7xl px-4 py-10 sm:px-8 sm:py-14">
-      <h1 className="font-display text-4xl leading-tight tracking-tight text-ink sm:text-6xl">
-        Browse wedding services
-      </h1>
-      <p className="mt-3 mb-7 max-w-prose text-muted-foreground">
-        Find wedding vendors by service, location, and starting price.
-      </p>
+      <header className="mb-7 grid overflow-hidden rounded-[1.65rem] border border-line bg-blush sm:grid-cols-[1fr_minmax(9rem,29%)]">
+        <div className="px-5 py-7 sm:px-8 sm:py-10">
+          <h1 className="font-display text-4xl leading-tight tracking-tight text-ink sm:text-6xl">Browse wedding services</h1>
+          <p className="mt-3 max-w-prose text-muted-foreground">Find wedding vendors by service, location, and starting price.</p>
+        </div>
+        <div className="relative hidden min-h-38 sm:block">
+          <Image src="/bloom/florist.webp" alt="" fill sizes="30vw" className="object-cover" />
+        </div>
+      </header>
       <Suspense fallback={<CatalogLoading />}>
         <BrowseCatalog searchParams={searchParams} />
       </Suspense>

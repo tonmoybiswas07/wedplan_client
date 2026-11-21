@@ -10,7 +10,7 @@ const subscriptionPath = "/dashboard/vendor/subscription";
 const transactionsPath = "/dashboard/admin/transactions";
 const dateFormat = new Intl.DateTimeFormat("en-BD", { dateStyle: "medium", timeZone: "Asia/Dhaka" });
 const badge = "inline-flex w-fit items-center gap-1 rounded-full border border-line bg-blush px-2.5 py-1 text-xs font-semibold text-ink";
-const card = "border border-line bg-paper p-1 shadow-sm";
+const card = "rounded-[1.4rem] border border-line bg-paper p-1 shadow-sm";
 
 type Billing = {
   plan: "free" | "premium";
@@ -43,7 +43,7 @@ export async function VendorSubscription() {
   return (
     <div className="grid max-w-4xl gap-5">
       <section className={card}>
-        <div className="flex flex-wrap items-center justify-between gap-3 border border-line/65 p-5">
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-line/65 p-5">
           <div>
             <h2 className="font-display text-2xl">Current plan</h2>
             {premium && ends && <p className="mt-1 text-sm text-muted-foreground">
@@ -58,7 +58,7 @@ export async function VendorSubscription() {
       </section>
       <div className="grid gap-4 md:grid-cols-2">
         <section className={card}>
-          <div className="grid h-full content-start gap-4 border border-line/65 p-5 sm:p-6">
+          <div className="grid h-full content-start gap-4 rounded-xl border border-line/65 p-5 sm:p-6">
             <h2 className="font-display text-3xl">Free</h2>
             <p className="text-sm text-muted-foreground">No subscription fee.</p>
             <p className="flex items-start gap-2 text-sm"><Check size={17} aria-hidden="true" /> Activate up to 3 services.</p>
@@ -66,8 +66,8 @@ export async function VendorSubscription() {
             {!premium && <span className={badge}>Current plan</span>}
           </div>
         </section>
-        <section className={card}>
-          <div className="grid h-full content-start gap-4 border border-line/65 p-5 sm:p-6">
+        <section className={cn(card, "bg-blush")}>
+          <div className="grid h-full content-start gap-4 rounded-xl border border-line/65 p-5 sm:p-6">
             <h2 className="flex items-center gap-2 font-display text-3xl"><Crown aria-hidden="true" className="size-5 text-berry" />Premium</h2>
             <p className="text-sm text-muted-foreground">{price ? (
               <>
@@ -100,7 +100,7 @@ export async function PaymentReturn({ kind, search }: { kind: "success" | "cance
 
   return (
     <section className={cn(card, "max-w-2xl")}>
-      <div className="grid gap-4 border border-line/65 p-5 sm:p-8">
+      <div className="grid gap-4 rounded-xl border border-line/65 p-5 sm:p-8">
         <CreditCard aria-hidden="true" className="text-berry" />
         <h2 role="status" className="font-display text-3xl">{heading}</h2>
         <p className="text-sm text-muted-foreground">

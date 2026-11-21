@@ -65,11 +65,11 @@ async function ServicePageContent({ params }: { params: Params }) {
             <p className="mt-3 whitespace-pre-wrap break-words leading-relaxed text-muted-foreground">{service.description}</p>
           </section>
         </div>
-        <div className="grid min-w-0 gap-5">
-          <section aria-labelledby="vendor-details" className="border border-line bg-paper p-5 sm:p-6">
+        <div className="grid min-w-0 gap-5 lg:sticky lg:top-23">
+          <section aria-labelledby="vendor-details" className="workspace-panel">
             <h2 id="vendor-details" className="font-display text-2xl">Service and vendor</h2>
             <p className="mt-4 text-sm text-muted-foreground">Starting price</p>
-            <p className="mt-1 text-xl font-semibold">{currency.format(service.priceMinor / 100)}</p>
+            <p className="mt-1 font-display text-3xl font-extrabold text-berry">{currency.format(service.priceMinor / 100)}</p>
             <div className="mt-4 grid gap-2 border-t border-line/60 pt-4 text-sm">
               <p className="flex items-start gap-2 break-words"><Store className="mt-0.5 size-4 shrink-0 text-berry" aria-hidden="true" />{service.vendor.businessName || service.vendor.name}</p>
               {service.vendor.premium && <span className="w-fit rounded-full bg-blush px-2 py-0.5 text-xs font-semibold text-ink">Premium Vendor</span>}

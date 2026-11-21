@@ -53,7 +53,7 @@ export async function AdminServiceList({
     <div className="grid gap-5">
       <form
         action={path}
-        className="flex flex-wrap items-end gap-3 border border-line bg-paper p-4"
+        className="flex flex-wrap items-end gap-3 workspace-panel"
       >
         <div className="min-w-0 flex-1 basis-52">
           <label

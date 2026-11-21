@@ -70,11 +70,11 @@ function BookingCard({ booking, role, details = false }: { booking: Booking; rol
 }
 
 function BookingError({ message }: { message: string }) {
-  return <p role="alert" className="border border-line bg-paper p-5 text-sm">{message}</p>;
+  return <p role="alert" className="workspace-panel text-sm">{message}</p>;
 }
 
 export function BookingLoading() {
-  return <p role="status" className="border border-line bg-paper p-5 text-sm text-muted-foreground motion-safe:animate-pulse">Loading bookings…</p>;
+  return <p role="status" className="workspace-panel text-sm text-muted-foreground motion-safe:animate-pulse">Loading bookings…</p>;
 }
 
 export async function BookingList({ role, search }: { role: BookingRole; search: Promise<{ page?: string | string[] }> }) {

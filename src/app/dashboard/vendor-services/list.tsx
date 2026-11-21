@@ -24,15 +24,15 @@ export async function ServiceList() {
         </Link>
       </div>
       {!services.length ? (
-        <div className="border border-dashed border-line bg-paper px-6 py-12 text-center">
+        <div className="workspace-panel border-dashed py-12 text-center">
           <h2 className="font-display text-2xl">No services yet</h2>
           <p className="mt-2 text-sm text-muted-foreground">Add your first wedding service to submit it for review.</p>
         </div>
       ) : (
         <ul className="grid gap-4 lg:grid-cols-2 2xl:grid-cols-3">
           {services.map((service) => (
-            <li key={service.id} className="min-w-0 border border-line bg-paper p-1 shadow-sm">
-              <article className="flex h-full flex-col border border-line/65">
+            <li key={service.id} className="min-w-0 overflow-hidden rounded-[1.4rem] border border-line bg-paper shadow-sm">
+              <article className="flex h-full flex-col">
                 <div className="grid aspect-video place-items-center overflow-hidden bg-blush/45 text-berry">
                   {service.imageUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element -- The API supplies a hosted ImgBB URL.

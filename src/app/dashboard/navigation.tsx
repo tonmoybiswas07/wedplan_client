@@ -49,8 +49,8 @@ function DashboardLinks({ role, section, onNavigate }: {
           <Link key={item} href={dashboardPath(role, item)} prefetch={false}
             onClick={onNavigate} aria-current={section === item ? "page" : undefined}
             className={cn(
-              "flex min-h-11 items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blush",
-              section === item ? "bg-blush text-ink" : "text-on-plum hover:bg-on-plum/10",
+              "flex min-h-11 items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blush",
+              section === item ? "bg-blush font-bold text-ink" : "text-on-plum hover:bg-on-plum/10",
             )}>
             <Icon size={17} aria-hidden="true" />
             {sections[item].label}
@@ -121,9 +121,13 @@ export function DashboardNavigation({ role, section }: { role: DashboardRole; se
 
   return (
     <>
-      <aside className="hidden bg-plum p-5 md:block lg:p-6">
-        <div className="mb-5 border-b border-blush/30 pb-5"><Brand /></div>
-        <DashboardLinks role={role} section={section} />
+      <aside className="hidden border-e border-line bg-plum md:block">
+        <div className="sticky top-0 max-h-svh overflow-auto p-4 lg:p-5">
+          <div className="mb-5 border-b border-on-plum/20 pb-5"><Brand /></div>
+          <p className="mb-2 px-3 text-xs font-semibold tracking-widest text-on-plum/75 uppercase">{dashboardRoles[role].label}</p>
+          <DashboardLinks role={role} section={section} />
+          <Link href="/" className="mt-5 flex min-h-11 items-center border-t border-on-plum/20 px-3 text-sm text-on-plum hover:underline">Back to WedPlan</Link>
+        </div>
       </aside>
       <header className="col-span-full flex items-center justify-between bg-plum px-4 py-3 md:hidden">
         <Brand />

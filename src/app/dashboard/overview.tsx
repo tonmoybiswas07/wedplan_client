@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight, CircleUserRound, Heart } from "lucide-react";
+import { ArrowUpRight, CircleUserRound } from "lucide-react";
 import { requireDashboardAccess } from "@/lib/dashboard-session";
 import { Suspense } from "react";
 import { BookingDetails, BookingList, BookingLoading } from "./bookings/views";
@@ -21,7 +22,6 @@ import {
   dashboardPath,
   dashboardRoles,
   sections,
-  type DashboardSection,
 } from "./sections";
 
 export function DashboardNotice({ unavailable }: { unavailable: boolean }) {
@@ -44,11 +44,7 @@ export function DashboardNotice({ unavailable }: { unavailable: boolean }) {
 
 function StationeryCard({ children }: { children: ReactNode }) {
   return (
-    <section className="min-w-0 rounded-xl border border-line bg-paper p-1 shadow-sm">
-      <div className="h-full rounded-lg border border-line/65 p-5 sm:p-7">
-        {children}
-      </div>
-    </section>
+    <section className="workspace-panel min-w-0">{children}</section>
   );
 }
 
@@ -123,75 +119,48 @@ export async function DashboardOverview({
     </>
   );
 
-  function workspaceLink(item: DashboardSection) {
-    return (
-      <li key={item}>
-        <Link
-          href={dashboardPath(user.role, item)}
-          prefetch={false}
-          className="group flex items-center justify-between gap-3 py-3 text-sm font-semibold text-ink hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-berry"
-        >
-          <span>{sections[item].label}</span>
-          <span className="flex items-center gap-2 text-xs font-medium text-berry">
-            {!["profile-settings", "my-services", "add-service", "manage-services", "my-bookings", "booking-requests", "manage-users", "subscription", "transactions"].includes(
-              item,
-            ) && "Coming soon"}
-            <ArrowRight size={15} aria-hidden="true" />
-          </span>
-        </Link>
-      </li>
-    );
-  }
+  const primary = user.role === "vendor" ? "add-service" : user.role === "admin" ? "manage-services" : "my-bookings";
+  const secondary = user.role === "admin" ? "transactions" : user.role === "vendor" ? "my-services" : null;
 
   return (
-    <div className="min-h-svh md:grid md:grid-cols-[14rem_minmax(0,1fr)] lg:grid-cols-[16rem_minmax(0,1fr)]">
+    <div className="min-h-svh md:grid md:grid-cols-[13rem_minmax(0,1fr)] lg:grid-cols-[15rem_minmax(0,1fr)]">
       <DashboardNavigation role={user.role} section={section} />
       <main
         className="min-w-0 px-4 pb-12 sm:px-8 lg:px-12"
         id="dashboard-overview"
       >
         <div className="mx-auto max-w-6xl">
-          <div className="flex min-h-20 items-center justify-between gap-3 border-b border-line">
+          <div className="flex min-h-18 items-center justify-between gap-3 border-b border-line">
             <p className="text-sm font-semibold text-berry">
               {workspace.label} dashboard
             </p>
             <div className="flex items-center gap-2"><ThemeSwitcher /><DashboardAccount name={user.name} role={user.role} image={user.image} /></div>
           </div>
-          <header className="relative my-6 overflow-hidden rounded-xl border border-line bg-paper px-5 py-7 sm:px-8 sm:py-9">
-            <div aria-hidden="true" className="petal-pattern pointer-events-none absolute inset-y-0 end-0 w-1/3 opacity-55 [mask-image:linear-gradient(to_right,transparent,black)]" />
-            <h1 className="relative break-words font-display text-4xl leading-tight tracking-tight text-ink sm:text-5xl">
-              {overview
-                ? `Welcome, ${user.name}`
-                : editing
-                  ? "Edit Service"
-                  : bookingId ? "Booking Details" : accountId ? "User Details" : payment ? "Payment status" : sections[section].label}
-            </h1>
-            <p className="mt-2 max-w-prose text-muted-foreground">
-              {overview ? workspace.description : sections[section].description}
-            </p>
+          <header className={overview
+            ? "relative my-6 overflow-hidden rounded-[1.75rem] bg-plum px-5 py-7 text-on-plum sm:px-8 sm:py-9"
+            : "my-6 border-b border-line pb-5 sm:my-8"}>
+            {overview && <div aria-hidden="true" className="petal-pattern pointer-events-none absolute inset-y-0 end-0 w-1/2 opacity-65 [mask-image:linear-gradient(to_right,transparent,black)]" />}
+            <div className="relative">
+              <h1 className="break-words font-display text-3xl leading-tight tracking-tight sm:text-5xl">
+                {overview ? `Welcome, ${user.name}` : editing ? "Edit Service" : bookingId ? "Booking Details" : accountId ? "User Details" : payment ? "Payment status" : sections[section].label}
+              </h1>
+              <p className={overview ? "mt-2 max-w-prose text-on-plum/85" : "mt-2 max-w-prose text-muted-foreground"}>
+                {overview ? workspace.description : sections[section].description}
+              </p>
+              {overview && <div className="mt-5 flex flex-wrap gap-2">
+                <Link href={dashboardPath(user.role, primary)} className="inline-flex min-h-11 items-center gap-2 rounded-full bg-paper px-4 py-2 text-sm font-bold text-ink hover:bg-blush">
+                  {sections[primary].label} <ArrowUpRight size={16} aria-hidden="true" />
+                </Link>
+                <Link href={secondary ? dashboardPath(user.role, secondary) : "/services"} className="inline-flex min-h-11 items-center rounded-full border border-on-plum/45 px-4 py-2 text-sm font-semibold text-on-plum hover:bg-on-plum/10">
+                  {secondary ? sections[secondary].label : "Browse services"}
+                </Link>
+              </div>}
+            </div>
           </header>
           {overview ? (
-            <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
-              <StationeryCard>
-                <div className="mb-2 flex items-center gap-3">
-                  <span className="grid size-10 place-items-center rounded-full bg-blush text-ink">
-                    <Heart size={18} aria-hidden="true" />
-                  </span>
-                  <h2 className="font-display text-2xl">Overview</h2>
-                </div>
-                <div className="my-4">
-                  <Suspense fallback={<p role="status" className="text-sm">Loading statistics…</p>}>
-                    <DashboardStats role={user.role} />
-                  </Suspense>
-                </div>
-                <ul className="divide-y divide-line/60">
-                  {workspace.sections
-                    .filter((item) => item !== "overview")
-                    .map(workspaceLink)}
-                </ul>
-              </StationeryCard>
-              <StationeryCard>{accountSummary}</StationeryCard>
-            </div>
+            <Suspense fallback={<div role="status" className="workspace-panel motion-safe:animate-pulse">Loading dashboard…</div>}>
+              <DashboardStats role={user.role} />
+            </Suspense>
           ) : bookingRole ? (
             <Suspense fallback={<BookingLoading />}>
               {bookingId ? <BookingDetails role={bookingRole} id={bookingId} /> : <BookingList role={bookingRole} search={search} />}
@@ -221,7 +190,7 @@ export async function DashboardOverview({
               <AdminServiceList search={search} />
             </Suspense>
           ) : (
-            <div className="max-w-2xl">
+            <div className="grid items-start gap-5 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)]">
               <StationeryCard>
                 {profile && user.role !== "admin" ? (
                   <>
@@ -239,6 +208,14 @@ export async function DashboardOverview({
                   <h2 className="font-display text-2xl">Coming soon</h2>
                 )}
               </StationeryCard>
+              {profile && user.role !== "admin" && (
+                <StationeryCard>
+                  <div className="relative mb-5 hidden aspect-[16/9] overflow-hidden rounded-xl lg:block">
+                    <Image src="/bloom/florist.webp" alt="" fill sizes="(min-width: 1024px) 26vw, 1px" className="object-cover" />
+                  </div>
+                  {accountSummary}
+                </StationeryCard>
+              )}
             </div>
           )}
         </div>
