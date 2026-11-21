@@ -6,6 +6,8 @@ import { requireDashboardAccess } from "@/lib/dashboard-session";
 import { Suspense } from "react";
 import { BookingDetails, BookingList, BookingLoading } from "./bookings/views";
 import { AdminUserDetails, AdminUsersList } from "./admin-users/views";
+import { Button } from "@/components/ui/button";
+import { ProfileForm } from "./profile/form";
 import { DashboardStats } from "./stats";
 import { AdminServiceList, type DashboardSearch } from "./admin-services/list";
 import { fetchVendorServices } from "./vendor-services/api";
@@ -88,6 +90,7 @@ export async function DashboardOverview({
 
   const overview = section === "overview";
   const profile = section === "profile-settings";
+  const googleStatus = profile ? (await search).google : undefined;
   const accountSummary = (
     <>
       <div className="mb-5 flex items-center gap-3">
@@ -105,6 +108,10 @@ export async function DashboardOverview({
           <dt className="text-muted-foreground">Email</dt>
           <dd className="break-words font-semibold">{user.email}</dd>
         </div>
+        {user.role === "vendor" && user.businessName && <div>
+          <dt className="text-muted-foreground">Business name</dt>
+          <dd className="break-words font-semibold">{user.businessName}</dd>
+        </div>}
         <div>
           <dt className="text-muted-foreground">Role</dt>
           <dd className="font-semibold">{workspace.label}</dd>
@@ -145,7 +152,7 @@ export async function DashboardOverview({
             <p className="text-sm font-semibold text-stationery-rose">
               {workspace.label} dashboard
             </p>
-            <DashboardAccount name={user.name} role={user.role} />
+            <DashboardAccount name={user.name} role={user.role} image={user.image} />
           </div>
           <header className="py-8 sm:py-11">
             <h1 className="break-words font-stationery text-4xl leading-tight tracking-tight text-stationery-plum sm:text-5xl">
@@ -206,12 +213,17 @@ export async function DashboardOverview({
           ) : (
             <div className="max-w-2xl">
               <StationeryCard>
-                {profile ? (
+                {profile && user.role !== "admin" ? (
                   <>
-                    {accountSummary}
-                    <p className="mt-5 border-t border-stationery-line pt-4 text-sm text-muted-foreground">
-                      Profile editing is coming soon.
-                    </p>
+                    <ProfileForm role={user.role} name={user.name} email={user.email} image={user.image} businessName={user.businessName} />
+                    <form action="/api/auth/google" method="post" className="mt-6 border-t border-stationery-line/65 pt-5">
+                      <input type="hidden" name="mode" value="link" />
+                      <input type="hidden" name="profile" value={dashboardPath(user.role, "profile-settings")} />
+                      <Button type="submit" variant="outline" className="h-10 px-4">Link Google account</Button>
+                      {googleStatus === "linked" && <p role="status" className="mt-2 text-sm">Google account linked.</p>}
+                      {googleStatus === "unavailable" && <p role="alert" className="mt-2 text-sm text-destructive">Google sign-in is not configured.</p>}
+                      {googleStatus === "failed" && <p role="alert" className="mt-2 text-sm text-destructive">Google linking did not complete. Try again with the email on this account.</p>}
+                    </form>
                   </>
                 ) : (
                   <h2 className="font-stationery text-2xl">Coming soon</h2>

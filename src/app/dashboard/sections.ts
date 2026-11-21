@@ -1,7 +1,7 @@
 export const sections = {
   overview: { label: "Overview", description: "" },
   "my-bookings": { label: "My Bookings", description: "Review the vendors you’ve booked for your wedding." },
-  "profile-settings": { label: "Profile Settings", description: "View the account details associated with your WedPlan profile." },
+  "profile-settings": { label: "Profile Settings", description: "Update your display name and profile photo." },
   "my-services": { label: "My Services", description: "View and manage your wedding service listings." },
   "add-service": { label: "Add Service", description: "Create a listing for a wedding service you offer." },
   "booking-requests": { label: "Booking Requests", description: "Review requests from couples interested in your services." },

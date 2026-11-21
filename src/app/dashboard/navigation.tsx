@@ -6,6 +6,7 @@ import {
   CalendarDays, ChevronDown, CircleUserRound, CreditCard, Heart, LayoutGrid,
   LogOut, Menu, PackagePlus, ReceiptText, Store, Users, X,
 } from "lucide-react";
+import { AccountAvatar } from "@/components/ui/account-avatar";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { dashboardPath, dashboardRoles, sections, type DashboardRole, type DashboardSection } from "./sections";
@@ -59,7 +60,7 @@ function DashboardLinks({ role, section, onNavigate }: {
   );
 }
 
-export function DashboardAccount({ name, role }: { name: string; role: DashboardRole }) {
+export function DashboardAccount({ name, role, image }: { name: string; role: DashboardRole; image?: string }) {
   const details = useRef<HTMLDetailsElement>(null);
   const trigger = useRef<HTMLElement>(null);
 
@@ -82,7 +83,7 @@ export function DashboardAccount({ name, role }: { name: string; role: Dashboard
     }}>
       <summary ref={trigger} aria-label="Account menu"
         className="flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-lg border border-stationery-line bg-stationery-paper px-2.5 text-stationery-plum focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stationery-rose [&::-webkit-details-marker]:hidden">
-        <CircleUserRound size={20} aria-hidden="true" />
+        <AccountAvatar image={image} />
         <span className="hidden max-w-40 truncate text-sm font-medium sm:block">{name}</span>
         <ChevronDown size={15} aria-hidden="true" />
       </summary>

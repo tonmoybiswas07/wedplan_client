@@ -43,12 +43,12 @@ export const getDashboardAccess = cache(async () => {
     if (response.status === 401) return { status: "guest" } as const;
     if (!response.ok) return { status: "unavailable" } as const;
 
-    const { user } = (await response.json()) as { user?: { name?: unknown; email?: unknown; role?: unknown } };
+    const { user } = (await response.json()) as { user?: { name?: unknown; email?: unknown; role?: unknown; image?: unknown; businessName?: unknown } };
     if (!user || !isDashboardRole(user.role) || typeof user.name !== "string" || typeof user.email !== "string") {
       return { status: "denied" } as const;
     }
 
-    return { status: "allowed", user: { name: user.name, email: user.email, role: user.role } } as const;
+    return { status: "allowed", user: { name: user.name, email: user.email, role: user.role, image: typeof user.image === "string" ? user.image : undefined, businessName: typeof user.businessName === "string" ? user.businessName : undefined } } as const;
   } catch {
     return { status: "unavailable" } as const;
   }

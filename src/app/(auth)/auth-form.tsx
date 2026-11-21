@@ -40,7 +40,7 @@ const roles = [
 
 const initialState: AuthState = {};
 
-export function AuthForm({ mode, returnTo }: { mode: "sign-in" | "sign-up"; returnTo?: string }) {
+export function AuthForm({ mode, returnTo, googleError }: { mode: "sign-in" | "sign-up"; returnTo?: string; googleError?: string }) {
   const signingUp = mode === "sign-up";
   const [state, action, pending] = useActionState(
     signingUp ? signUp : signIn,
@@ -156,6 +156,14 @@ export function AuthForm({ mode, returnTo }: { mode: "sign-in" | "sign-up"; retu
               )}
             </fieldset>
           )}
+          {signingUp && <div className="invitation-field">
+            <label htmlFor="signup-image">Profile photo (optional)</label>
+            <Input id="signup-image" name="image" type="file" accept="image/jpeg,image/png,image/webp"
+              aria-describedby={state.errors?.image ? "signup-image-error" : "signup-image-hint"}
+              aria-invalid={Boolean(state.errors?.image)} />
+            <p id="signup-image-hint" className="invitation-hint">JPEG, PNG, or WebP, up to 5 MB.</p>
+            {state.errors?.image && <p id="signup-image-error" className="invitation-error">{state.errors.image}</p>}
+          </div>}
         </fieldset>
 
         <Button type="submit" className="invitation-submit" disabled={pending}>
@@ -175,6 +183,13 @@ export function AuthForm({ mode, returnTo }: { mode: "sign-in" | "sign-up"; retu
           <span className="sr-only">Check the highlighted fields.</span>
         )}
       </div>
+
+      <form action="/api/auth/google" method="post" className="mt-5">
+        <input type="hidden" name="mode" value={mode} />
+        {returnTo && <input type="hidden" name="returnTo" value={returnTo} />}
+        <Button type="submit" variant="outline" className="h-11 w-full border-stationery-line bg-stationery-paper">Continue with Google</Button>
+        {googleError && <p role="alert" className="invitation-error mt-2">{googleError}</p>}
+      </form>
 
       <p className="invitation-switch">
         {signingUp ? "Already have an account?" : "New to WedPlan?"}{" "}

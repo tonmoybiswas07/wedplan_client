@@ -1,8 +1,7 @@
-import type { ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
 import Link from "next/link";
 import { Heart } from "lucide-react";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { PublicAccountLink } from "./account-link";
 import "../(auth)/invitation.css";
 
 export default function PublicLayout({ children }: { children: ReactNode }) {
@@ -23,12 +22,9 @@ export default function PublicLayout({ children }: { children: ReactNode }) {
             <Link href="/services" className="font-medium hover:underline">
               Browse Services
             </Link>
-            <Link
-              href="/sign-in"
-              className={cn(buttonVariants({ variant: "outline" }), "h-9 px-3")}
-            >
-              Sign in
-            </Link>
+            <Suspense fallback={<span className="h-9 w-14" aria-hidden="true" />}>
+              <PublicAccountLink />
+            </Suspense>
           </nav>
         </div>
       </header>
