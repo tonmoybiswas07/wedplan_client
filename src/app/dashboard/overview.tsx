@@ -8,6 +8,7 @@ import { BookingDetails, BookingList, BookingLoading } from "./bookings/views";
 import { AdminUserDetails, AdminUsersList } from "./admin-users/views";
 import { Button } from "@/components/ui/button";
 import { ProfileForm } from "./profile/form";
+import { AdminTransactions, BillingLoading, PaymentReturn, VendorSubscription } from "./billing/views";
 import { DashboardStats } from "./stats";
 import { AdminServiceList, type DashboardSearch } from "./admin-services/list";
 import { fetchVendorServices } from "./vendor-services/api";
@@ -73,9 +74,10 @@ export async function DashboardOverview({
     : user.role === "vendor" && section === "booking-requests" ? "vendor" : undefined;
   const bookingId = bookingRole && slug?.length === 2 ? slug[1] : undefined;
   const accountId = section === "manage-users" && slug?.length === 2 ? slug[1] : undefined;
+  const payment = section === "subscription" && slug?.length === 2 && (slug[1] === "success" || slug[1] === "cancel") ? slug[1] : undefined;
   if (
     !section ||
-    (!editing && !bookingId && !accountId && slug && (slug.length !== 1 || section === "overview"))
+    (!editing && !bookingId && !accountId && !payment && slug && (slug.length !== 1 || section === "overview"))
   )
     notFound();
 
@@ -130,7 +132,7 @@ export async function DashboardOverview({
         >
           <span>{sections[item].label}</span>
           <span className="flex items-center gap-2 text-xs font-medium text-stationery-rose">
-            {!["profile-settings", "my-services", "add-service", "manage-services", "my-bookings", "booking-requests", "manage-users"].includes(
+            {!["profile-settings", "my-services", "add-service", "manage-services", "my-bookings", "booking-requests", "manage-users", "subscription", "transactions"].includes(
               item,
             ) && "Coming soon"}
             <ArrowRight size={15} aria-hidden="true" />
@@ -160,7 +162,7 @@ export async function DashboardOverview({
                 ? `Welcome, ${user.name}`
                 : editing
                   ? "Edit Service"
-                  : bookingId ? "Booking Details" : accountId ? "User Details" : sections[section].label}
+                  : bookingId ? "Booking Details" : accountId ? "User Details" : payment ? "Payment status" : sections[section].label}
             </h1>
             <p className="mt-2 max-w-prose text-muted-foreground">
               {overview ? workspace.description : sections[section].description}
@@ -202,6 +204,12 @@ export async function DashboardOverview({
             <Suspense fallback={<p role="status">Loading services…</p>}>
               <ServiceList />
             </Suspense>
+          ) : section === "subscription" ? (
+            <Suspense fallback={<BillingLoading />}>
+              {payment ? <PaymentReturn kind={payment} search={search} /> : <VendorSubscription />}
+            </Suspense>
+          ) : section === "transactions" ? (
+            <Suspense fallback={<BillingLoading />}><AdminTransactions search={search} /></Suspense>
           ) : section === "manage-users" ? (
             <Suspense fallback={<p role="status">Loading users…</p>}>
               {accountId ? <AdminUserDetails id={accountId} viewerEmail={user.email} /> : <AdminUsersList search={search} viewerEmail={user.email} />}
