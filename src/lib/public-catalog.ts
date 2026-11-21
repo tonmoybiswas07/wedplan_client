@@ -9,7 +9,7 @@ export type Listing = {
   priceMinor: number;
   imageUrl?: string;
   location?: string;
-  vendor: { name: string };
+  vendor: { name: string; businessName?: string; premium?: boolean };
 };
 
 export async function readCatalog(query: URLSearchParams) {

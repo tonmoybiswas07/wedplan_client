@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# WedPlan Client
 
-## Getting Started
+WedPlan is a wedding planning marketplace. Customers discover services and request bookings, vendors publish services and manage requests, and admins moderate the platform.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Public catalogue with six assignment categories, keyword and location filters, budget ranges, and price sorting
+- Better Auth email and Google authentication, role-protected dashboards, and ImgBB profile and service images
+- Booking requests, vendor moderation, and Stripe Test Mode subscriptions and transaction reporting
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Technology
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Next.js, React, TypeScript, Tailwind CSS, shadcn/ui, Motion, and Sonner. The separate API uses Express, MongoDB, Better Auth, ImgBB, and Stripe.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Run locally
 
-## Learn More
+1. Start the [WedPlan API](https://github.com/tonmoybiswas07/wedplan_server) and configure its environment.
+2. In this repository, run `npm ci`.
+3. Copy `.env.example` to `.env.local`. Set `API_BASE_URL` to the Express origin.
+4. Run `npm run dev` and open [WedPlan on localhost](http://localhost:3000).
 
-To learn more about Next.js, take a look at the following resources:
+Run `npm run build` followed by `npm start` to check the production build locally.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Client variable | Purpose |
+| --- | --- |
+| `API_BASE_URL` | Server-side Express origin, such as `http://localhost:8000` |
+| `WEDPLAN_CONTACT_EMAIL` | Optional public support email for the footer |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Set the server's `CLIENT_URL` to the browser-facing Next.js origin. Use the same local hostname in the browser and OAuth configuration. Keep MongoDB, Better Auth, Google, ImgBB and Stripe credentials on the server. See the [server setup and environment guide](https://github.com/tonmoybiswas07/wedplan_server#wedplan-api).
 
-## Deploy on Vercel
+## Links and submission
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- [Client repository](https://github.com/tonmoybiswas07/wedplan_client)
+- [Server repository](https://github.com/tonmoybiswas07/wedplan_server)
+- Live website link pending deployment and verification.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+For deployment, configure the Express origin and support email on the Next.js host, then use its Next.js build and start commands. Check private routes after a hard refresh, Google callback and consent, Stripe Checkout and webhook delivery from the deployed host. Provide the evaluator with the verified live URL and the dedicated Admin credentials through the assignment submission channel.

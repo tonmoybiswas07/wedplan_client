@@ -29,12 +29,12 @@ export async function saveVendorService(id: string | undefined, form: FormData):
     if (typeof value === "string") body.set(key, value);
   }
 
-  const image = form.get("image");
-  if (image && typeof image !== "string" && image.size) {
-    if (image.size > 5 * 1024 * 1024) {
-      return { ok: false, message: "Check the service image.", errors: { image: ["Choose an image under 5 MB."] } };
-    }
-    body.set("image", new Blob([await image.arrayBuffer()], { type: image.type }), image.name);
+  const images = form.getAll("image").filter((value): value is File => typeof value !== "string" && value.size > 0);
+  if (images.length > 4 || images.reduce((total, image) => total + image.size, 0) > 5 * 1024 * 1024) {
+    return { ok: false, message: "Check the service images.", errors: { image: ["Choose up to four images totalling 5 MB or less."] } };
+  }
+  for (const image of images) {
+    body.append("image", new Blob([await image.arrayBuffer()], { type: image.type }), image.name);
   }
 
   return mutationResult(await fetchVendorServices(id, { method: id ? "PATCH" : "POST", body }));

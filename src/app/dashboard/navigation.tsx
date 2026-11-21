@@ -92,6 +92,12 @@ export function DashboardAccount({ name, role, image }: { name: string; role: Da
           <p className="break-words font-semibold">{name}</p>
           <p className="text-muted-foreground">{dashboardRoles[role].label}</p>
         </div>
+        <nav aria-label="Account" className="grid gap-1 pt-1">
+          <Link href="/dashboard" prefetch={false} onClick={() => details.current?.removeAttribute("open")}
+            className="rounded-md px-2.5 py-2 text-sm hover:bg-stationery-blush">Dashboard</Link>
+          <Link href={dashboardPath(role, "profile-settings")} prefetch={false} onClick={() => details.current?.removeAttribute("open")}
+            className="rounded-md px-2.5 py-2 text-sm hover:bg-stationery-blush">Profile Settings</Link>
+        </nav>
         <form action="/dashboard/sign-out" method="post" className="pt-1">
           <Button type="submit" variant="ghost" className="h-10 w-full justify-start gap-2 px-2.5 hover:bg-stationery-blush">
             <LogOut size={16} aria-hidden="true" /> Sign Out

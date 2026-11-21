@@ -1,20 +1,13 @@
 import Image from "next/image";
-import Link from "next/link";
-import { Heart } from "lucide-react";
+import { WedPlanToasts } from "@/components/ui/toasts";
+import { SiteFooter, SiteHeader } from "@/components/public/site-layout";
 import type { ReactNode } from "react";
 import "./invitation.css";
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
   return (
-    <main className="invitation">
-      <div className="invitation-shell">
-        <header className="invitation-header">
-          <Link href="/" className="invitation-brand">
-            <span className="invitation-mark"><Heart size={16} aria-hidden="true" /></span>
-            WedPlan
-          </Link>
-        </header>
-
+    <div className="invitation"><SiteHeader />
+      <main className="invitation-shell">
         <div className="invitation-grid">
           <section className="invitation-panel" aria-labelledby="auth-heading">
             {children}
@@ -33,7 +26,8 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
             <figcaption>For the day you’ll always remember.</figcaption>
           </figure>
         </div>
-      </div>
-    </main>
+      </main>
+      <SiteFooter /><WedPlanToasts />
+    </div>
   );
 }

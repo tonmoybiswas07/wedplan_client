@@ -27,7 +27,7 @@ export const dashboardRoles = {
   admin: {
     label: "Admin",
     description: "Oversee WedPlan accounts, service listings, and transactions.",
-    sections: ["overview", "manage-users", "manage-services", "transactions"],
+    sections: ["overview", "manage-users", "manage-services", "transactions", "profile-settings"],
   },
 } as const satisfies Record<string, { label: string; description: string; sections: readonly DashboardSection[] }>;
 

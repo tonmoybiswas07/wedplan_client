@@ -1,5 +1,6 @@
 "use client";
 
+import { toast } from "sonner";
 import { useActionState, useEffect, useState } from "react";
 import Link from "next/link";
 import { HeartHandshake, Store } from "lucide-react";
@@ -47,8 +48,17 @@ export function AuthForm({ mode, returnTo, googleError }: { mode: "sign-in" | "s
     initialState,
   );
   useEffect(() => {
-    if (state.returnTo) window.location.replace(state.returnTo);
-  }, [state.returnTo]);
+    if (state.returnTo) {
+      try {
+        sessionStorage.setItem("wedplan-auth-feedback", mode);
+      } catch {
+        // Continue signing in when storage is unavailable.
+      }
+      window.location.replace(state.returnTo);
+    } else if (state.message || state.errors) {
+      toast.error(state.message ?? "Check the highlighted fields.");
+    }
+  }, [mode, state]);
   const [values, setValues] = useState({ name: "", email: "", password: "" });
   const [role, setRole] = useState("");
 
@@ -114,7 +124,7 @@ export function AuthForm({ mode, returnTo, googleError }: { mode: "sign-in" | "s
                   )}
                   {!error && descriptionId && (
                     <p className="invitation-hint" id={descriptionId}>
-                      At least 8 characters.
+                      At least 6 characters with an uppercase and a lowercase letter.
                     </p>
                   )}
                 </div>

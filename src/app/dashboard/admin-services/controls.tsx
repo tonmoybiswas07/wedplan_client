@@ -2,7 +2,7 @@
 
 import { ServiceConfirmation } from "../vendor-services/confirm";
 import type { VendorService } from "../vendor-services/model";
-import { moderateService } from "./actions";
+import { deleteInappropriateService, moderateService } from "./actions";
 
 export function ModerationControls({ id, title, status }: VendorService) {
   return (
@@ -26,6 +26,9 @@ export function ModerationControls({ id, title, status }: VendorService) {
           mutate={() => moderateService(id, "rejected")}
         />
       )}
+      <ServiceConfirmation label="Delete" title={title}
+        description="This permanently removes the listing from WedPlan. Existing booking records are kept."
+        success="Service deleted." destructive mutate={() => deleteInappropriateService(id)} />
     </div>
   );
 }

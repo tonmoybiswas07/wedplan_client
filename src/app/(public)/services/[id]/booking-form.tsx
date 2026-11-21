@@ -5,7 +5,6 @@ import { CalendarCheck } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { WedPlanToasts } from "@/components/ui/toasts";
 import { requestBooking, type BookingState } from "./booking-action";
 
 export function BookingForm({ serviceId, earliestDate }: { serviceId: string; earliestDate: string }) {
@@ -78,7 +77,6 @@ export function BookingForm({ serviceId, earliestDate }: { serviceId: string; ea
           </>
         )}
       </div>
-      <WedPlanToasts />
     </section>
   );
 }

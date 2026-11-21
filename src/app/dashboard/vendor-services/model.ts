@@ -6,6 +6,7 @@ export type VendorService = {
   description: string;
   priceMinor: number;
   imageUrl?: string;
+  imageUrls?: string[];
   status: "pending" | "approved" | "rejected";
   isActive: boolean;
 };

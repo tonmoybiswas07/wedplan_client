@@ -71,7 +71,8 @@ async function ServicePageContent({ params }: { params: Params }) {
             <p className="mt-4 text-sm text-muted-foreground">Starting price</p>
             <p className="mt-1 text-xl font-semibold">{currency.format(service.priceMinor / 100)}</p>
             <div className="mt-4 grid gap-2 border-t border-stationery-line/60 pt-4 text-sm">
-              <p className="flex items-start gap-2 break-words"><Store className="mt-0.5 size-4 shrink-0 text-stationery-rose" aria-hidden="true" />{service.vendor.name}</p>
+              <p className="flex items-start gap-2 break-words"><Store className="mt-0.5 size-4 shrink-0 text-stationery-rose" aria-hidden="true" />{service.vendor.businessName || service.vendor.name}</p>
+              {service.vendor.premium && <span className="w-fit rounded-full bg-stationery-blush px-2 py-0.5 text-xs font-semibold text-stationery-plum">Premium Vendor</span>}
               <p className="flex items-start gap-2 break-words"><MapPin className="mt-0.5 size-4 shrink-0 text-stationery-rose" aria-hidden="true" />{service.location || "Location not listed"}</p>
             </div>
           </section>

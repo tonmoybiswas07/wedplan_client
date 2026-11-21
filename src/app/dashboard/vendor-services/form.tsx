@@ -7,13 +7,13 @@ import { ImagePlus } from "lucide-react";
 import { toast } from "sonner";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { canonicalCategory, categories } from "@/components/public/categories";
 import { cn } from "@/lib/utils";
 import { saveVendorService } from "./actions";
 import type { ServiceErrors, VendorService } from "./model";
 
 const fields = [
   { name: "title", label: "Service name", max: 100, min: 3, placeholder: "e.g. Full-day wedding photography" },
-  { name: "category", label: "Category", max: 60, min: 2, placeholder: "e.g. Photography" },
   { name: "location", label: "City or service area", max: 100, min: 2, placeholder: "e.g. Dhaka" },
   { name: "price", label: "Starting price (BDT)", max: 11, min: 1, placeholder: "e.g. 25000" },
 ] as const;
@@ -23,20 +23,19 @@ export function ServiceForm({ service }: { service?: VendorService }) {
   const [pending, startTransition] = useTransition();
   const [errors, setErrors] = useState<ServiceErrors>({});
   const [message, setMessage] = useState("");
-  const [image, setImage] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
+  const [previews, setPreviews] = useState<string[]>([]);
   const imageInput = useRef<HTMLInputElement>(null);
 
-  useEffect(() => () => { if (preview) URL.revokeObjectURL(preview); }, [preview]);
+  useEffect(() => () => previews.forEach((preview) => URL.revokeObjectURL(preview)), [previews]);
 
   function clearImage() {
     if (imageInput.current) imageInput.current.value = "";
-    setImage(null);
-    setPreview(null);
+    setPreviews([]);
     setErrors(({ image: _image, ...remaining }) => remaining);
   }
 
-  const shownImage = image ? preview : service?.imageUrl;
+  const savedImages = service?.imageUrls?.length ? service.imageUrls : service?.imageUrl ? [service.imageUrl] : [];
+  const shownImages = previews.length ? previews : savedImages;
 
   function fieldError(name: keyof ServiceErrors) {
     const error = errors[name]?.[0];
@@ -44,7 +43,7 @@ export function ServiceForm({ service }: { service?: VendorService }) {
   }
 
   return (
-    <form className="grid gap-6" aria-busy={pending} onSubmit={(event) => {
+    <form method="post" className="grid gap-6" aria-busy={pending} onSubmit={(event) => {
       event.preventDefault();
       const form = new FormData(event.currentTarget);
       setErrors({});
@@ -79,6 +78,16 @@ export function ServiceForm({ service }: { service?: VendorService }) {
               {fieldError(name)}
             </div>
           ))}
+          <div>
+            <label htmlFor="category" className="mb-1.5 block text-sm font-semibold">Category</label>
+            <select id="category" name="category" required defaultValue={canonicalCategory(service?.category)}
+              aria-invalid={Boolean(errors.category)} aria-describedby={errors.category ? "category-error" : undefined}
+              className="h-11 w-full rounded-md border border-input bg-stationery-paper px-3 text-sm focus-visible:ring-2 focus-visible:ring-ring">
+              <option value="">Choose a category</option>
+              {categories.map(({ name }) => <option key={name}>{name}</option>)}
+            </select>
+            {fieldError("category")}
+          </div>
         </div>
         <div>
           <label htmlFor="description" className="mb-1.5 block text-sm font-semibold">Description</label>
@@ -88,26 +97,24 @@ export function ServiceForm({ service }: { service?: VendorService }) {
             className="w-full rounded-md border border-input bg-stationery-paper px-3 py-2 outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/40 aria-invalid:border-destructive" />
           {fieldError("description")}
         </div>
-        <div className="grid gap-4 border-t border-stationery-line/65 pt-5 sm:grid-cols-[9rem_1fr] sm:items-center">
-          <div className="grid aspect-4/3 w-36 place-items-center overflow-hidden rounded-md border border-stationery-line bg-stationery-ivory text-stationery-rose">
-            {shownImage ? (
+        <div className="grid gap-4 border-t border-stationery-line/65 pt-5">
+          <div className="flex flex-wrap gap-3">
+            {shownImages.length ? shownImages.map((photo, index) => (
               // eslint-disable-next-line @next/next/no-img-element -- Includes local blob previews.
-              <img src={shownImage} alt="Service photo preview" className="size-full object-cover" />
-            ) : <ImagePlus aria-hidden="true" size={26} />}
+              <img key={photo + index} src={photo} alt={`Service photo ${index + 1}`} className="aspect-square w-20 rounded-md border border-stationery-line object-cover sm:w-24" />
+            )) : <div className="grid size-20 place-items-center rounded-md border border-stationery-line bg-stationery-ivory text-stationery-rose"><ImagePlus aria-hidden="true" size={26} /></div>}
           </div>
           <div className="min-w-0">
-            <label htmlFor="image" className="mb-1 block text-sm font-semibold">Service photo <span className="font-normal text-muted-foreground">(optional)</span></label>
-            <p id="image-hint" className="mb-2 text-sm text-muted-foreground">JPEG, PNG, or WebP, up to 5 MB.</p>
+            <label htmlFor="image" className="mb-1 block text-sm font-semibold">{savedImages.length ? "Replace service photos" : "Service photos"}</label>
+            <p id="image-hint" className="mb-2 text-sm text-muted-foreground">Upload 1–4 JPEG, PNG, or WebP photos, up to 5 MB total. The first photo is used on the service card.</p>
             <Input id="image" name="image" ref={imageInput} type="file" accept="image/jpeg,image/png,image/webp"
-              aria-invalid={Boolean(errors.image)} aria-describedby={errors.image ? "image-hint image-error" : "image-hint"}
+              multiple required={!savedImages.length} aria-invalid={Boolean(errors.image)} aria-describedby={errors.image ? "image-hint image-error" : "image-hint"}
               onChange={(event) => {
-                const selected = event.currentTarget.files?.[0] ?? null;
-                setPreview(selected && selected.type.startsWith("image/") ? URL.createObjectURL(selected) : null);
-                setImage(selected);
+                setPreviews(Array.from(event.currentTarget.files ?? []).slice(0, 4).filter((chosen) => chosen.type.startsWith("image/")).map((chosen) => URL.createObjectURL(chosen)));
                 setErrors(({ image: _image, ...remaining }) => remaining);
               }} />
             {fieldError("image")}
-            {image && <Button type="button" variant="ghost" className="mt-2" onClick={clearImage}>Clear selected photo</Button>}
+            {previews.length > 0 && <Button type="button" variant="ghost" className="mt-2" onClick={clearImage}>Clear selected photos</Button>}
           </div>
         </div>
       </fieldset>

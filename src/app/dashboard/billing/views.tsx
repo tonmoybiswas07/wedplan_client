@@ -62,6 +62,7 @@ export async function VendorSubscription() {
             <h2 className="font-stationery text-3xl">Free</h2>
             <p className="text-sm text-muted-foreground">No subscription fee.</p>
             <p className="flex items-start gap-2 text-sm"><Check size={17} aria-hidden="true" /> Activate up to 3 services.</p>
+            <p className="text-sm">Vendor dashboard and booking request management.</p>
             {!premium && <span className={badge}>Current plan</span>}
           </div>
         </section>
@@ -75,6 +76,7 @@ export async function VendorSubscription() {
               </>
             ) : "Recurring subscription"}</p>
             <p className="flex items-start gap-2 text-sm"><Check size={17} aria-hidden="true" /> No active-service limit.</p>
+            <p className="text-sm">All Free features and a Premium Vendor badge.</p>
             {premium ? <span className={badge}>Current plan</span> : result.awaitingPayment ? (
               <p className="text-sm text-muted-foreground">Resolve the existing subscription in Stripe before starting another checkout.</p>
             ) : result.billingAvailable ? <UpgradeButton /> : (

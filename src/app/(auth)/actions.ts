@@ -26,8 +26,10 @@ async function authenticate(form: FormData, signingUp: boolean): Promise<AuthSta
   }
   if (typeof password !== "string" || !password) {
     errors.password = "Enter your password.";
-  } else if (signingUp && password.length < 8) {
-    errors.password = "Use at least 8 characters.";
+  } else if (signingUp && password.length < 6) {
+    errors.password = "Use at least 6 characters.";
+  } else if (signingUp && (!/[A-Z]/.test(password) || !/[a-z]/.test(password))) {
+    errors.password = "Include an uppercase and a lowercase letter.";
   } else if (password.length > 128) {
     errors.password = "Use 128 characters or fewer.";
   }

@@ -22,7 +22,8 @@ export function ServiceGrid({ listings }: { listings: Listing[] }) {
               <p className="text-xs font-semibold tracking-[.15em] text-stationery-rose uppercase">{service.category}</p>
               <h3 className="break-words font-stationery text-[1.65rem] leading-tight">{service.title}</h3>
               <div className="grid gap-1.5 text-sm text-muted-foreground">
-                <p className="break-words">By {service.vendor.name}</p>
+                <p className="break-words">By {service.vendor.businessName || service.vendor.name}</p>
+                {service.vendor.premium && <span className="w-fit rounded-full bg-stationery-blush px-2 py-0.5 text-xs font-semibold text-stationery-plum">Premium Vendor</span>}
                 <p className="flex items-start gap-1.5"><MapPin size={15} className="mt-0.5 shrink-0" aria-hidden="true" />{service.location || "Location not listed"}</p>
               </div>
               <div className="mt-auto flex flex-wrap items-center justify-between gap-3 border-t border-stationery-line/60 pt-3">

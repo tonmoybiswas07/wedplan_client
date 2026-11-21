@@ -233,7 +233,7 @@ export async function DashboardOverview({
                       {googleStatus === "failed" && <p role="alert" className="mt-2 text-sm text-destructive">Google linking did not complete. Try again with the email on this account.</p>}
                     </form>
                   </>
-                ) : (
+                ) : profile ? accountSummary : (
                   <h2 className="font-stationery text-2xl">Coming soon</h2>
                 )}
               </StationeryCard>

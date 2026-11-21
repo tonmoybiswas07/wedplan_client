@@ -25,6 +25,8 @@ async function BrowseCatalog({ searchParams }: { searchParams: Search }) {
   const q = text("q", 100);
   const category = text("category", 60);
   const location = text("location", 100);
+  const minPrice = text("minPrice", 11);
+  const maxPrice = text("maxPrice", 11);
   const sort =
     values.sort === "price-asc" || values.sort === "price-desc"
       ? values.sort
@@ -33,7 +35,7 @@ async function BrowseCatalog({ searchParams }: { searchParams: Search }) {
     typeof values.page === "string" && /^[1-9]\d{0,4}$/.test(values.page)
       ? Number(values.page)
       : 1;
-  const filtered = q || category || location || sort !== "newest";
+  const filtered = q || category || location || minPrice || maxPrice || sort !== "newest";
   const select =
     "h-11 w-full rounded-md border border-input bg-stationery-paper px-3 text-sm focus-visible:outline-2 focus-visible:outline-ring";
 
@@ -42,6 +44,8 @@ async function BrowseCatalog({ searchParams }: { searchParams: Search }) {
     if (q) params.set("q", q);
     if (category) params.set("category", category);
     if (location) params.set("location", location);
+    if (minPrice) params.set("minPrice", minPrice);
+    if (maxPrice) params.set("maxPrice", maxPrice);
     if (sort !== "newest") params.set("sort", sort);
     if (pageNumber > 1) params.set("page", String(pageNumber));
     return params;
@@ -52,14 +56,14 @@ async function BrowseCatalog({ searchParams }: { searchParams: Search }) {
       <Form
         action="/services"
         key={query(page).toString()}
-        className="mb-8 grid items-end gap-4 border border-stationery-line bg-stationery-paper p-4 sm:grid-cols-2 sm:p-5 xl:grid-cols-[1.4fr_1fr_1fr_1fr_auto]"
+        className="mb-8 grid items-end gap-4 border border-stationery-line bg-stationery-paper p-4 sm:grid-cols-2 sm:p-5 xl:grid-cols-4"
       >
         <div>
           <label
             htmlFor="browse-search"
             className="mb-1.5 block text-sm font-semibold"
           >
-            Service name
+            Search services
           </label>
           <Input
             id="browse-search"
@@ -67,7 +71,7 @@ async function BrowseCatalog({ searchParams }: { searchParams: Search }) {
             type="search"
             maxLength={100}
             defaultValue={q}
-            placeholder="Search by name"
+            placeholder="Name or keywords"
             className="h-11"
           />
         </div>
@@ -127,6 +131,12 @@ async function BrowseCatalog({ searchParams }: { searchParams: Search }) {
             <option value="price-desc">Price: high to low</option>
           </select>
         </div>
+        {([["minPrice", "Minimum price (BDT)", minPrice], ["maxPrice", "Maximum price (BDT)", maxPrice]] as const).map(([key, label, value]) => (
+          <div key={key}>
+            <label htmlFor={`browse-${key}`} className="mb-1.5 block text-sm font-semibold">{label}</label>
+            <Input id={`browse-${key}`} name={key} type="number" min="0" max="99999999.99" step="0.01" defaultValue={value} className="h-11" />
+          </div>
+        ))}
         <Button
           type="submit"
           className="h-11 px-4 sm:justify-self-start xl:justify-self-stretch"
@@ -169,6 +179,11 @@ async function BrowseResults({
   next: URLSearchParams;
   page: number;
 }) {
+  const min = query.get("minPrice");
+  const max = query.get("maxPrice");
+  if (min !== null && max !== null && Number(min) > Number(max)) {
+    return <p role="alert" className="border border-stationery-line bg-stationery-paper p-6">Minimum price must be at or below maximum price.</p>;
+  }
   const result = await readCatalog(query);
   if (!result)
     return (
