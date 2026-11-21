@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Nunito } from "next/font/google";
 import { WedPlanTheme } from "@/components/ui/theme";
 import "./globals.css";
 
@@ -13,6 +13,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const nunito = Nunito({ variable: "--font-nunito", subsets: ["latin"] });
+
 export const metadata: Metadata = {
   title: "WedPlan | Wedding Planning Platform",
   description: "Browse wedding services, request bookings, and manage your WedPlan account.",
@@ -23,7 +25,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${nunito.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col"><WedPlanTheme>{children}</WedPlanTheme></body>
     </html>

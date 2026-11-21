@@ -51,7 +51,7 @@ export function ActionConfirmation({
         }}
         className="fixed inset-0 m-auto w-[min(90vw,26rem)] rounded-lg border border-line bg-paper p-6 text-ink backdrop:bg-overlay/60"
       >
-        <h2 id={heading} className="mb-2 font-editorial text-2xl">
+        <h2 id={heading} className="mb-2 font-display text-2xl">
           {label} {subject}?
         </h2>
         <p className="mb-2 break-words text-sm font-semibold">{title}</p>

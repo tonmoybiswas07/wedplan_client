@@ -14,7 +14,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
           </section>
 
           <figure className="invitation-photo">
-            <div aria-hidden="true" className="alpana pointer-events-none absolute -inset-3 opacity-45" />
+            <div aria-hidden="true" className="petal-pattern pointer-events-none absolute -inset-3 opacity-45" />
             <div className="invitation-frame">
               <Image
                 src="/wedding-editorial.webp"

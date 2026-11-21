@@ -102,7 +102,7 @@ export function ServiceForm({ service }: { service?: VendorService }) {
             {shownImages.length ? shownImages.map((photo, index) => (
               // eslint-disable-next-line @next/next/no-img-element -- Includes local blob previews.
               <img key={photo + index} src={photo} alt={`Service photo ${index + 1}`} className="aspect-square w-20 rounded-md border border-line object-cover sm:w-24" />
-            )) : <div className="grid size-20 place-items-center rounded-md border border-line bg-canvas text-earth"><ImagePlus aria-hidden="true" size={26} /></div>}
+            )) : <div className="grid size-20 place-items-center rounded-md border border-line bg-canvas text-berry"><ImagePlus aria-hidden="true" size={26} /></div>}
           </div>
           <div className="min-w-0">
             <label htmlFor="image" className="mb-1 block text-sm font-semibold">{savedImages.length ? "Replace service photos" : "Service photos"}</label>

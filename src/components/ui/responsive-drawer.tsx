@@ -25,7 +25,7 @@ export function ResponsiveDrawer({ title, kind, children }: {
     <dialog id={id} aria-labelledby={id + "-title"} ref={drawer}
       className="fixed inset-y-0 end-0 start-auto m-0 h-dvh max-h-none w-[min(90vw,25rem)] max-w-none overflow-y-auto border-s border-line bg-paper p-5 text-ink backdrop:bg-overlay/65">
       <div className="mb-5 flex items-center justify-between gap-3 border-b border-line pb-4">
-        <h2 id={id + "-title"} className="font-editorial text-2xl">{title}</h2>
+        <h2 id={id + "-title"} className="font-display text-2xl">{title}</h2>
         <Button variant="ghost" size="icon" type="button" aria-label={`Close ${title.toLowerCase()}`} onClick={() => drawer.current?.close()}><X aria-hidden="true" /></Button>
       </div>
       <div onClick={(event) => {

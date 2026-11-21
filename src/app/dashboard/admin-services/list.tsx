@@ -123,10 +123,10 @@ export async function AdminServiceList({
               <article className="grid gap-4 border border-line/65 p-4 sm:p-5">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div className="min-w-0">
-                    <p className="break-words text-sm font-medium text-earth">
+                    <p className="break-words text-sm font-medium text-berry">
                       {service.category}
                     </p>
-                    <h2 className="break-words font-editorial text-2xl">
+                    <h2 className="break-words font-display text-2xl">
                       {service.title}
                     </h2>
                   </div>

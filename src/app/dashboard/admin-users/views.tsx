@@ -19,11 +19,11 @@ function AccountCard({ user, viewerEmail, details }: { user: AdminUser; viewerEm
       <div className="grid gap-4 border border-line/65 p-4 sm:p-5">
         <div className="flex min-w-0 flex-wrap items-start justify-between gap-3">
           <div className="flex min-w-0 items-start gap-3">
-            <span className="grid size-10 shrink-0 place-items-center rounded-full bg-sage text-ink">
+            <span className="grid size-10 shrink-0 place-items-center rounded-full bg-blush text-ink">
               <UserRound aria-hidden="true" size={18} />
             </span>
             <div className="min-w-0">
-              <h2 className="break-words font-editorial text-2xl">{user.name}</h2>
+              <h2 className="break-words font-display text-2xl">{user.name}</h2>
               <p className="break-words text-sm text-muted-foreground">{user.email}</p>
             </div>
           </div>

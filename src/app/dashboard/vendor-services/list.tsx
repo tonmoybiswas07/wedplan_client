@@ -25,7 +25,7 @@ export async function ServiceList() {
       </div>
       {!services.length ? (
         <div className="border border-dashed border-line bg-paper px-6 py-12 text-center">
-          <h2 className="font-editorial text-2xl">No services yet</h2>
+          <h2 className="font-display text-2xl">No services yet</h2>
           <p className="mt-2 text-sm text-muted-foreground">Add your first wedding service to submit it for review.</p>
         </div>
       ) : (
@@ -33,7 +33,7 @@ export async function ServiceList() {
           {services.map((service) => (
             <li key={service.id} className="min-w-0 border border-line bg-paper p-1 shadow-sm">
               <article className="flex h-full flex-col border border-line/65">
-                <div className="grid aspect-video place-items-center overflow-hidden bg-sage/45 text-earth">
+                <div className="grid aspect-video place-items-center overflow-hidden bg-blush/45 text-berry">
                   {service.imageUrl ? (
                     // eslint-disable-next-line @next/next/no-img-element -- The API supplies a hosted ImgBB URL.
                     <img src={service.imageUrl} alt="" loading="lazy" className="size-full object-cover" />
@@ -41,8 +41,8 @@ export async function ServiceList() {
                 </div>
                 <div className="flex flex-1 flex-col gap-3 p-4 sm:p-5">
                   <div>
-                    <p className="text-sm font-medium break-words text-earth">{service.category}</p>
-                    <h2 className="font-editorial text-2xl break-words">{service.title}</h2>
+                    <p className="text-sm font-medium break-words text-berry">{service.category}</p>
+                    <h2 className="font-display text-2xl break-words">{service.title}</h2>
                   </div>
                   <p className="line-clamp-3 text-sm break-words text-muted-foreground">{service.description}</p>
                   <p className="font-semibold">{price.format(service.priceMinor / 100)}</p>

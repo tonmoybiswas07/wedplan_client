@@ -18,12 +18,12 @@ export function BookingForm({ serviceId, earliestDate }: { serviceId: string; ea
   }
 
   return (
-    <section aria-labelledby="booking-heading" className="border border-line bg-paper p-1">
-      <div className="border border-line/65 p-5 sm:p-6">
-        <h2 id="booking-heading" className="font-editorial text-3xl text-ink">Request a booking</h2>
+    <section aria-labelledby="booking-heading" className="rounded-[1.4rem] border border-line bg-blush p-1 shadow-sm">
+      <div className="rounded-[1.2rem] border border-line/65 bg-paper p-5 sm:p-6">
+        <h2 id="booking-heading" className="font-display text-3xl text-ink">Request a booking</h2>
         {state?.ok ? (
-          <div role="status" className="mt-4 flex items-start gap-3 bg-sage/60 p-4">
-            <CalendarCheck className="mt-0.5 size-5 shrink-0 text-earth" aria-hidden="true" />
+          <div role="status" className="mt-4 flex items-start gap-3 bg-blush/60 p-4">
+            <CalendarCheck className="mt-0.5 size-5 shrink-0 text-berry" aria-hidden="true" />
             <div>
               <p className="font-semibold">Request sent</p>
               <p className="mt-1 text-sm text-muted-foreground">Your request is pending vendor review.</p>

@@ -207,7 +207,7 @@ export function AuthForm({ mode, returnTo, googleError }: { mode: "sign-in" | "s
       <form action="/api/auth/google" method="post" className="mt-5">
         <input type="hidden" name="mode" value={mode} />
         {returnTo && <input type="hidden" name="returnTo" value={returnTo} />}
-        <Button type="submit" variant="outline" className="h-11 w-full border-line bg-paper">Continue with Google</Button>
+        <Button type="submit" variant="outline" className="h-11 w-full border-input bg-paper">Continue with Google</Button>
         {googleError && <p role="alert" className="invitation-error mt-2">{googleError}</p>}
       </form>
 

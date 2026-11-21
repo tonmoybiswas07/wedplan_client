@@ -57,10 +57,10 @@ export function SiteHeader() {
 export function SiteFooter() {
   const configured = process.env.WEDPLAN_CONTACT_EMAIL?.trim();
   const email = configured && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(configured) ? configured : undefined;
-  return <footer className="border-t border-line bg-olive text-on-olive">
+  return <footer className="border-t border-line bg-plum text-on-plum">
     <div className="mx-auto grid max-w-7xl gap-7 px-4 py-9 sm:grid-cols-3 sm:px-8">
       <section><Brand />
-        <p className="mt-3 max-w-xs text-sm text-on-olive/80">Discover wedding services, compare vendors, and request bookings in one place.</p>
+        <p className="mt-3 max-w-xs text-sm text-on-plum/80">Discover wedding services, compare vendors, and request bookings in one place.</p>
       </section>
       <nav aria-label="Footer navigation" className="grid content-start gap-2 text-sm">
         <p className="font-semibold">Explore</p>
@@ -79,7 +79,7 @@ export function SiteFooter() {
           <a href={serverRepository} className="hover:underline">Server</a>
         </div>
       </section>
-      <p className="border-t border-line/60 pt-4 text-xs text-on-olive/80 sm:col-span-3">© WedPlan. All rights reserved.</p>
+      <p className="border-t border-line/60 pt-4 text-xs text-on-plum/80 sm:col-span-3">© WedPlan. All rights reserved.</p>
     </div>
   </footer>;
 }

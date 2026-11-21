@@ -4,7 +4,7 @@ import type { VendorService } from "./model";
 const approval = {
   pending: {
     label: "Pending approval",
-    color: "bg-sage text-ink",
+    color: "bg-warning-surface text-warning-ink",
   },
   approved: { label: "Approved", color: "bg-success-surface text-success-ink" },
   rejected: { label: "Rejected", color: "bg-danger-surface text-danger-ink" },

@@ -7,13 +7,16 @@
 @theme inline {
   --color-canvas: var(--background);
   --color-ink: var(--foreground);
-  --color-earth: var(--earth);
-  --color-sage: var(--accent);
+  --color-berry: var(--berry);
+  --color-blush: var(--accent);
   --color-paper: var(--card);
   --color-line: var(--border);
-  --color-olive: var(--olive);
-  --color-on-olive: var(--on-olive);
-  --color-marigold: var(--marigold);
+  --color-plum: var(--plum);
+  --color-on-plum: var(--on-plum);
+  --color-petal: var(--petal);
+  --color-button-edge: var(--button-edge);
+  --color-arrow-inset: var(--arrow-inset);
+  --color-arrow-ink: var(--arrow-ink);
   --color-overlay: var(--overlay);
   --color-success-surface: var(--success-surface);
   --color-success-ink: var(--success-ink);
@@ -21,12 +24,12 @@
   --color-danger-ink: var(--destructive);
   --color-warning-surface: var(--warning-surface);
   --color-warning-ink: var(--warning-ink);
-  --font-editorial: var(--editorial-serif);
+  --font-display: var(--display-font);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans), Arial, sans-serif;
   --font-mono: var(--font-geist-mono);
-  --font-heading: var(--editorial-serif);
+  --font-heading: var(--display-font);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -66,84 +69,89 @@
 }
 
 :root {
-  --editorial-serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
-  --background: #f8f4e8;
-  --foreground: #293823;
-  --card: #fffaf0;
+  --display-font: var(--font-nunito), Arial, sans-serif;
+  --background: #fff8ed;
+  --foreground: #352038;
+  --card: #fffdf8;
   --card-foreground: var(--foreground);
   --popover: var(--card);
   --popover-foreground: var(--foreground);
-  --primary: #9e442e;
-  --primary-foreground: #fff9ec;
-  --secondary: #ead8be;
+  --primary: #b31557;
+  --primary-foreground: #ffffff;
+  --secondary: #f9dce8;
   --secondary-foreground: var(--foreground);
-  --muted: #edeadd;
-  --muted-foreground: #575a46;
-  --accent: #e2e9d7;
+  --muted: #f3e9e9;
+  --muted-foreground: #6f5269;
+  --accent: #fbe5ed;
   --accent-foreground: var(--foreground);
-  --destructive: #a23022;
-  --border: #c0b9a1;
-  --input: #8b876e;
-  --ring: #995137;
-  --earth: #8b422c;
-  --olive: #263c2d;
-  --on-olive: #f9f2df;
-  --marigold: #d09a38;
-  --overlay: #111b11;
+  --destructive: #a4213d;
+  --border: #e4c3cf;
+  --input: #a67991;
+  --ring: #a41761;
+  --berry: #a31a53;
+  --plum: #4a2446;
+  --on-plum: #fff1f6;
+  --petal: #db72a0;
+  --overlay: #231021;
   --success-surface: #dcebd5;
   --success-ink: #2a572c;
-  --danger-surface: #f7ded3;
+  --danger-surface: #f9dbe3;
   --warning-surface: #f5e4b8;
   --warning-ink: #694611;
-  --sidebar: var(--olive);
-  --sidebar-foreground: var(--on-olive);
+  --sidebar: var(--plum);
+  --sidebar-foreground: var(--on-plum);
   --sidebar-primary: var(--primary);
   --sidebar-primary-foreground: var(--primary-foreground);
   --sidebar-accent: var(--accent);
   --sidebar-accent-foreground: var(--accent-foreground);
   --sidebar-border: var(--border);
-  --sidebar-ring: var(--marigold);
+  --sidebar-ring: var(--petal);
   --chart-1: #426749;
   --chart-2: #aa5037;
   --chart-3: #946521;
   --chart-4: #67826c;
   --chart-5: #754b3b;
   --radius: .75rem;
-  --hero-wash: #f3e4cb;
+  --hero-wash: #ffedf2;
+  --button-edge: #7d1240;
+  --arrow-inset: #fdd9e9;
+  --arrow-ink: #861445;
 }
 
 .dark {
-  --background: #171f18;
-  --foreground: #f5eddb;
-  --card: #222d24;
-  --primary: #e69979;
-  --primary-foreground: #2a1711;
-  --secondary: #46372b;
-  --muted: #2c362b;
-  --muted-foreground: #c4c4ac;
-  --accent: #314334;
-  --destructive: #ffae9a;
-  --border: #59634f;
-  --input: #78836b;
-  --ring: #f0bc6d;
-  --earth: #edab89;
-  --olive: #243629;
-  --on-olive: #faf0d9;
-  --marigold: #e6ac50;
-  --overlay: #0a100a;
+  --background: #211524;
+  --foreground: #fff2f8;
+  --card: #302034;
+  --primary: #be245f;
+  --primary-foreground: #ffffff;
+  --secondary: #502940;
+  --muted: #3d2940;
+  --muted-foreground: #d9bcd2;
+  --accent: #47293f;
+  --destructive: #ffa4b7;
+  --border: #694861;
+  --input: #ab7b9b;
+  --ring: #ff9cc7;
+  --berry: #ff97bf;
+  --plum: #42243e;
+  --on-plum: #fff1f7;
+  --petal: #f688b4;
+  --overlay: #100913;
   --success-surface: #293f2d;
   --success-ink: #b9e3b1;
-  --danger-surface: #4d3029;
+  --danger-surface: #54263d;
   --warning-surface: #484027;
   --warning-ink: #ffd988;
-  --hero-wash: #2b3728;
+  --hero-wash: #372036;
+  --button-edge: #a13568;
+  --arrow-inset: #ffd7e9;
+  --arrow-ink: #70153d;
 }
 
-@utility alpana {
-  background-image: radial-gradient(ellipse at 22% 32%, transparent 33%, color-mix(in srgb, var(--marigold) 23%, transparent) 35% 37%, transparent 39%),
-    radial-gradient(ellipse at 78% 32%, transparent 33%, color-mix(in srgb, var(--marigold) 23%, transparent) 35% 37%, transparent 39%),
-    radial-gradient(ellipse at 50% 75%, transparent 29%, color-mix(in srgb, var(--marigold) 23%, transparent) 31% 33%, transparent 35%);
-  background-size: 52px 52px;
+@utility petal-pattern {
+  background-image: radial-gradient(ellipse at 34% 30%, color-mix(in srgb, var(--petal) 20%, transparent) 0 8%, transparent 9%),
+    radial-gradient(ellipse at 61% 58%, color-mix(in srgb, var(--petal) 15%, transparent) 0 7%, transparent 8%);
+  background-size: 52px 60px;
 }
 
 @layer base {
@@ -153,6 +161,7 @@
   body {
     @apply bg-background text-foreground;
   }
+  h1, h2, h3 { font-family: var(--display-font); font-weight: 850; }
   :focus-visible { outline: 2px solid var(--ring); outline-offset: 3px; }
   html {
     @apply font-sans;

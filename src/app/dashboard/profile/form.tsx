@@ -48,7 +48,7 @@ export function ProfileForm({ role, name, email, image, businessName }: {
     }}>
       <fieldset disabled={pending} className="grid gap-5 disabled:opacity-70">
         <div className="flex flex-wrap items-center gap-4 border-b border-line/65 pb-5">
-          <div className="grid size-20 shrink-0 place-items-center overflow-hidden rounded-full border border-line bg-sage text-earth">
+          <div className="grid size-20 shrink-0 place-items-center overflow-hidden rounded-full border border-line bg-blush text-berry">
             {preview || image ? (
               // eslint-disable-next-line @next/next/no-img-element -- Supports local file previews and hosted profile photos.
               <img src={preview ?? image} alt="Profile photo" className="size-full object-cover" referrerPolicy="no-referrer" />

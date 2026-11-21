@@ -154,7 +154,7 @@ async function BrowseCatalog({ searchParams }: { searchParams: Search }) {
       </div>
       <div className="mb-8 hidden lg:block">{filters("desktop")}</div>
       <div className="mb-4 flex items-center justify-between gap-3">
-        <h2 className="font-editorial text-2xl">Service listings</h2>
+        <h2 className="font-display text-2xl">Service listings</h2>
         {filtered && (
           <Link
             href="/services"
@@ -216,7 +216,7 @@ async function BrowseResults({
         <ServiceGrid listings={result.services} />
       ) : (
         <div className="border border-dashed border-line bg-paper p-8 text-center">
-          <h3 className="font-editorial text-2xl">No matching services</h3>
+          <h3 className="font-display text-2xl">No matching services</h3>
           <p className="mt-2 text-muted-foreground">
             Try another name, category, or location.
           </p>
@@ -253,7 +253,7 @@ async function BrowseResults({
 export default function BrowsePage({ searchParams }: { searchParams: Search }) {
   return (
     <main className="mx-auto min-h-[70svh] max-w-7xl px-4 py-10 sm:px-8 sm:py-14">
-      <h1 className="font-editorial text-4xl leading-tight tracking-tight text-ink sm:text-6xl">
+      <h1 className="font-display text-4xl leading-tight tracking-tight text-ink sm:text-6xl">
         Browse wedding services
       </h1>
       <p className="mt-3 mb-7 max-w-prose text-muted-foreground">

@@ -27,7 +27,7 @@ import {
 export function DashboardNotice({ unavailable }: { unavailable: boolean }) {
   return (
     <main className="mx-auto max-w-2xl px-6 py-20">
-      <h1 className="mb-4 font-editorial text-4xl">
+      <h1 className="mb-4 font-display text-4xl">
         {unavailable ? "Dashboard unavailable" : "Access denied"}
       </h1>
       <p className="mb-5 text-muted-foreground">
@@ -97,10 +97,10 @@ export async function DashboardOverview({
   const accountSummary = (
     <>
       <div className="mb-5 flex items-center gap-3">
-        <span className="grid size-10 place-items-center rounded-full bg-sage text-ink">
+        <span className="grid size-10 place-items-center rounded-full bg-blush text-ink">
           <CircleUserRound size={19} aria-hidden="true" />
         </span>
-        <h2 className="font-editorial text-2xl">Your account</h2>
+        <h2 className="font-display text-2xl">Your account</h2>
       </div>
       <dl className="grid gap-3 text-sm">
         <div>
@@ -129,10 +129,10 @@ export async function DashboardOverview({
         <Link
           href={dashboardPath(user.role, item)}
           prefetch={false}
-          className="group flex items-center justify-between gap-3 py-3 text-sm font-semibold text-ink hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-earth"
+          className="group flex items-center justify-between gap-3 py-3 text-sm font-semibold text-ink hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-berry"
         >
           <span>{sections[item].label}</span>
-          <span className="flex items-center gap-2 text-xs font-medium text-earth">
+          <span className="flex items-center gap-2 text-xs font-medium text-berry">
             {!["profile-settings", "my-services", "add-service", "manage-services", "my-bookings", "booking-requests", "manage-users", "subscription", "transactions"].includes(
               item,
             ) && "Coming soon"}
@@ -152,14 +152,14 @@ export async function DashboardOverview({
       >
         <div className="mx-auto max-w-6xl">
           <div className="flex min-h-20 items-center justify-between gap-3 border-b border-line">
-            <p className="text-sm font-semibold text-earth">
+            <p className="text-sm font-semibold text-berry">
               {workspace.label} dashboard
             </p>
             <div className="flex items-center gap-2"><ThemeSwitcher /><DashboardAccount name={user.name} role={user.role} image={user.image} /></div>
           </div>
           <header className="relative my-6 overflow-hidden rounded-xl border border-line bg-paper px-5 py-7 sm:px-8 sm:py-9">
-            <div aria-hidden="true" className="alpana pointer-events-none absolute inset-y-0 end-0 w-1/3 opacity-55 [mask-image:linear-gradient(to_right,transparent,black)]" />
-            <h1 className="relative break-words font-editorial text-4xl leading-tight tracking-tight text-ink sm:text-5xl">
+            <div aria-hidden="true" className="petal-pattern pointer-events-none absolute inset-y-0 end-0 w-1/3 opacity-55 [mask-image:linear-gradient(to_right,transparent,black)]" />
+            <h1 className="relative break-words font-display text-4xl leading-tight tracking-tight text-ink sm:text-5xl">
               {overview
                 ? `Welcome, ${user.name}`
                 : editing
@@ -174,10 +174,10 @@ export async function DashboardOverview({
             <div className="grid items-start gap-4 lg:grid-cols-[minmax(0,3fr)_minmax(0,2fr)]">
               <StationeryCard>
                 <div className="mb-2 flex items-center gap-3">
-                  <span className="grid size-10 place-items-center rounded-full bg-sage text-ink">
+                  <span className="grid size-10 place-items-center rounded-full bg-blush text-ink">
                     <Heart size={18} aria-hidden="true" />
                   </span>
-                  <h2 className="font-editorial text-2xl">Overview</h2>
+                  <h2 className="font-display text-2xl">Overview</h2>
                 </div>
                 <div className="my-4">
                   <Suspense fallback={<p role="status" className="text-sm">Loading statistics…</p>}>
@@ -236,7 +236,7 @@ export async function DashboardOverview({
                     </form>
                   </>
                 ) : profile ? accountSummary : (
-                  <h2 className="font-editorial text-2xl">Coming soon</h2>
+                  <h2 className="font-display text-2xl">Coming soon</h2>
                 )}
               </StationeryCard>
             </div>

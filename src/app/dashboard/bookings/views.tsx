@@ -28,7 +28,7 @@ function BookingCard({ booking, role, details = false }: { booking: Booking; rol
   return (
     <article className="min-w-0 border border-line bg-paper p-1 shadow-sm">
       <div className="grid min-w-0 gap-4 border border-line/65 p-4 sm:grid-cols-[10rem_minmax(0,1fr)] sm:p-5">
-        <div className="grid aspect-[4/3] w-full place-items-center overflow-hidden border border-line/60 bg-sage/50 text-earth">
+        <div className="grid aspect-[4/3] w-full place-items-center overflow-hidden border border-line/60 bg-blush/50 text-berry">
           {booking.service.imageUrl ? (
             // eslint-disable-next-line @next/next/no-img-element -- Service images are stored as ImgBB URLs.
             <img src={booking.service.imageUrl} alt="" loading="lazy" className="size-full object-cover" />
@@ -36,7 +36,7 @@ function BookingCard({ booking, role, details = false }: { booking: Booking; rol
         </div>
         <div className="min-w-0">
           <div className="flex flex-wrap items-start justify-between gap-2">
-            <h2 className="break-words font-editorial text-2xl">{booking.service.title}</h2>
+            <h2 className="break-words font-display text-2xl">{booking.service.title}</h2>
             <BookingStatusBadge status={booking.status} />
           </div>
           <dl className="mt-4 grid gap-3 text-sm sm:grid-cols-2">
@@ -91,8 +91,8 @@ export async function BookingList({ role, search }: { role: BookingRole; search:
         <ul className="grid gap-4">{result.bookings.map((booking) => <li key={booking.id}><BookingCard role={role} booking={booking} /></li>)}</ul>
       ) : (
         <div className="border border-dashed border-line bg-paper p-8 text-center">
-          <CalendarDays aria-hidden="true" className="mx-auto mb-3 text-earth" />
-          <h2 className="font-editorial text-2xl">{page > 1 ? "No bookings on this page" : role === "customer" ? "No bookings yet" : "No booking requests yet"}</h2>
+          <CalendarDays aria-hidden="true" className="mx-auto mb-3 text-berry" />
+          <h2 className="font-display text-2xl">{page > 1 ? "No bookings on this page" : role === "customer" ? "No bookings yet" : "No booking requests yet"}</h2>
           {page === 1 && role === "customer" && <Link href="/services" className={cn(buttonVariants(), "mt-4 h-9 px-3")}>Browse Services</Link>}
         </div>
       )}

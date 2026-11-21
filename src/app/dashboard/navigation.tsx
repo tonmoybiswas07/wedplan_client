@@ -27,11 +27,11 @@ const icons = {
 
 function Brand() {
   return (
-    <Link href="/" aria-label="WedPlan home" className="inline-flex items-center gap-3 text-on-olive">
-      <span className="grid size-9 place-items-center rounded-full border border-sage/40">
+    <Link href="/" aria-label="WedPlan home" className="inline-flex items-center gap-3 text-on-plum">
+      <span className="grid size-9 place-items-center rounded-full border border-blush/40">
         <Heart size={17} aria-hidden="true" />
       </span>
-      <span className="font-editorial text-2xl font-semibold">WedPlan</span>
+      <span className="font-display text-2xl font-semibold">WedPlan</span>
     </Link>
   );
 }
@@ -49,8 +49,8 @@ function DashboardLinks({ role, section, onNavigate }: {
           <Link key={item} href={dashboardPath(role, item)} prefetch={false}
             onClick={onNavigate} aria-current={section === item ? "page" : undefined}
             className={cn(
-              "flex min-h-11 items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sage",
-              section === item ? "bg-sage text-ink" : "text-on-olive hover:bg-on-olive/10",
+              "flex min-h-11 items-center gap-3 rounded-md px-3 py-2.5 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blush",
+              section === item ? "bg-blush text-ink" : "text-on-plum hover:bg-on-plum/10",
             )}>
             <Icon size={17} aria-hidden="true" />
             {sections[item].label}
@@ -83,7 +83,7 @@ export function DashboardAccount({ name, role, image, align = "end" }: { name: s
       }
     }}>
       <summary ref={trigger} aria-label="Account menu"
-        className="flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-lg border border-line bg-paper px-2.5 text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-earth [&::-webkit-details-marker]:hidden">
+        className="flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-lg border border-line bg-paper px-2.5 text-ink focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-berry [&::-webkit-details-marker]:hidden">
         <AccountAvatar image={image} />
         <span className={cn("max-w-40 truncate text-sm font-medium", align === "end" && "hidden sm:block")}>{name}</span>
         <ChevronDown size={15} aria-hidden="true" />
@@ -95,12 +95,12 @@ export function DashboardAccount({ name, role, image, align = "end" }: { name: s
         </div>
         <nav aria-label="Account" className="grid gap-1 pt-1">
           <Link href="/dashboard" prefetch={false} onClick={() => details.current?.removeAttribute("open")}
-            className="rounded-md px-2.5 py-2 text-sm hover:bg-sage">Dashboard</Link>
+            className="rounded-md px-2.5 py-2 text-sm hover:bg-blush">Dashboard</Link>
           <Link href={dashboardPath(role, "profile-settings")} prefetch={false} onClick={() => details.current?.removeAttribute("open")}
-            className="rounded-md px-2.5 py-2 text-sm hover:bg-sage">Profile Settings</Link>
+            className="rounded-md px-2.5 py-2 text-sm hover:bg-blush">Profile Settings</Link>
         </nav>
         <form action="/dashboard/sign-out" method="post" className="pt-1">
-          <Button type="submit" variant="ghost" className="h-10 w-full justify-start gap-2 px-2.5 hover:bg-sage">
+          <Button type="submit" variant="ghost" className="h-10 w-full justify-start gap-2 px-2.5 hover:bg-blush">
             <LogOut size={16} aria-hidden="true" /> Sign Out
           </Button>
         </form>
@@ -121,25 +121,25 @@ export function DashboardNavigation({ role, section }: { role: DashboardRole; se
 
   return (
     <>
-      <aside className="hidden bg-olive p-5 md:block lg:p-6">
-        <div className="mb-5 border-b border-sage/30 pb-5"><Brand /></div>
+      <aside className="hidden bg-plum p-5 md:block lg:p-6">
+        <div className="mb-5 border-b border-blush/30 pb-5"><Brand /></div>
         <DashboardLinks role={role} section={section} />
       </aside>
-      <header className="col-span-full flex items-center justify-between bg-olive px-4 py-3 md:hidden">
+      <header className="col-span-full flex items-center justify-between bg-plum px-4 py-3 md:hidden">
         <Brand />
         <Button type="button" variant="ghost" size="icon" aria-label="Open dashboard menu"
           aria-haspopup="dialog" aria-controls="dashboard-drawer" onClick={() => drawer.current?.showModal()}
-          className="size-11 border-sage/40 text-on-olive hover:bg-on-olive/10 hover:text-on-olive">
+          className="size-11 border-blush/40 text-on-plum hover:bg-on-plum/10 hover:text-on-plum">
           <Menu aria-hidden="true" />
         </Button>
       </header>
       <dialog id="dashboard-drawer" ref={drawer} aria-labelledby="drawer-heading"
-        className="fixed inset-y-0 start-0 end-auto m-0 h-dvh max-h-none w-[min(85vw,21rem)] max-w-none overflow-auto bg-olive p-5 text-on-olive backdrop:bg-overlay/60">
-        <div className="mb-5 flex items-center justify-between border-b border-sage/30 pb-4">
-          <h2 id="drawer-heading" className="font-editorial text-2xl">Dashboard</h2>
+        className="fixed inset-y-0 start-0 end-auto m-0 h-dvh max-h-none w-[min(85vw,21rem)] max-w-none overflow-auto bg-plum p-5 text-on-plum backdrop:bg-overlay/60">
+        <div className="mb-5 flex items-center justify-between border-b border-blush/30 pb-4">
+          <h2 id="drawer-heading" className="font-display text-2xl">Dashboard</h2>
           <Button type="button" variant="ghost" size="icon" aria-label="Close dashboard menu"
             onClick={() => drawer.current?.close()}
-            className="size-11 text-on-olive hover:bg-on-olive/10 hover:text-on-olive">
+            className="size-11 text-on-plum hover:bg-on-plum/10 hover:text-on-plum">
             <X aria-hidden="true" />
           </Button>
         </div>
