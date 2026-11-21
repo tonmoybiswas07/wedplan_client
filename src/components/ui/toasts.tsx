@@ -2,7 +2,7 @@
 
 import { Toaster } from "sonner";
 
-export function DashboardToasts() {
+export function WedPlanToasts() {
   return (
     <Toaster
       position="bottom-center"

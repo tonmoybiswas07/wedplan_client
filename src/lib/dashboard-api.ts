@@ -12,8 +12,15 @@ export async function fetchDashboardApi(role: DashboardRole, path: string, optio
     return new Response(null, { status: 403 });
   }
 
+  return fetchSessionApi(path, options);
+}
+
+export async function fetchSessionApi(path: string, options?: RequestInit) {
   const session = await getDashboardToken();
-  if (session.status !== "allowed") return new Response(null, { status: 401 });
+  if (session.status !== "allowed") {
+    const status = session.status === "unavailable" ? 503 : session.status === "denied" ? 403 : 401;
+    return new Response(null, { status });
+  }
 
   try {
     const headers = new Headers(options?.headers);
